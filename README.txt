@@ -1,6 +1,6 @@
 Automata Project
-3MD
-mhd
-mhd
-mhd
+3MD team
+mohammed Al-Syrwan
+Mohammed yaman
+mohammed Al-jobory
 
