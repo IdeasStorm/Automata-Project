@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>535</width>
-    <height>293</height>
+    <height>307</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -62,7 +62,7 @@
      <rect>
       <x>10</x>
       <y>20</y>
-      <width>51</width>
+      <width>71</width>
       <height>16</height>
      </rect>
     </property>
@@ -75,8 +75,8 @@
      <rect>
       <x>310</x>
       <y>0</y>
-      <width>46</width>
-      <height>13</height>
+      <width>71</width>
+      <height>16</height>
      </rect>
     </property>
     <property name="text">
@@ -109,6 +109,14 @@
      <string>Find</string>
     </property>
    </widget>
+   <zorder>listView</zorder>
+   <zorder>lineEdit</zorder>
+   <zorder>plainTextEdit</zorder>
+   <zorder>label</zorder>
+   <zorder>label_2</zorder>
+   <zorder>pushButton_2</zorder>
+   <zorder>pushButton_3</zorder>
+   <zorder>pushButton</zorder>
   </widget>
  </widget>
  <layoutdefault spacing="6" margin="11"/>
