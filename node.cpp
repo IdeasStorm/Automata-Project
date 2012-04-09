@@ -2,11 +2,12 @@
 
 //int Node::q = -1;
 
-Node::Node()
+Node::Node(QString name)
 {
     //Node::q++;
+    this->name = name;
     setNotFinite();
-    nextNodes = new QMap<char, Node*>();
+    nextNodes = new QMultiHash<char, Node*>();
 }
 
 void Node::link(char value, Node *second)
@@ -28,7 +29,7 @@ void Node::setNotFinite()
 bool Node::isFiniteState()
 { return finite; }
 
-Node* Node::nextNode(char value)
+QList<Node*> Node::nextNode(char value)
 {
-    return nextNodes->value(value);
+    return nextNodes->values(value);
 }

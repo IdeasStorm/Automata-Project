@@ -8,13 +8,13 @@ int main(int argc, char *argv[])
     MainWindow w;
     w.show();
 
-    Node* node = new Node();
+    Node* node = new Node("q0");
     node->link('a');
-    Node* n = node->nextNode('a');
-    n = new Node();
+    //QList<Node*> n = node->nextNode('a');
+    Node* n = new Node("q1");
     n->setFinite();
     node->link('b', n);
-    Node* in = node->nextNode('b');
+    QList<Node*> in = node->nextNode('b');
 
     return a.exec();
 }
