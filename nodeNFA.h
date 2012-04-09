@@ -2,8 +2,9 @@
 #define NODENFA_H
 
 #include <QMultiHash>
+#include "node.h"
 
-class NodeNFA
+class NodeNFA : public Node
 {
 public:
     NodeNFA(QString);
@@ -12,13 +13,8 @@ public:
     void link(char);                //link with itself
     QList<NodeNFA*> nextNode(char);           //return the next state if this char enter
                                             //null if there is no next state
-    void setFinite();               //call this if this state is finite
-    void setNotFinite();            //call this if this state is not finite
-    bool isFiniteState();           //return true if is finite otherwise return false
 private:
-    QString name;
     QMultiHash<char, NodeNFA*>* nextNodes;
-    bool finite;
 };
 
 #endif // NODENFA_H
