@@ -11,7 +11,7 @@ NodeNFA::NodeNFA(int num) : Node(num)
     nextNodes = new QMultiHash<char, NodeNFA*>();
 }
 
-void NodeNFA::link(char value, NodeNFA *second)
+void NodeNFA::link(char value, Node *second)
 {
     nextNodes->insert(value, second);
 }

@@ -6,8 +6,8 @@ class Node
 public:
     Node(QString);
     Node(int);
-    void link(char, Node*)=0;
-    void link(char)=0;
+    virtual void link(char, Node*)=0;
+    virtual void link(char)=0;
     void setFinite();
     void setNotFinite();
     bool isFiniteState();
