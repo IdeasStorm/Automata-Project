@@ -13,6 +13,8 @@ public: // Private
 public:
     DFA(QString *KeyWord,int numberWord); //not to use in Search ..! only simulate for convert NFA to DFA and to build NFA
     bool SimulateDFA(QString input); //Simulate DFA and return True or false
+
+    void simplify();
 };
 
 #endif // DFA_H
