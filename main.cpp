@@ -1,6 +1,6 @@
 #include <QtGui/QApplication>
 #include "mainwindow.h"
-#include "node.h"
+#include "nodenfa.h"
 
 
 int main(int argc, char *argv[])
@@ -9,13 +9,13 @@ int main(int argc, char *argv[])
     MainWindow w;
     w.show();
 
-    Node* node = new Node("q0");
+    NodeNFA* node = new NodeNFA("q0");
     node->link('a');
     //QList<Node*> n = node->nextNode('a');
-    Node* n = new Node("q1");
+    NodeNFA* n = new NodeNFA("q1");
     n->setFinite();
     node->link('b', n);
-    QList<Node*> in = node->nextNode('b');
+    QList<NodeNFA*> in = node->nextNode('b');
 
     return a.exec();
 }

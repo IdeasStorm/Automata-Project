@@ -1,8 +1,8 @@
-#include "node.h"
+#include "nodenfa.h"
 
 //int Node::q = -1;
 
-Node::Node(QString name)
+NodeNFA::NodeNFA(QString name)
 {
     //Node::q++;
     this->name = name;
@@ -10,26 +10,26 @@ Node::Node(QString name)
     nextNodes = new QMultiHash<char, Node*>();
 }
 
-void Node::link(char value, Node *second)
+void NodeNFA::link(char value, NodeNFA *second)
 {
     nextNodes->insert(value, second);
 }
 
-void Node::link(char value)
+void NodeNFA::link(char value)
 {
     nextNodes->insert(value, this);
 }
 
-void Node::setFinite()
+void NodeNFA::setFinite()
 { finite = true; }
 
-void Node::setNotFinite()
+void NodeNFA::setNotFinite()
 { finite = false; }
 
-bool Node::isFiniteState()
+bool NodeNFA::isFiniteState()
 { return finite; }
 
-QList<Node*> Node::nextNode(char value)
+QList<NodeNFA*> NodeNFA::nextNode(char value)
 {
     return nextNodes->values(value);
 }
