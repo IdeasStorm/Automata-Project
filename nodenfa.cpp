@@ -10,6 +10,12 @@ NodeNFA::NodeNFA(QString name)
     nextNodes = new QMultiHash<char, Node*>();
 }
 
+NodeNFA::NodeNFA(int num)
+{
+    QSrting name = "q" + num;
+    this(name);
+}
+
 void NodeNFA::link(char value, NodeNFA *second)
 {
     nextNodes->insert(value, second);
