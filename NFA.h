@@ -9,10 +9,10 @@
 class NFA {
 public: // Private
     int startState;
-    QMap<QPair<int, QCharRef>, int> transitions; // for save the transition of DFA
+    QMultiMap<QPair<int,char>, int> transitions; // for save the transition of DFA
     QSet<int> finalStates;
 public:
-    NFA(QString *input,int numberWord); //not to use in Search ..! only simulate for convert NFA to DFA and to build NFA
+    NFA(QString *KeyWord,int numberWord); //not to use in Search ..! only simulate for convert NFA to DFA and to build NFA
     DFA ConvertToDFA();
 };
 

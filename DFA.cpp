@@ -1,16 +1,16 @@
 #include "DFA.h"
 
-DFA::DFA(QString *input,int numberWord) //not for use in Work Case
+DFA::DFA(QString *KeyWord,int numberWord) //not for use in Work Case
 {
     startState = 0 ; //q0
     int currentState =startState ;
     for (int i=0;i<numberWord;i++)
     {
-        QString s = input[i];
-        transitions.insert(qMakePair(startState,s[0]),++currentState);
+        QString s = KeyWord[i];
+        transitions.insert(qMakePair(startState,(QChar)s[0]),++currentState);
         for (int j=1;j<s.length();j++)
         {
-            transitions.insert(qMakePair(currentState,s[j]),++currentState);
+            transitions.insert(qMakePair(currentState,(QChar)s[j]),++currentState);
         }
         finalStates.insert(currentState);
     }
