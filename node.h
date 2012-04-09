@@ -1,13 +1,24 @@
 #ifndef NODE_H
 #define NODE_H
 
+#include <QMultiHash>
+
 class Node
 {
 public:
-    Node();
-    void link(char, Node*);         //linke with another node
-    Node* nextState(char);          //return the next state if this char enter
-                                    //      null if there is no next state
+    Node(QString);
+    void link(char, Node*);         //link with another node
+    void link(char);                //link with itself
+    QList<Node*> nextNode(char);           //return the next state if this char enter
+                                            //null if there is no next state
+    void setFinite();               //call this if this state is finite
+    void setNotFinite();            //call this if this state is not finite
+    bool isFiniteState();           //return true if is finite otherwise return false
+    static int q;                   //state number
+private:
+    QString name;
+    QMultiHash<char, Node*>* nextNodes;
+    bool finite;
 };
 
 #endif // NODE_H
