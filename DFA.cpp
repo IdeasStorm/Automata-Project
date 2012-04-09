@@ -37,14 +37,12 @@ void DFA::LoadDFA(QString *KeyWord,int numberWord)
     {
         QString s = KeyWord[i];
 
-//        CurrentState = new Node(CounterState++);
-        //For link StartState with self by (e)
-        StartState->link('e',CurrentState);
+//TODO JOPORY       CurrentState = new Node(CounterState++);
 
         //For link each node with another node Based input
         for (int j=0;j<s.length();j++)
         {
-            //NextState = new Node(CounterState++);
+//TODO JOPORY       NextState = new Node(CounterState++);
             CurrentState->link(s[j].cell(),NextState);
             CurrentState->link(' ',StartState);
             CurrentState = NextState ;

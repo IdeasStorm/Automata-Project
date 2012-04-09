@@ -1,25 +1,56 @@
-/*#include "NFA.h"
+#include "NFA.h"
 
-NFA::NFA(QString *KeyWord,int numberWord) //not for use in Work Case
+Node * NFA::getStartState()
 {
-    startState = 0 ; //q0
-    int currentState =startState ;
-    for (int i=0;i<numberWord;i++)
+    return StartState ;
+}
+
+void NFA::setStartState(Node *state)
+{
+    StartState = state;
+}
+
+
+NFA::NFA()
+{
+    StartState = new Node("q0") ;
+    //For link Start State with self if the input a-->z
+    for (char ch='a';ch<'z';ch++)
     {
-        QString s = KeyWord[i];
-        transitions.insert(qMakePair(startState,s[0]),++currentState);
-        transitions.insert(qMakePair(startState,' '),startState);
-        for (int j=1;j<s.length();j++)
-        {
-            transitions.insert(qMakePair(currentState,' '),startState);
-            transitions.insert(qMakePair(currentState,s[j]),++currentState);
-        }
-        finalStates.insert(currentState);
+        StartState->link(ch);
     }
 }
 
-DFA ConvertToDFA()
+NFA::NFA(QString *KeyWord,int numberWord)
 {
-    //To Jopory ....
+
+    NFA();
+    LoadNFA(KeyWord,numberWord);
 }
-*/
+
+void NFA::LoadNFA(QString *KeyWord,int numberWord)
+{
+    Node *CurrentState,*NextState = StartState;
+    int CounterState = 1 ; //for generate and save name of states(node) q0,1,2,3....
+
+    for (int i=0;i<numberWord;i++)
+    {
+        QString s = KeyWord[i];
+
+//TODO JOPORY       CurrentState = new Node(CounterState++);
+        //For link StartState with self by (/0) Obselon
+        StartState->link('/0',CurrentState);
+
+        //For link each node with another node Based input
+        for (int j=0;j<s.length();j++)
+        {
+//TODO JOPORY       NextState = new Node(CounterState++);
+            CurrentState->link(s[j].cell(),NextState);
+            CurrentState->link(' ',StartState);
+            CurrentState = NextState ;
+        }
+
+        //For set Finit of the last node in each word ..
+        NextState->setFinite();
+    }//For number Word
+}
