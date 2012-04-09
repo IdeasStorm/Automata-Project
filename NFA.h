@@ -14,7 +14,7 @@ private:
 public:
     //Default Constructer of NFA
     NFA();
-    // Default Constructer of NFA and build DFA
+    // Default Constructer of NFA and build NFA
     NFA(QString *KeyWord,int numberWord);
 
     //Build DFA
