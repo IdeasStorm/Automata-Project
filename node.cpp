@@ -1,24 +1,19 @@
 #include "node.h"
 
-//int Node::q = -1;
-
 Node::Node(QString name)
 {
-    //Node::q++;
     this->name = name;
     setNotFinite();
-    nextNodes = new QMultiHash<char, Node*>();
 }
 
-void Node::link(char value, Node *second)
+Node::Node(int num)
 {
-    nextNodes->insert(value, second);
+    QSrting name = "q" + num;
+    this(name);
 }
 
-void Node::link(char value)
-{
-    nextNodes->insert(value, this);
-}
+QString Node::getName()
+{ return name; }
 
 void Node::setFinite()
 { finite = true; }
@@ -28,8 +23,3 @@ void Node::setNotFinite()
 
 bool Node::isFiniteState()
 { return finite; }
-
-QList<Node*> Node::nextNode(char value)
-{
-    return nextNodes->values(value);
-}

@@ -12,13 +12,27 @@ TEMPLATE = app
 
 SOURCES += main.cpp\
         mainwindow.cpp \
-    node.cpp \
     DFA.cpp \
-    NFA.cpp
+    NFA.cpp \
+    nodenfa.cpp \
+    nodedfa.cpp \
+    node.cpp
 
 HEADERS  += mainwindow.h \
-    node.h \
     DFA.h \
-    NFA.h
+    NFA.h \
+    nodenfa.h \
+    nodedfa.h \
+    node.h
 
 FORMS    += mainwindow.ui
+
+
+
+
+
+
+
+
+
+
