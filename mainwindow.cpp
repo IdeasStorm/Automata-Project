@@ -15,6 +15,5 @@ MainWindow::~MainWindow()
 
 void MainWindow::on_pushButton_clicked()
 {
-    //ui->listView-> += ui->lineEdit->text() ;
     ui->listWidget->addItem(new QListWidgetItem(ui->lineEdit->text()));
 }
