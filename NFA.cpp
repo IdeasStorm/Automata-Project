@@ -1,4 +1,4 @@
-#include "NFA.h"
+/*#include "NFA.h"
 
 NFA::NFA(QString *KeyWord,int numberWord) //not for use in Work Case
 {
@@ -22,3 +22,4 @@ DFA ConvertToDFA()
 {
     //To Jopory ....
 }
+*/

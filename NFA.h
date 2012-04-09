@@ -1,4 +1,4 @@
-#ifndef NFA_H
+/*#ifndef NFA_H
 #define NFA_H
 #include"DFA.h"
 #include<QMap>
@@ -17,3 +17,4 @@ public:
 };
 
 #endif // NFA_H
+*/
