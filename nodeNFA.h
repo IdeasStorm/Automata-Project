@@ -15,7 +15,6 @@ public:
     void setFinite();               //call this if this state is finite
     void setNotFinite();            //call this if this state is not finite
     bool isFiniteState();           //return true if is finite otherwise return false
-    static int q;                   //state number
 private:
     QString name;
     QMultiHash<char, NodeNFA*>* nextNodes;

@@ -1,13 +1,10 @@
 #include "nodenfa.h"
 
-//int Node::q = -1;
-
 NodeNFA::NodeNFA(QString name)
 {
-    //Node::q++;
     this->name = name;
     setNotFinite();
-    nextNodes = new QMultiHash<char, Node*>();
+    nextNodes = new QMultiHash<char, NodeNFA*>();
 }
 
 NodeNFA::NodeNFA(int num)
