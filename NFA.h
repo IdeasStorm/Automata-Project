@@ -25,9 +25,12 @@ private:
     NodeNFA *StartState ;
     QSet<NodeNFA *> FinitStates;
     QSet<QString>* usedState;
+    QList<NodeNFA*> temp;
+    int nodeNum;
 
-    void addToSet(NodeNFA*);
-    QList<NodeNFA*>* getValueNodes(NodeNFA* node);
+    void addToSet(QString, NodeDFA*, char);
+    void addToList(NodeNFA* node);
+    QList<NodeNFA*>* getValueNodes(NodeNFA* node, NodeDFA* dfa);
 };
 
 #endif // NFA_H

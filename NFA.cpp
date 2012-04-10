@@ -1,4 +1,5 @@
 #include "NFA.h"
+#include "nodedfa.h"
 
 NodeNFA * NFA::getStartState()
 {
@@ -85,26 +86,42 @@ QSet<NodeNFA *> NFA::getFinitStates()
     return FinitStates;
 }
 
-void NFA::addToSet(NodeNFA* node)
+void NFA::addToSet(QString name, NodeDFA* dfa, char ch)
 {
-    usedState->insert(node->getName());
+    usedState->insert(name);
+    if (dfa == NULL)
+        dfa = new NodeDFA(nodeNum);
+    else
+        dfa->link(ch, new NodeDFA(nodeNum));
+    nodeNum++;
 }
 
-QList<NodeNFA*>* NFA::getValueNodes(NodeNFA* node)
+void NFA::addToList(NodeNFA* node)
+{
+    if (!temp.contains(node))
+       temp.append(node);
+}
+
+QList<NodeNFA*>* NFA::getValueNodes(NodeNFA* node, NodeDFA* dfa)
 {
     QList<char> keys = node->getNextNodes()->uniqueKeys();
     for(int i=0;i<keys.length();i++)
     {
         QList<NodeNFA*> states = node->getNextNode(keys.at(i));
+        QString* toSet = new QString();
         for(int j=0;j<states.length();j++)
         {
-            getValueNodes(states.at(i));
+            toSet->append(states.at(i)->getName());
+            addToList(states.at(i));
         }
+        addToSet(*toSet, dfa, keys.at(i));
     }
 }
 
 NodeDFA* NFA::convertToDFA()
 {
+    NodeDFA* DFANode;
     usedState = new QSet<QString>();
-    addToSet(StartState);
+    nodeNum = 0;
+    addToSet(StartState->getName(), DFANode, ' ');
 }
