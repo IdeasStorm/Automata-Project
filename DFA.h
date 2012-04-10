@@ -8,7 +8,7 @@
 class DFA {
 
 private:
-    Node *StartState ;
+    NodeDFA *StartState ;
 
 public:
     //Default Constructer of DFA
@@ -20,9 +20,9 @@ public:
     void LoadDFA(QString *KeyWord,int numberWord);
 
     // Get StartState
-    Node * getStartState();
+    NodeDFA * getStartState();
     //Set StartState
-    void setStartState(Node *state);
+    void setStartState(NodeDFA *state);
     // simulate DFA (Run DFA)
     bool SimulateDFA(QString input); //Simulate DFA and return True or false
 

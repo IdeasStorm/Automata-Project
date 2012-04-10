@@ -13,6 +13,9 @@ public:
     void setNotFinite();
     bool isFiniteState();
     QString getName();
+
+    //virtual Node * nextNode(char);           //return the next state if this char enter
+
 private:
     QString name;
     bool finite;

@@ -1,13 +1,16 @@
 #include <QtGui/QApplication>
 #include "mainwindow.h"
 #include "nodenfa.h"
-
+#include "DFA.h"
 
 int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
     MainWindow w;
     w.show();
+
+
+
 
     /*
     NodeNFA* node = new NodeNFA("q0");
@@ -17,6 +20,6 @@ int main(int argc, char *argv[])
     n->setFinite();
     node->link('b', n);
     QList<NodeNFA*> in = node->nextNode('b');
-*/
+    */
     return a.exec();
 }

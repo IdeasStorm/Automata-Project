@@ -1,11 +1,11 @@
 #include "DFA.h"
 
-Node * DFA::getStartState()
+NodeDFA * DFA::getStartState()
 {
     return StartState ;
 }
 
-void DFA::setStartState(Node *state)
+void DFA::setStartState(NodeDFA *state)
 {
     StartState = state;
 }
@@ -13,7 +13,7 @@ void DFA::setStartState(Node *state)
 
 DFA::DFA()
 {
-    //StartState = new Node("q0") ;
+    StartState = new NodeDFA("q0") ;
     //For link Start State with self if the input a-->z
     for (char ch='a';ch<'z';ch++)
     {
@@ -30,7 +30,7 @@ DFA::DFA(QString *KeyWord,int numberWord)
 
 void DFA::LoadDFA(QString *KeyWord,int numberWord)
 {
-    Node *CurrentState,*NextState = StartState;
+    NodeDFA *CurrentState,*NextState = StartState;
     int CounterState = 1 ; //for generate and save name of states(node)
 
     for (int i=0;i<numberWord;i++)
@@ -47,21 +47,34 @@ void DFA::LoadDFA(QString *KeyWord,int numberWord)
             CurrentState->link(' ',StartState);
             CurrentState = NextState ;
         }
-
         //For set Finit of the last node in each word ..
+        NextState = new NodeDFA(CounterState++);
+        CurrentState->link(' '.cell(),NextState);
         NextState->setFinite();
     }//For number Word
 }
 
-/*
+
 bool DFA::SimulateDFA(QString input)
 {
-    int currentState = startState ;
+    NodeDFA* currentState = StartState ;
     for(int i=0;i<input.length();i++)
     {
         //currentState = transitions[qMakePair(currentState,input[i])];
+        currentState = StartState->nextNode(input[i].cell());
     }
-    return finalStates.find(currentState)!= finalStates.end();
+    return currentState->isFiniteState();
 }
 
-*/
+
+QString NodeDFA::getName()
+{ return name; }
+
+void NodeDFA::setFinite()
+{ finite = true; }
+
+void NodeDFA::setNotFinite()
+{ finite = false; }
+
+bool NodeDFA::isFiniteState()
+{ return finite; }

@@ -1,17 +1,17 @@
 #include "nodedfa.h"
 #include "node.h"
 
-NodeDFA::NodeDFA(QString name) : Node(name)
+NodeDFA::NodeDFA(QString name)
 {
-    nextNodes = new QMap<char, Node *>();
+    nextNodes = new QMap<char, NodeDFA *>();
 }
 
-NodeDFA::NodeDFA(int num) : Node(num)
+NodeDFA::NodeDFA(int num)
 {
-    nextNodes = new QMap<char, Node *>();
+    nextNodes = new QMap<char, NodeDFA *>();
 }
 
-void NodeDFA::link(char value, Node *second)
+void NodeDFA::link(char value, NodeDFA *second)
 {
     nextNodes->insert(value, second);
 }
@@ -21,7 +21,7 @@ void NodeDFA::link(char value)
     nextNodes->insert(value, this);
 }
 
-Node * NodeDFA::nextNode(char value)
+NodeDFA * NodeDFA::nextNode(char value)
 {
     return nextNodes->value(value);
 }
