@@ -1,4 +1,5 @@
 #include "NFA.h"
+#include "nodedfa.h"
 
 NodeNFA * NFA::getStartState()
 {
@@ -64,18 +65,19 @@ void NFA::LoadNFA(QString *KeyWords,int numberWords)
             CurrentState->link(' ',StartState);
             CurrentState = NextState ;
         }
+
         //For set Finit of the last Node after node of ' '
         NextState = new NodeNFA(CounterState++);
         CurrentState->link(' ',NextState);
         NextState->setFinite();
         FinitStates.insert(NextState);
 
-    }//For number Word
+    }//For number Words
 
-    //for copy of Start State map to copy into Finite States
+    //for copy of Start State map into Finite States
     foreach (NodeNFA *state , FinitStates)
     {
-        state->setnextNodes(StartState->getnextNodes());
+        state->setNextNodes(StartState->getNextNodes());
     }
 
 }
@@ -83,4 +85,44 @@ void NFA::LoadNFA(QString *KeyWords,int numberWords)
 QSet<NodeNFA *> NFA::getFinitStates()
 {
     return FinitStates;
+}
+
+void NFA::addToSet(QString name, NodeDFA* dfa, char ch)
+{
+    usedState->insert(name);
+    if (dfa == NULL)
+        dfa = new NodeDFA(nodeNum);
+    else
+        dfa->link(ch, new NodeDFA(nodeNum));
+    nodeNum++;
+}
+
+void NFA::addToList(NodeNFA* node)
+{
+    if (!temp.contains(node))
+       temp.append(node);
+}
+
+QList<NodeNFA*>* NFA::getValueNodes(NodeNFA* node, NodeDFA* dfa)
+{
+    QList<char> keys = node->getNextNodes()->uniqueKeys();
+    for(int i=0;i<keys.length();i++)
+    {
+        QList<NodeNFA*> states = node->getNextNode(keys.at(i));
+        QString* toSet = new QString();
+        for(int j=0;j<states.length();j++)
+        {
+            toSet->append(states.at(i)->getName());
+            addToList(states.at(i));
+        }
+        addToSet(*toSet, dfa, keys.at(i));
+    }
+}
+
+NodeDFA* NFA::convertToDFA()
+{
+    NodeDFA* DFANode;
+    usedState = new QSet<QString>();
+    nodeNum = 0;
+    addToSet(StartState->getName(), DFANode, ' ');
 }
