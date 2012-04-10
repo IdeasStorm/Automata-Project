@@ -1,4 +1,5 @@
 #include "node.h"
+#include <QString>
 
 Node::Node(QString name)
 {

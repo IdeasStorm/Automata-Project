@@ -13,7 +13,7 @@ void DFA::setStartState(Node *state)
 
 DFA::DFA()
 {
-    //StartState = new Node("q0") ;
+    StartState = new Node("q0") ;
     //For link Start State with self if the input a-->z
     for (char ch='a';ch<'z';ch++)
     {
@@ -36,6 +36,12 @@ void DFA::LoadDFA(QString *KeyWord,int numberWord)
     for (int i=0;i<numberWord;i++)
     {
         QString s = KeyWord[i];
+<<<<<<< HEAD
+        //transitions.insert(qMakePair(startState,(QChar)s[0]),++currentState);
+        for (int j=1;j<s.length();j++)
+        {
+            //transitions.insert(qMakePair(currentState,(QChar)s[j]),++currentState);
+=======
 
 //TODO JOPORY       CurrentState = new Node(CounterState++);
 
@@ -46,6 +52,7 @@ void DFA::LoadDFA(QString *KeyWord,int numberWord)
             CurrentState->link(s[j].cell(),NextState);
             CurrentState->link(' ',StartState);
             CurrentState = NextState ;
+>>>>>>> origin/DFA
         }
 
         //For set Finit of the last node in each word ..

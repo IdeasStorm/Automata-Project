@@ -1,6 +1,6 @@
 #ifndef NODEDFA_H
 #define NODEDFA_H
-
+#include <QMap>
 #include "node.h"
 
 class NodeDFA : public Node
