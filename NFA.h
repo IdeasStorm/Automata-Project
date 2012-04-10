@@ -18,9 +18,16 @@ public:
     QSet<NodeNFA *> getFinitStates();
     //Set
     void setStartState(NodeNFA *state);
+
+    //Convert from NFA to DFA
+    NodeDFA* convertToDFA();
 private:
     NodeNFA *StartState ;
     QSet<NodeNFA *> FinitStates;
+    QSet<QString>* usedState;
+
+    void addToSet(NodeNFA*);
+    QList<NodeNFA*>* getValueNodes(NodeNFA* node);
 };
 
 #endif // NFA_H

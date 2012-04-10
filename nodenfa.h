@@ -10,9 +10,9 @@ public:
     NodeNFA(int);
     void link(char, NodeNFA*);
     void link(char);
-    QList<NodeNFA*> nextNode(char);
-    QMultiHash<char, NodeNFA*>* getnextNodes();
-    void setnextNodes(QMultiHash<char, NodeNFA*>* nextnodes);
+    QList<NodeNFA*> getNextNode(char);
+    QMultiHash<char, NodeNFA*>* getNextNodes();
+    void setNextNodes(QMultiHash<char, NodeNFA*>*);
     void setFinite();
     void setNotFinite();
     bool isFiniteState();

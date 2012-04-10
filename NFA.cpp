@@ -75,7 +75,7 @@ void NFA::LoadNFA(QString *KeyWords,int numberWords)
     //for copy of Start State map to copy into Finite States
     foreach (NodeNFA *state , FinitStates)
     {
-        state->setnextNodes(StartState->getnextNodes());
+        state->setNextNodes(StartState->getNextNodes());
     }
 
 }
@@ -83,4 +83,28 @@ void NFA::LoadNFA(QString *KeyWords,int numberWords)
 QSet<NodeNFA *> NFA::getFinitStates()
 {
     return FinitStates;
+}
+
+void NFA::addToSet(NodeNFA* node)
+{
+    usedState->insert(node->getName());
+}
+
+QList<NodeNFA*>* NFA::getValueNodes(NodeNFA* node)
+{
+    QList<char> keys = node->getNextNodes()->uniqueKeys();
+    for(int i=0;i<keys.length();i++)
+    {
+        QList<NodeNFA*> states = node->getNextNode(keys.at(i));
+        for(int j=0;j<states.length();j++)
+        {
+            getValueNodes(states.at(i));
+        }
+    }
+}
+
+NodeDFA* NFA::convertToDFA()
+{
+    usedState = new QSet<QString>();
+    addToSet(StartState);
 }
