@@ -120,6 +120,7 @@ void DFA::simplify()
                     group.subtract(new_group);
                     // adding the new group
                     groups.append(new_group);
+                    break; // not reliable
                 }
             }
         }
