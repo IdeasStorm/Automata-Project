@@ -2,30 +2,70 @@
 #include <QSet>
 #include "nodedfa.h"
 
-DFA::DFA(QString *KeyWord,int numberWord) //not for use in Work Case
+NodeDFA * DFA::getStartState()
 {
-    startState = 0 ; //q0
-    int currentState =startState ;
-    for (int i=0;i<numberWord;i++)
+    return StartState ;
+}
+
+void DFA::setStartState(NodeDFA *state)
+{
+    StartState = state;
+}
+
+
+DFA::DFA()
+{
+    StartState = new NodeDFA("q0") ;
+    //For link Start State with self if the input a-->z
+    for (char ch='a';ch<'z';ch++)
     {
-        QString s = KeyWord[i];
-        //transitions.insert(qMakePair(startState,(QChar)s[0]),++currentState);
-        for (int j=1;j<s.length();j++)
-        {
-            //transitions.insert(qMakePair(currentState,(QChar)s[j]),++currentState);
-        }
-        finalStates.insert(currentState);
+        StartState->link(ch);
     }
 }
 
+DFA::DFA(QString *KeyWord,int numberWord)
+{
+
+    DFA();
+    LoadDFA(KeyWord,numberWord);
+}
+
+void DFA::LoadDFA(QString *KeyWord,int numberWord)
+{
+    NodeDFA *CurrentState,*NextState = StartState;
+    int CounterState = 1 ; //for generate and save name of states(node)
+
+    for (int i=0;i<numberWord;i++)
+    {
+        QString s = KeyWord[i];
+
+        CurrentState = new NodeDFA(CounterState++);
+
+        //For link each node with another node Based input
+        for (int j=0;j<s.length();j++)
+        {
+            NextState = new NodeDFA(CounterState++);
+            CurrentState->link(s[j].cell(),NextState);
+            CurrentState->link(' ',StartState);
+            CurrentState = NextState ;
+        }
+        //For set Finit of the last node in each word ..
+        NextState = new NodeDFA(CounterState++);
+        CurrentState->link(' ',NextState);
+        NextState->setFinite();
+    }//For number Word
+}
+
+
 bool DFA::SimulateDFA(QString input)
 {
-    int currentState = startState ;
+    NodeDFA* currentState = StartState ;
     for(int i=0;i<input.length();i++)
     {
         //currentState = transitions[qMakePair(currentState,input[i])];
+        currentState = StartState->nextNode(input[i].cell());
     }
-    return finalStates.find(currentState)!= finalStates.end();
+    return currentState->isFiniteState();
 }
 typename QSet<NodeDFA*> NodeGroup;
 // simplifies the DFA Automata

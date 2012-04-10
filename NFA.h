@@ -1,19 +1,26 @@
 #ifndef NFA_H
 #define NFA_H
+
 #include"DFA.h"
-#include<QMap>
-#include<QSet>
+#include "nodenfa.h"
 #include<QString>
-#include<QPair>
+#include <QSet>
 
 class NFA {
-public: // Private
-    int startState;
-    QMultiMap<QPair<int,char>, int> transitions; // for save the transition of DFA
-    QSet<int> finalStates;
 public:
-    NFA(QString *KeyWord,int numberWord); //not to use in Search ..! only simulate for convert NFA to DFA and to build NFA
-    DFA ConvertToDFA();
+    NFA();
+    NFA(QString *KeyWords,int numberWord);
+    //Build NFA
+    void LoadNFA(QString *KeyWords,int numberWord);
+
+    // Get
+    NodeNFA * getStartState();
+    QSet<NodeNFA *> getFinitStates();
+    //Set
+    void setStartState(NodeNFA *state);
+private:
+    NodeNFA *StartState ;
+    QSet<NodeNFA *> FinitStates;
 };
 
 #endif // NFA_H

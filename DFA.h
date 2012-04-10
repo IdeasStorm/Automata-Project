@@ -1,20 +1,32 @@
 #ifndef DFA_H
 #define DFA_H
-#include<QMap>
-#include<QSet>
+
 #include<QString>
-#include<QPair>
+#include "nodedfa.h"
 
 class DFA {
-public: // Private
-    int startState;
-    QMap<QPair<int, char>, int> transitions; // for save the transition of DFA
-    QSet<int> finalStates;
+
+private:
+    NodeDFA *StartState ;
+
 public:
-    DFA(QString *KeyWord,int numberWord); //not to use in Search ..! only simulate for convert NFA to DFA and to build NFA
+    //Default Constructer of DFA
+    DFA();
+    // Default Constructer of DFA and build DFA
+    DFA(QString *KeyWord,int numberWord);
+
+    //Build DFA
+    void LoadDFA(QString *KeyWord,int numberWord);
+
+    // Get StartState
+    NodeDFA* getStartState();
+    //Set StartState
+    void setStartState(NodeDFA *state);
+    // simulate DFA (Run DFA)
     bool SimulateDFA(QString input); //Simulate DFA and return True or false
 
     void simplify();
+
 };
 
 #endif // DFA_H

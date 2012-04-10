@@ -1,14 +1,16 @@
 #include "nodedfa.h"
-#include "node.h"
+#include <QString>
 
-NodeDFA::NodeDFA(QString name) : Node(name)
+NodeDFA::NodeDFA(QString name)
 {
-    nextNodes = new QMap<char, NodeDFA*>();
+    nextNodes = new QMap<char, NodeDFA *>();
+    this->name = name;
 }
 
-NodeDFA::NodeDFA(int num) : Node(num)
+NodeDFA::NodeDFA(int num)
 {
-    nextNodes = new QMap<char, NodeDFA*>();
+    nextNodes = new QMap<char, NodeDFA *>();
+    this->name = "q" + num;
 }
 
 void NodeDFA::link(char value, NodeDFA *second)
@@ -25,4 +27,13 @@ NodeDFA* NodeDFA::nextNode(char value)
 {
     return nextNodes->value(value);
 }
+
+void NodeDFA::setFinite()
+{ finite = true; }
+
+void NodeDFA::setNotFinite()
+{ finite = false; }
+
+bool NodeDFA::isFiniteState()
+{ return finite; }
 
