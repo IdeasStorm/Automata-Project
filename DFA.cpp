@@ -65,16 +65,3 @@ bool DFA::SimulateDFA(QString input)
     }
     return currentState->isFiniteState();
 }
-
-
-QString NodeDFA::getName()
-{ return name; }
-
-void NodeDFA::setFinite()
-{ finite = true; }
-
-void NodeDFA::setNotFinite()
-{ finite = false; }
-
-bool NodeDFA::isFiniteState()
-{ return finite; }

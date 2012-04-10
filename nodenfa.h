@@ -2,7 +2,6 @@
 #define NODENFA_H
 
 #include <QMultiHash>
-#include "node.h"
 
 class NodeNFA
 {

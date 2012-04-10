@@ -2,7 +2,6 @@
 #define DFA_H
 
 #include<QString>
-#include "node.h"
 #include "nodedfa.h"
 
 class DFA {
@@ -20,7 +19,7 @@ public:
     void LoadDFA(QString *KeyWord,int numberWord);
 
     // Get StartState
-    NodeDFA * getStartState();
+    NodeDFA* getStartState();
     //Set StartState
     void setStartState(NodeDFA *state);
     // simulate DFA (Run DFA)

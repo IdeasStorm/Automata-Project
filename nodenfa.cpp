@@ -1,14 +1,16 @@
 #include "nodenfa.h"
-#include "node.h"
+
 
 NodeNFA::NodeNFA(QString name)
 {
     nextNodes = new QMultiHash<char, NodeNFA*>();
+    this->name = name;
 }
 
 NodeNFA::NodeNFA(int num)
 {
     nextNodes = new QMultiHash<char, NodeNFA*>();
+    this->name = "q" + num;
 }
 
 void NodeNFA::link(char value, NodeNFA *second)

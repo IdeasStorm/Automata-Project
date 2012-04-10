@@ -18,7 +18,7 @@ public:
     // Default Constructer of NFA and build NFA
     NFA(QString *KeyWords,int numberWord);
 
-    //Build DFA
+    //Build NFA
     void LoadNFA(QString *KeyWords,int numberWord);
 
     // Get
