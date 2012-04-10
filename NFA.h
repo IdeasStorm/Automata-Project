@@ -7,18 +7,10 @@
 #include <QSet>
 
 class NFA {
-
-private:
-    NodeNFA *StartState ;
-    QSet<NodeNFA *> FinitStates;
-
 public:
-    //Default Constructer of NFA
     NFA();
-    // Default Constructer of NFA and build NFA
     NFA(QString *KeyWords,int numberWord);
-
-    //Build DFA
+    //Build NFA
     void LoadNFA(QString *KeyWords,int numberWord);
 
     // Get
@@ -26,7 +18,9 @@ public:
     QSet<NodeNFA *> getFinitStates();
     //Set
     void setStartState(NodeNFA *state);
-
+private:
+    NodeNFA *StartState ;
+    QSet<NodeNFA *> FinitStates;
 };
 
 #endif // NFA_H

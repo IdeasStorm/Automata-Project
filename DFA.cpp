@@ -86,3 +86,4 @@ QSet<NodeDFA*> DFA::getFinitStates()
 {
     return FinitStates;
 }
+

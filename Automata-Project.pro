@@ -15,17 +15,17 @@ SOURCES += main.cpp\
     DFA.cpp \
     NFA.cpp \
     nodenfa.cpp \
-    nodedfa.cpp \
-    node.cpp
+    nodedfa.cpp
 
 HEADERS  += mainwindow.h \
     DFA.h \
     NFA.h \
     nodenfa.h \
-    nodedfa.h \
-    node.h
+    nodedfa.h
 
 FORMS    += mainwindow.ui
+
+
 
 
 
