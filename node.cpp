@@ -9,8 +9,8 @@ Node::Node(QString name)
 
 Node::Node(int num)
 {
-    QSrting name = "q" + num;
-    this(name);
+    //QString name = "q" + num;
+    //Node(name);
 }
 
 QString Node::getName()
