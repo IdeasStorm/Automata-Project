@@ -3,6 +3,7 @@
 
 #include<QString>
 #include "node.h"
+#include "nodedfa.h"
 
 class DFA {
 

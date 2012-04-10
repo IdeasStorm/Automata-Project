@@ -1,4 +1,4 @@
-/*#include "NFA.h"
+#include "NFA.h"
 
 Node * NFA::getStartState()
 {
@@ -13,7 +13,7 @@ void NFA::setStartState(Node *state)
 
 NFA::NFA()
 {
-    StartState = new Node("q0") ;
+    StartState = new NodeNFA("q0") ;
     //For link Start State with self if the input a-->z
     for (char ch='a';ch<'z';ch++)
     {
@@ -37,14 +37,14 @@ void NFA::LoadNFA(QString *KeyWord,int numberWord)
     {
         QString s = KeyWord[i];
 
-//TODO JOPORY       CurrentState = new Node(CounterState++);
+        CurrentState = new NodeNFA(CounterState++);
         //For link StartState with self by (/0) Obselon
-        StartState->link('/0',CurrentState);
+        StartState->link('\0',CurrentState);
 
         //For link each node with another node Based input
         for (int j=0;j<s.length();j++)
         {
-//TODO JOPORY       NextState = new Node(CounterState++);
+            NextState = new NodeNFA(CounterState++);
             CurrentState->link(s[j].cell(),NextState);
             CurrentState->link(' ',StartState);
             CurrentState = NextState ;
@@ -54,4 +54,4 @@ void NFA::LoadNFA(QString *KeyWord,int numberWord)
         NextState->setFinite();
     }//For number Word
 }
-*/
+

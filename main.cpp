@@ -8,7 +8,8 @@ int main(int argc, char *argv[])
     QApplication a(argc, argv);
     MainWindow w;
     w.show();
-/*
+
+    /*
     NodeNFA* node = new NodeNFA("q0");
     node->link('a');
     QList<Node*> n = node->nextNode('a');

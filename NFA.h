@@ -2,6 +2,7 @@
 #define NFA_H
 
 #include"DFA.h"
+#include "nodenfa.h"
 
 #include<QString>
 #include "node.h"

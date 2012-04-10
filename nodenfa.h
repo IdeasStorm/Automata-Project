@@ -9,13 +9,13 @@ class NodeNFA : public Node
 public:
     NodeNFA(QString);
     NodeNFA(int);
-    void link(char, NodeNFA*);         //link with another node
+    void link(char, Node*);         //link with another node
 //NOTE this method can't override link(char,Node*)
     void link(char);                //link with itself
-    QList<NodeNFA*> nextNode(char);           //return the next state if this char enter
+    QList<Node*> nextNode(char);           //return the next state if this char enter
                                             //null if there is no next state
 private:
-    QMultiHash<char, NodeNFA*>* nextNodes;
+    QMultiHash<char, Node*>* nextNodes;
 };
 
 #endif // NODENFA_H

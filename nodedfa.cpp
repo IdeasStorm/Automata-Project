@@ -3,15 +3,15 @@
 
 NodeDFA::NodeDFA(QString name) : Node(name)
 {
-    nextNodes = new QMap<char, NodeDFA*>();
+    nextNodes = new QMap<char, Node *>();
 }
 
 NodeDFA::NodeDFA(int num) : Node(num)
 {
-    nextNodes = new QMap<char, NodeDFA*>();
+    nextNodes = new QMap<char, Node *>();
 }
 
-void NodeDFA::link(char value, NodeDFA *second)
+void NodeDFA::link(char value, Node *second)
 {
     nextNodes->insert(value, second);
 }
@@ -21,7 +21,7 @@ void NodeDFA::link(char value)
     nextNodes->insert(value, this);
 }
 
-NodeDFA* NodeDFA::nextNode(char value)
+Node * NodeDFA::nextNode(char value)
 {
     return nextNodes->value(value);
 }

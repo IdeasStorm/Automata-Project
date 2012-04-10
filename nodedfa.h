@@ -8,12 +8,12 @@ class NodeDFA : public Node
 public:
     NodeDFA(QString);
     NodeDFA(int);
-    void link(char, NodeDFA*);         //link with another node
+    void link(char, Node *);         //link with another node
     void link(char);                //link with itself
-    NodeDFA* nextNode(char);           //return the next state if this char enter
+    Node * nextNode(char);           //return the next state if this char enter
                                             //null if there is no next state
 private:
-    QMap<char, NodeDFA*>* nextNodes;
+    QMap<char, Node *>* nextNodes;
 };
 
 #endif // NODEDFA_H
