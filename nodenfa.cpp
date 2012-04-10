@@ -25,3 +25,25 @@ QList<NodeNFA*> NodeNFA::nextNode(char value)
 {
     return nextNodes->values(value);
 }
+
+QMultiHash<char, NodeNFA*>* NodeNFA::getnextNodes()
+{
+    return nextNodes ;
+}
+
+void NodeNFA::setnextNodes(QMultiHash<char, NodeNFA*>* nextnodes)
+{
+    nextNodes = nextnodes;
+}
+
+QString NodeNFA::getName()
+{ return name; }
+
+void NodeNFA::setFinite()
+{ finite = true; }
+
+void NodeNFA::setNotFinite()
+{ finite = false; }
+
+bool NodeNFA::isFiniteState()
+{ return finite; }

@@ -13,10 +13,7 @@ public:
     NodeDFA * nextNode(char);
                                             //null if there is no next state
 
-    void setFinite();
-    void setNotFinite();
-    bool isFiniteState();
-    QString getName();
+
 private:
     QMap<char, NodeDFA *>* nextNodes;
 private:

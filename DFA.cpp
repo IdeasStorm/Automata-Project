@@ -49,7 +49,7 @@ void DFA::LoadDFA(QString *KeyWord,int numberWord)
         }
         //For set Finit of the last node in each word ..
         NextState = new NodeDFA(CounterState++);
-        CurrentState->link(' '.cell(),NextState);
+        CurrentState->link(' ',NextState);
         NextState->setFinite();
     }//For number Word
 }
