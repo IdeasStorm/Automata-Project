@@ -65,15 +65,16 @@ void NFA::LoadNFA(QString *KeyWords,int numberWords)
             CurrentState->link(' ',StartState);
             CurrentState = NextState ;
         }
+
         //For set Finit of the last Node after node of ' '
         NextState = new NodeNFA(CounterState++);
         CurrentState->link(' ',NextState);
         NextState->setFinite();
         FinitStates.insert(NextState);
 
-    }//For number Word
+    }//For number Words
 
-    //for copy of Start State map to copy into Finite States
+    //for copy of Start State map into Finite States
     foreach (NodeNFA *state , FinitStates)
     {
         state->setNextNodes(StartState->getNextNodes());
