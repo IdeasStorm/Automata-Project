@@ -92,18 +92,34 @@ void DFA::simplify()
     QList<QSet<NodeDFA*> > groups;
     groups.append(finit);
     groups.append(non_finit);
-
-    foreach (QSet<NodeDFA*> group, groups) {
+    bool no_more_groups = false;
+    //(QSet<NodeDFA*> group, groups)
+    while (!no_more_groups){
+        // just giving a default value
+        no_more_groups = true;
         if (group.count() <=1 ) continue;
         else {
             for (char symbol = 'a'; symbol < 'Z'; ++symbol) { // all symbols
+                // initialising a group to add out-going nodes to it
+                QSet<NodeDFA*> new_group;
+
                 foreach (NodeDFA* node, group) { // all nodes in group e.g. [A B C]=>each of A,B,C
+                    // the next state delta(node,symbol)
                     NodeDFA *next_node = node->nextNode(symbol);
-                    if (group.contains(next_node)) { //same group => don't divide
-                        // do nothing
-                    }else{ // divide
-                        // divide and make a new group
+
+                    if (!group.contains(next_node)) { //same group => divide
+                        // dividing and making a new group
+                        no_more_groups = false;
+                        // adding new out-going node to the temp new_group
+                        new_group.insert(node);
                     }
+                }
+                // checking whether there is any out-going nodes
+                if (!no_more_groups) {
+                    // extracting out-going nodes from the old group
+                    group.subtract(new_group);
+                    // adding the new group
+                    groups.append(new_group);
                 }
             }
         }
