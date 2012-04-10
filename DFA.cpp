@@ -93,8 +93,9 @@ void DFA::simplify()
     groups.append(finit);
     groups.append(non_finit);
     bool no_more_groups = false;
-    //(QSet<NodeDFA*> group, groups)
+    QList<QSet<NodeDFA*> >::iterator group_iter = groups.begin();
     while (!no_more_groups){
+        QSet<NodeDFA*> group = *group_iter;
         // just giving a default value
         no_more_groups = true;
         if (group.count() <=1 ) continue;
@@ -124,6 +125,10 @@ void DFA::simplify()
                 }
             }
         }
+        if (group_iter != groups.end())
+            group_iter++;
+        else
+            no_more_groups = true;
     }
 
 
