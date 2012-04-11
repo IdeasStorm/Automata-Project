@@ -115,7 +115,7 @@ QHash<QString,int> DFA::SimulateDFA(QString input)
 // simplifies the DFA Automata
 void DFA::simplify()
 {
-    QSet<NodeDFA*> non_finit ;//= get
+    QSet<NodeDFA*> non_finit = getNonFinitStates();
     QSet<NodeDFA*> finit = getFinitStates();
     QList<QSet<NodeDFA*> > groups;
     groups.append(finit);
@@ -188,7 +188,7 @@ QSet<NodeDFA *> DFA::getAllStates()
 {
     return AllStates;
 }
-QSet<NodeDFA*> DFA::getNotFinitStates()
+QSet<NodeDFA*> DFA::getNonFinitStates()
 {
     return AllStates.subtract(FinitStates);
 }
