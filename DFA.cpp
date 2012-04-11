@@ -26,6 +26,7 @@ DFA::DFA(QString *KeyWords,int numberWords)
 {
     //DFA();
     StartState = new NodeDFA('0') ;
+    AllStates.insert(StartState);
     DeadState = new NodeDFA ('|'); // | ==> Loop Dead State
     StartState->link('?',DeadState);
     StartState->link(' ');
@@ -49,6 +50,7 @@ void DFA::LoadDFA(QString *KeyWords,int numberWords)
             if (CurrentState->nextNode(s[j].cell()) == CurrentState->nextNode('?'))
             {
                 NextState = new NodeDFA(CounterState++);
+                AllStates.insert(NextState);
                 NextState->link('?',DeadState); //  Link to Dead State
                 CurrentState->link(s[j].cell(),NextState);
                 CurrentState->link(' ',StartState);
@@ -59,6 +61,7 @@ void DFA::LoadDFA(QString *KeyWords,int numberWords)
         }
         //For set Finit of the last Node after node of ' '
         NextState = new NodeDFA(CounterState++);
+        AllStates.insert(NextState);
         CurrentState->link(' ',NextState);
         NextState->setFinite();
         FinitStates.insert(NextState);
@@ -183,6 +186,10 @@ QSet<NodeDFA*> DFA::getFinitStates()
 
 QSet<NodeDFA *> DFA::getAllStates()
 {
-    //TODO write me
+    return AllStates;
+}
+QSet<NodeDFA*> DFA::getNotFinitStates()
+{
+    return AllStates.subtract(FinitStates);
 }
 

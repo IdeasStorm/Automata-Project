@@ -33,6 +33,7 @@ private:
     NodeDFA *StartState ;
     NodeDFA *DeadState;
     QSet<NodeDFA*> FinitStates;
+    QSet<NodeDFA*> AllStates;
 
 };
 
