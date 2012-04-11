@@ -188,7 +188,7 @@ QSet<NodeDFA *> DFA::getAllStates()
 {
     return AllStates;
 }
-QSet<NodeDFA*> DFA::getNotFinitStates()
+QSet<NodeDFA*> DFA::getNonFinitStates()
 {
     return AllStates.subtract(FinitStates);
 }

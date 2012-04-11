@@ -30,9 +30,10 @@ public:
 
     void simplify();
 
+    NodeDFA *DeadState;
 private:
     NodeDFA *StartState ;
-    NodeDFA *DeadState;
+    //NodeDFA *DeadState;
     QSet<NodeDFA*> FinitStates;
     QSet<NodeDFA*> AllStates;
 

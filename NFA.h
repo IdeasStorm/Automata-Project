@@ -20,7 +20,7 @@ public:
     void setStartState(NodeNFA *state);
 
     //Convert from NFA to DFA
-    NodeDFA* convertToDFA();
+    DFA* convertToDFA();
 private:
     NodeNFA *StartState ;
     QSet<NodeNFA *> FinitStates;
