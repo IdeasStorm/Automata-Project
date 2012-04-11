@@ -7,7 +7,7 @@
 class NodeDFA
 {
 public:
-    NodeDFA(QString);
+    NodeDFA(char);
     NodeDFA(int);
     void link(char, NodeDFA*);
     void link(char);
@@ -15,9 +15,12 @@ public:
     void setFinite();
     void setNotFinite();
     bool isFiniteState();
+    void setnextNodes( QMap<char, NodeDFA*>*);
+    QMap<char, NodeDFA*>* getnextNodes();
+
 private:
+    char name;
     QMap<char, NodeDFA*>* nextNodes;
-    QString name;
     bool finite;
 };
 
