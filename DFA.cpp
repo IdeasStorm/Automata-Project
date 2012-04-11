@@ -53,7 +53,8 @@ void DFA::LoadDFA(QString *KeyWords,int numberWords)
                 AllStates.insert(NextState);
                 NextState->link('?',DeadState); //  Link to Dead State
                 CurrentState->link(s[j].cell(),NextState);
-                CurrentState->link(' ',StartState);
+                if (CurrentState->nextNode(' ')==CurrentState->nextNode('?'))
+                    CurrentState->link(' ',StartState);
                 CurrentState = NextState ;
             }
             else
@@ -188,7 +189,7 @@ QSet<NodeDFA *> DFA::getAllStates()
 {
     return AllStates;
 }
-QSet<NodeDFA*> DFA::getNotFinitStates()
+QSet<NodeDFA*> DFA::getNonFinitStates()
 {
     return AllStates.subtract(FinitStates);
 }
