@@ -5,6 +5,7 @@
 #include "nodenfa.h"
 #include<QString>
 #include <QSet>
+#include <stack>
 
 class NFA {
 public:
@@ -21,6 +22,13 @@ public:
 
     //Convert from NFA to DFA
     NodeDFA* convertToDFA();
+
+    //closure
+     QList<NodeNFA *>* getClosure(NodeNFA*);
+
+     //to Pure NFA
+     void toPureNFA(NFA*);
+     QList<NodeNFA*> * func(QList<NodeNFA*>* a,QList<NodeNFA*>*b);
 private:
     NodeNFA *StartState ;
     QSet<NodeNFA *> FinitStates;
