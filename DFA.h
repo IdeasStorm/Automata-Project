@@ -4,12 +4,10 @@
 #include<QString>
 #include <QSet>
 #include "nodedfa.h"
+#include<QMap>
+
 
 class DFA {
-
-private:
-    NodeDFA *StartState ;
-    QSet<NodeDFA*> FinitStates;
 
 public:
     //Default Constructer of DFA
@@ -26,8 +24,12 @@ public:
     //Set
     void setStartState(NodeDFA *state);
     // simulate DFA (Run DFA)
-    bool SimulateDFA(QString input); //Simulate DFA and return True or false
+    QHash<QString,int>  SimulateDFA(QString input); //Simulate DFA and return True or false
 
+private:
+    NodeDFA *StartState ;
+    NodeDFA *DeadState;
+    QSet<NodeDFA*> FinitStates;
 };
 
 #endif // DFA_H

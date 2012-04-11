@@ -1,6 +1,7 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 #include "DFA.h"
+#include "NFA.h"
 #include <QString>
 
 MainWindow::MainWindow(QWidget *parent) :
@@ -44,12 +45,27 @@ QString *MainWindow::getAllKeywords()
 
 void MainWindow::on_pushButton_3_clicked()
 {
+    ui->OutPut->clear();
+    NFA *myt = new NFA(getAllKeywords(),getWordCount());
+
+    /* this code is Work 100%....
+    ui->OutPut->clear();
     DFA *myt = new DFA(getAllKeywords(),getWordCount());
-    QString res = (myt->SimulateDFA(ui->plainTextEdit->toPlainText())) ? "true" : "false";
-    ui->OutPut->addItem(new QListWidgetItem(res));
+    QHash<QString,int> reshash = myt->SimulateDFA(ui->plainTextEdit->toPlainText());
+    QList<QString> res = reshash.keys();
+
+    foreach(QString key,res)
+    {
+        int num = reshash.value(key);
+        QString* str = new QString(key + QString(num));
+        ui->OutPut->addItem(new QListWidgetItem(*str));
+    }
+*/
+
 }
 
 int MainWindow::getWordCount()
 {
     return ui->listWidget->count();
 }
+
