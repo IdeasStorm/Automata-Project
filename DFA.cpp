@@ -159,7 +159,7 @@ void DFA::simplify()
     foreach (QSet<NodeDFA*> group, groups) {
         if (group.count() > 1) {
             // merge nodes
-            NodeDFA* new_node = new NodeDFA();
+            NodeDFA* new_node = new NodeDFA(1); //TODO must change name
             foreach (NodeDFA* node, group) {
                 for (char symbol = 'a'; symbol < 'Z'; ++symbol) { // all symbols
                     new_node->link(symbol, node->nextNode(symbol));
@@ -179,5 +179,10 @@ void DFA::simplify()
 QSet<NodeDFA*> DFA::getFinitStates()
 {
     return FinitStates;
+}
+
+QSet<NodeDFA *> DFA::getAllStates()
+{
+    //TODO write me
 }
 

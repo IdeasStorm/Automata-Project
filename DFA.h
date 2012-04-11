@@ -21,6 +21,7 @@ public:
     // Get
     NodeDFA * getStartState();
     QSet<NodeDFA*> getFinitStates();
+    QSet<NodeDFA*> getAllStates();
     //Set
     void setStartState(NodeDFA *state);
     // simulate DFA (Run DFA)
