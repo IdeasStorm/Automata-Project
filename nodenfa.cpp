@@ -25,8 +25,9 @@ void NodeNFA::link(char value)
 
 QList<NodeNFA*> NodeNFA::getNextNode(char value)
 {
-    return nextNodes->values(value);
-}
+
+        return nextNodes->values(value);
+    }
 
 QMultiHash<char, NodeNFA*>* NodeNFA::getNextNodes()
 {

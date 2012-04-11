@@ -1,6 +1,7 @@
 #include "NFA.h"
 #include "nodedfa.h"
-
+#include <stack>
+#include"QStack"
 NodeNFA * NFA::getStartState()
 {
     return StartState ;
@@ -121,8 +122,123 @@ QList<NodeNFA*>* NFA::getValueNodes(NodeNFA* node, NodeDFA* dfa)
 
 NodeDFA* NFA::convertToDFA()
 {
+
     NodeDFA* DFANode;
     usedState = new QSet<QString>();
     nodeNum = 0;
     addToSet(StartState->getName(), DFANode, ' ');
+}
+
+
+QList<NodeNFA *>*  NFA::getClosure(NodeNFA * state)
+{
+QStack <NodeNFA*> s;
+    QList<NodeNFA*>* list;         // the final set
+    list->push_front(state);
+    s.push(state);
+    NodeNFA* q;
+    QList<NodeNFA*> r;
+
+    while(  ! s.empty() )
+    {
+
+        q=s.pop();
+        r=q->getNextNode('\0');
+
+        foreach (NodeNFA* n,r)
+        {
+            if (!list->contains(n))
+            {
+              list->push_front(n);
+              s.push(n);
+            }
+        }
+    }
+    return list;
+}
+
+
+
+void NFA::toPureNFA(NFA * nfa)
+{
+
+QStack<NodeNFA*> s;
+NodeNFA* start=nfa->getStartState();
+s.push(start);
+NodeNFA* temp;
+while(! s.empty())
+{
+    temp=s.pop();
+    QMultiHash<char, NodeNFA*>* nodes=temp->getNextNodes();// after
+
+    foreach (NodeNFA* t , *nodes)
+    {
+        s.push(t);
+
+    }
+
+  QList<char> keys=nodes->uniqueKeys();
+
+QList<NodeNFA*>* temp1=getClosure(temp);
+QList<NodeNFA*>* temp2=new QList<NodeNFA*>();
+
+temp->setNextNodes(new QMultiHash<char,NodeNFA*>());
+  foreach(char c,keys)
+  {
+      if(c!='\0')
+      {
+
+              foreach(NodeNFA* t,*temp1)
+              {
+                  if(t->isFiniteState())
+                      temp->setFinite();
+                  if(t->getNextNode(c).size()==0)
+                      temp2->append(t);
+
+              }
+
+
+      QList<NodeNFA*>* temp3=func(temp1,temp2);
+      QList<NodeNFA*>* temp4=new QList<NodeNFA*>();
+      foreach(NodeNFA* b,*temp3)
+      {
+
+
+        temp4->append(*getClosure(b));
+
+      }
+
+          foreach(NodeNFA* nfa ,*temp4)
+          {
+              temp->link(c,nfa);
+
+          }
+
+       }
+
+  }
+temp1->clear();
+temp2->clear();
+
+
+
+}
+
+}
+
+
+
+QList<NodeNFA*> * NFA::func(QList<NodeNFA*>* a,QList<NodeNFA*>*b)
+{
+    QList<NodeNFA*> *list=new QList<NodeNFA*>();
+
+    foreach (NodeNFA* t,*a)
+    {
+        if(! b->contains(t))
+          list->append(t);
+
+
+    }
+
+return list;
 }
