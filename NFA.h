@@ -5,6 +5,7 @@
 #include "nodenfa.h"
 #include<QString>
 #include <QSet>
+#include <stack>
 
 class NFA {
 public:
@@ -16,13 +17,23 @@ public:
     // Get
     NodeNFA * getStartState();
     QSet<NodeNFA *> getFinitStates();
+    QList<char> getAlphabetic();
     //Set
     void setStartState(NodeNFA *state);
+    void setAlphabetic(QList<char> alphabetic);
 
     //Convert from NFA to DFA
     NodeDFA* convertToDFA();
+
+    //closure
+     QList<NodeNFA *>* getClosure(NodeNFA*);
+
+     //to Pure NFA
+     void toPureNFA(NFA*);
+     QList<NodeNFA*> * func(QList<NodeNFA*>* a,QList<NodeNFA*>*b);
 private:
     NodeNFA *StartState ;
+    QList<char> Alphabetic ;
     QSet<NodeNFA *> FinitStates;
     QSet<QString>* usedState;
     QList<NodeNFA*> temp;
