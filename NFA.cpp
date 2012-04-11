@@ -53,7 +53,7 @@ void NFA::LoadNFA(QString *KeyWords,int numberWords)
 
         for (char ch='a';ch<'z';ch++)
         {
-            QList<NodeNFA*> nodes = StartState->nextNode(ch);
+            QList<NodeNFA*> nodes = StartState->getNextNode(ch);
             foreach(NodeNFA* temp , nodes)
             {
                 state->link(ch,temp);
