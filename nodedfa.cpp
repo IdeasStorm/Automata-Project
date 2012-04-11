@@ -31,7 +31,7 @@ NodeDFA* NodeDFA::nextNode(char value)
     if (nextNodes->contains(value))
         return nextNodes->value(value);
     else
-        return nextNodes->value('?'); // return Dead State
+        return NULL;
 }
 
 void NodeDFA::setFinite()
