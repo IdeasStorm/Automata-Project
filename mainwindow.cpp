@@ -58,7 +58,9 @@ void MainWindow::on_pushButton_3_clicked()
     foreach(QString key,res)
     {
         int num = reshash.value(key);
-        QString* str = new QString(key + QString(num));
+        QString number;
+        number.setNum(num);
+        QString* str = new QString(key + number);
         ui->OutPut->addItem(new QListWidgetItem(*str));
     }
 }
