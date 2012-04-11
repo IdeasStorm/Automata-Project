@@ -5,12 +5,14 @@ NodeNFA::NodeNFA(QString name)
 {
     nextNodes = new QMultiHash<char, NodeNFA*>();
     this->name = name;
+    setNotFinite();
 }
 
 NodeNFA::NodeNFA(int num)
 {
     nextNodes = new QMultiHash<char, NodeNFA*>();
-    this->name = "q" + num;
+    this->name = num;
+    setNotFinite();
 }
 
 void NodeNFA::link(char value, NodeNFA *second)

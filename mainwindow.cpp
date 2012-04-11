@@ -1,6 +1,7 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 #include "DFA.h"
+#include "NFA.h"
 #include <QString>
 
 MainWindow::MainWindow(QWidget *parent) :
@@ -17,7 +18,8 @@ MainWindow::~MainWindow()
 
 void MainWindow::on_pushButton_clicked()
 {
-    if (ui->lineEdit->text() != ""){
+    if (ui->lineEdit->text() != "") //&&(!getAllKeywords()->contains(ui->lineEdit->text())
+    {
         ui->listWidget->addItem(new QListWidgetItem(ui->lineEdit->text()));
         ui->lineEdit->setText("");
     }
@@ -44,12 +46,27 @@ QString *MainWindow::getAllKeywords()
 
 void MainWindow::on_pushButton_3_clicked()
 {
+    //ui->OutPut->clear();
+    //NFA *myt = new NFA(getAllKeywords(),getWordCount());
+
+    // this code is Work 100%....
+    ui->OutPut->clear();
     DFA *myt = new DFA(getAllKeywords(),getWordCount());
-    QString res = (myt->SimulateDFA(ui->plainTextEdit->toPlainText())) ? "true" : "false";
-    ui->OutPut->addItem(new QListWidgetItem(res));
+    QHash<QString,int> reshash = myt->SimulateDFA(ui->plainTextEdit->toPlainText());
+    QList<QString> res = reshash.keys();
+
+    foreach(QString key,res)
+    {
+        int num = reshash.value(key);
+        QString number;
+        number.setNum(num);
+        QString* str = new QString(key + number);
+        ui->OutPut->addItem(new QListWidgetItem(*str));
+    }
 }
 
 int MainWindow::getWordCount()
 {
     return ui->listWidget->count();
 }
+
