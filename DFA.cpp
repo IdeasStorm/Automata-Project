@@ -165,7 +165,7 @@ void DFA::simplify()
                     new_node->link(symbol, node->nextNode(symbol));
                 }
             }
-            foreach (NodeDFA*node, getAllNodes()) {
+            foreach (NodeDFA*node, getAllStates()) {
                 for (char symbol = 'a'; symbol < 'Z'; ++symbol) { // all symbols
                     if (group.contains(node->nextNode(symbol)))
                         node->link(symbol, new_node);
