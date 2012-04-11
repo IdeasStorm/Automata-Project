@@ -121,7 +121,9 @@ QList<NodeNFA*>* NFA::getValueNodes(NodeNFA* node, NodeDFA* dfa)
 
 NodeDFA* NFA::convertToDFA()
 {
-    NodeDFA* DFANode, *Helper;
+    NodeDFA* DFANode;
+    QMap<QPair<QString, char>, NodeDFA*> *Helper =
+            new QMap<QPair<QString, char>, NodeDFA*>();
     //usedState = new QSet<QString>();
     //nodeNum = 0;
     //addToSet(StartState->getName(), DFANode, ' ');
@@ -129,10 +131,12 @@ NodeDFA* NFA::convertToDFA()
     QSet<NodeNFA*> set;
     set.insert(StartState);
     DFANode = new NodeDFA(0);
-    Helper = DFANode;
+    Helper->insert(new QPair("q0", ' '), DFANode);
+    //Helper = DFANode;
     groups.append(set);
     //bool no_more_groups = false;
-    int i=0, j=1;
+    int i=0, j=1, nodeNum=0;
+    QString toSet = new QString();
     bool finite = false;
     while (j != groups.length() ){
         //no_more_groups = true;
@@ -146,6 +150,7 @@ NodeDFA* NFA::convertToDFA()
                     for(int k=0;k<list.length();k++)
                     {
                         addToList(list.at(k));
+                        toSet += "q" + nodeNum;
                         if (list.at(k)->isFiniteState())
                             finite = true;
                     }
@@ -159,13 +164,20 @@ NodeDFA* NFA::convertToDFA()
                         NodeDFA* Dfa = new NodeDFA(j);
                         if (finite)
                             Dfa->setFinite();
-                        Helper->link(symbol, Dfa);
+                        Helper->insert(QPair(toSet, symbol), Dfa);
+                        nodeNum++;
                         //no_more_groups = false;
                         j++;
+                    }
+                    else
+                    {
+                        NodeDFA* Dfa = Helper[QPair(nodeNum, symbol)];
+                        Dfa->link(symbol, Dfa);
                     }
                     i++;
                     temp.clear();
                     finite = false;
+                    toSet.clear();
                 }
             }
             temp.clear();
