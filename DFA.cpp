@@ -11,6 +11,11 @@ void DFA::setStartState(NodeDFA *state)
 {
     StartState = state;
 }
+void DFA::setAlphabetic(QList<char> alphabetic)
+{
+    Alphabetic = alphabetic ;
+}
+
 QList<char> DFA::getAlphabetic()
 {
     return Alphabetic ;

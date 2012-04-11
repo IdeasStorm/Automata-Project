@@ -26,6 +26,7 @@ public:
     QList<char> getAlphabetic();
     //Set
     void setStartState(NodeDFA *state);
+    void setAlphabetic(QList<char> alphabetic);
     // simulate DFA (Run DFA)
     QHash<QString,int>  SimulateDFA(QString input); //Simulate DFA and return True or false
 

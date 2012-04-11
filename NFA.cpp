@@ -7,18 +7,44 @@ NodeNFA * NFA::getStartState()
     return StartState ;
 }
 
+QList<char> NFA::getAlphabetic()
+{
+    return Alphabetic;
+}
+
+void NFA::setAlphabetic(QList<char> alphabetic)
+{
+    Alphabetic  = alphabetic ;
+}
 
 
 NFA::NFA()
 {
     StartState = new NodeNFA("q0") ;
     StartState->link(' ');
+    //
+        int i = 0 ;
+        for (char ch = 'a';ch<'Z';ch++)
+        {
+            Alphabetic.insert(i++,ch);
+        }
+        Alphabetic.insert(i++,' ');
+
 }
 
 NFA::NFA(QString *KeyWords,int numberWords)
 {
+    //NFA();
     StartState = new NodeNFA("q0") ;
     StartState->link(' ');
+    //
+        int i = 0 ;
+        for (char ch = 'a';ch<'Z';ch++)
+        {
+            Alphabetic.insert(i++,ch);
+        }
+        Alphabetic.insert(i++,' ');
+
     LoadNFA(KeyWords,numberWords);
 }
 

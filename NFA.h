@@ -17,8 +17,10 @@ public:
     // Get
     NodeNFA * getStartState();
     QSet<NodeNFA *> getFinitStates();
+    QList<char> getAlphabetic();
     //Set
     void setStartState(NodeNFA *state);
+    void setAlphabetic(QList<char> alphabetic);
 
     //Convert from NFA to DFA
     NodeDFA* convertToDFA();
@@ -31,6 +33,7 @@ public:
      QList<NodeNFA*> * func(QList<NodeNFA*>* a,QList<NodeNFA*>*b);
 private:
     NodeNFA *StartState ;
+    QList<char> Alphabetic ;
     QSet<NodeNFA *> FinitStates;
     QSet<QString>* usedState;
     QList<NodeNFA*> temp;
