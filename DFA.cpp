@@ -11,15 +11,26 @@ void DFA::setStartState(NodeDFA *state)
 {
     StartState = state;
 }
+QList<char> DFA::getAlphabetic()
+{
+    return Alphabetic ;
+}
 
 DFA::DFA()
 {
     StartState = new NodeDFA('0') ;
-    DeadState = new NodeDFA ('|'); // | ==> Loop Dead State
-    StartState->link('?',DeadState);
+    Separate_words = new NodeDFA ('|'); // | ==> Loop Dead State
+    StartState->link('?',Separate_words);
     StartState->link(' ');
-    DeadState->link(' ',StartState);
-    DeadState->link('?'); // ? ==> a-->z
+    Separate_words->link(' ',StartState);
+    Separate_words->link('?'); // ? ==> a-->z
+//
+    int i = 0 ;
+    for (char ch = 'a';ch<'Z';ch++)
+    {
+        Alphabetic.insert(i++,ch);
+    }
+    Alphabetic.insert(i++,' ');
 }
 
 DFA::DFA(QString *KeyWords,int numberWords)
@@ -27,11 +38,19 @@ DFA::DFA(QString *KeyWords,int numberWords)
     //DFA();
     StartState = new NodeDFA('0') ;
     AllStates.insert(StartState);
-    DeadState = new NodeDFA ('|'); // | ==> Loop Dead State
-    StartState->link('?',DeadState);
+    Separate_words = new NodeDFA ('|'); // | ==> Loop Dead State
+    StartState->link('?',Separate_words);
     StartState->link(' ');
-    DeadState->link(' ',StartState);
-    DeadState->link('?'); // ? ==> a-->z
+    Separate_words->link(' ',StartState);
+    Separate_words->link('?'); // ? ==> a-->z
+    //
+    int i = 0 ;
+    for (char ch = 'a';ch<'Z';ch++)
+    {
+        Alphabetic.insert(i++,ch);
+    }
+    Alphabetic.insert(i++,' ');
+
     LoadDFA(KeyWords,numberWords);
 }
 
@@ -51,7 +70,7 @@ void DFA::LoadDFA(QString *KeyWords,int numberWords)
             {
                 NextState = new NodeDFA(CounterState++);
                 AllStates.insert(NextState);
-                NextState->link('?',DeadState); //  Link to Dead State
+                NextState->link('?',Separate_words); //  Link to Dead State
                 CurrentState->link(s[j].cell(),NextState);
                 if (CurrentState->nextNode(' ')==CurrentState->nextNode('?'))
                     CurrentState->link(' ',StartState);
