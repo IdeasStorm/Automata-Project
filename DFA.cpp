@@ -130,7 +130,24 @@ void DFA::simplify()
         else
             no_more_groups = true;
     }
-
+    // searching for groups including more than one node
+    foreach (QSet<NodeDFA*> group, groups) {
+        if (group.count() > 1) {
+            // merge nodes
+            NodeDFA* new_node = new NodeDFA();
+            foreach (NodeDFA* node, group) {
+                for (char symbol = 'a'; symbol < 'Z'; ++symbol) { // all symbols
+                    new_node->link(symbol, node->nextNode(symbol));
+                }
+            }
+            foreach (NodeDFA*node, getAllNodes()) {
+                for (char symbol = 'a'; symbol < 'Z'; ++symbol) { // all symbols
+                    if (group.contains(node->nextNode(symbol)))
+                        node->link(symbol, new_node);
+                }
+            }
+        }
+    }
 
 }
 
