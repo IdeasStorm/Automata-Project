@@ -62,7 +62,9 @@ protected:
     void drawBackground(QPainter *painter, const QRectF &rect);
 
     void scaleView(qreal scaleFactor);
-
+    void loadDefaultNodes();
+    //stores the current scene
+    QGraphicsScene *currentScene;
 private:
     int timerId;
     Node *centerNode;
