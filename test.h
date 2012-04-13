@@ -7,7 +7,7 @@ class test
 {
 public:
     test();
-    static test1(){
+    static void test1(){
         NodeDFA* a = new NodeDFA('A');
         NodeDFA* b = new NodeDFA('B');
         NodeDFA* c = new NodeDFA('C');

@@ -2,7 +2,7 @@
 #define MAINWINDOW_H
 
 #include <QMainWindow>
-
+#include "graphwidget.h"
 namespace Ui {
     class MainWindow;
 }
