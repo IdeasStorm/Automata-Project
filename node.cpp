@@ -54,8 +54,8 @@ Node::Node(GraphWidget *graphWidget)
     setFlag(ItemIsMovable);
     setFlag(ItemSendsGeometryChanges);
     setCacheMode(DeviceCoordinateCache);
-    setZValue(-1);
-    _text = "";
+    setZValue(-0.5);
+    _text = "?";
 }
 //! [0]
 
@@ -177,8 +177,10 @@ void Node::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWid
     painter->setBrush(gradient);
     painter->setPen(QPen(Qt::black, 0));
     painter->drawEllipse(-10, -10, 20, 20);
-    if (_text != "")
+    if (_text != "") {
+        painter->setPen(Qt::white);
         painter->drawText(-10,-10,30,30,0,_text);
+    }
 }
 //! [10]
 

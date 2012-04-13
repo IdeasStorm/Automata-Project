@@ -59,10 +59,18 @@ public:
     enum { Type = UserType + 2 };
     int type() const { return Type; }
     
+    void setSymbol(char symbol) {
+        _symbol = symbol;
+    }
+
+    QChar symbol(){
+        return _symbol;
+    }
+
 protected:
     QRectF boundingRect() const;
     void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget);
-    
+    QChar _symbol;
 private:
     Node *source, *dest;
 

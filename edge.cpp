@@ -57,7 +57,9 @@ Edge::Edge(Node *sourceNode, Node *destNode)
     dest = destNode;
     source->addEdge(this);
     dest->addEdge(this);
+    setZValue(-1);
     adjust();
+    _symbol = '?'; // default value
 }
 //! [0]
 
@@ -118,22 +120,32 @@ void Edge::paint(QPainter *painter, const QStyleOptionGraphicsItem *, QWidget *)
 
     QLineF line(sourcePoint, destPoint);
 
-    if (qFuzzyCompare(line.length(), qreal(0.)))
-        return;
 //! [4]
 
 //! [5]
     // Draw the line itself
     painter->setPen(QPen(Qt::black, 1, Qt::SolidLine, Qt::RoundCap, Qt::RoundJoin));
-    if (line.length() == 0) {
-        painter->drawArc(line.x1()+30,line.y1()+30,200,200,30*16,120*16);
+    if (qFuzzyCompare(line.length(), qreal(0.))) {
+        painter->drawEllipse(line.x1()-10,line.y1()-10,40,40);
+        painter->setPen(Qt::blue);
+        painter->drawText(line.x1() + 15, line.y1() + 15,_symbol);
     }
-    else
+    else {
         painter->drawLine(line);
+        QPointF p1;
+        p1.setX(line.x1()+line.x2());
+        p1.setY(line.y1()+line.y2());
+        p1 /= 2.0;
+        painter->setPen(Qt::blue);
+        painter->drawText(p1,_symbol);
+    }
+    // just for testing
+    //painter->drawEllipse(line.x1()-10,line.y1()-10,30,30);
 //! [5]
 
 //! [6]
     // Draw the arrows
+    painter->setPen(Qt::black);
     double angle = ::acos(line.dx() / line.length());
     if (line.dy() >= 0)
         angle = TwoPi - angle;
@@ -148,7 +160,7 @@ void Edge::paint(QPainter *painter, const QStyleOptionGraphicsItem *, QWidget *)
                                               cos(angle - Pi + Pi / 3) * arrowSize);
 
     painter->setBrush(Qt::black);
-    painter->drawPolygon(QPolygonF() << line.p1() << sourceArrowP1 << sourceArrowP2);
-    painter->drawPolygon(QPolygonF() << line.p2() << destArrowP1 << destArrowP2);        
+    //painter->drawPolygon(QPolygonF() << line.p1() << sourceArrowP1 << sourceArrowP2);
+    painter->drawPolygon(QPolygonF() << line.p2() << destArrowP1 << destArrowP2);
 }
 //! [6]
