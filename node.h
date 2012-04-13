@@ -69,9 +69,16 @@ public:
     QPainterPath shape() const;
     void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget);
 
+    void setText(QString text){
+        _text = text;
+    }
+    QString text() {
+        return _text;
+    }
+
 protected:
     QVariant itemChange(GraphicsItemChange change, const QVariant &value);
-
+    QString _text;
     void mousePressEvent(QGraphicsSceneMouseEvent *event);
     void mouseReleaseEvent(QGraphicsSceneMouseEvent *event);
     

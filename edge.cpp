@@ -117,6 +117,7 @@ void Edge::paint(QPainter *painter, const QStyleOptionGraphicsItem *, QWidget *)
         return;
 
     QLineF line(sourcePoint, destPoint);
+
     if (qFuzzyCompare(line.length(), qreal(0.)))
         return;
 //! [4]
@@ -124,7 +125,11 @@ void Edge::paint(QPainter *painter, const QStyleOptionGraphicsItem *, QWidget *)
 //! [5]
     // Draw the line itself
     painter->setPen(QPen(Qt::black, 1, Qt::SolidLine, Qt::RoundCap, Qt::RoundJoin));
-    painter->drawLine(line);
+    if (line.length() == 0) {
+        painter->drawArc(line.x1()+30,line.y1()+30,200,200,30*16,120*16);
+    }
+    else
+        painter->drawLine(line);
 //! [5]
 
 //! [6]

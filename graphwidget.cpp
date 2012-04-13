@@ -94,6 +94,7 @@ GraphWidget::GraphWidget(QWidget *parent)
     scene->addItem(new Edge(node7, node4));
     scene->addItem(new Edge(node8, node7));
     scene->addItem(new Edge(node9, node8));
+    scene->addItem(new Edge(centerNode, centerNode));
 
     node1->setPos(-50, -50);
     node2->setPos(0, -50);
