@@ -241,4 +241,9 @@ void GraphWidget::loadDefaultNodes()
     node8->setPos(0, 50);
     node9->setPos(50, 50);
 }
+
+void GraphWidget::loadFromDFA(DFA *dfa)
+{
+    //TODO add Body
+}
 //! [7]
