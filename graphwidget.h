@@ -66,9 +66,9 @@ protected:
     // loads the scene with some nodes for testing only
     void loadDefaultNodes();
 
-    fillFromDFANode(NodeDFA* start);
-    Node createNode(NodeDFA* node);
-
+    void fillFromDFANode(NodeDFA* start,Node* first);
+    Node *createNode(NodeDFA* node);
+    QList<char> symbols;
     //stores the current scene
     QGraphicsScene *currentScene;
 private:

@@ -245,25 +245,27 @@ void GraphWidget::loadDefaultNodes()
 void GraphWidget::loadFromDFA(DFA *dfa)
 {
     NodeDFA* start = dfa->getStartState();
-    createNode(start);
-    fillFromDFANode(start);
+    symbols = dfa->getAlphabetic();
+
+    fillFromDFANode(start,createNode(start));
 }
 
-GraphWidget::fillFromDFANode(NodeDFA *start)
+void GraphWidget::fillFromDFANode(NodeDFA *start,Node* first)
 {
-    foreach (char symbol, DFA::Alphabetic) {
-        Node other = createNode(start->nextNode(symbol));
-        Edge *edge = new Edge(start,other);
+    foreach (char symbol, symbols) {
+        Node *other = createNode(start->nextNode(symbol));
+        Edge *edge = new Edge(first,other);
         edge->setSymbol(symbol);
         currentScene->addItem(edge);
-        fillFromDFANode(start);
+        fillFromDFANode(start,createNode(start));
     }
 }
 
-Node GraphWidget::createNode(NodeDFA *node)
+Node *GraphWidget::createNode(NodeDFA *node)
 {
     Node *nodeGUI = new Node(this);
     currentScene->addItem(nodeGUI);
-    nodeGUI->setText(node->name);
+    nodeGUI->setText(QString(node->name));
+    return nodeGUI;
 }
 //! [7]
