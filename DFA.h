@@ -12,6 +12,7 @@ class DFA {
 public:
     //Default Constructer of DFA
     DFA();
+    ~DFA();
     // Default Constructer of DFA and build DFA
     DFA(QString *KeyWord,int numberWords);
 
