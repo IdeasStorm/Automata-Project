@@ -286,7 +286,7 @@ Node *GraphWidget::createNode(NodeDFA *node)
     return nodeGUI;
 }
 
-QGraphicsScene GraphWidget::getCurrentScene()
+QGraphicsScene * GraphWidget::getCurrentScene()
 {
     return currentScene;
 }

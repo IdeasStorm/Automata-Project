@@ -16,7 +16,7 @@ public:
     ~MainWindow();
     QString *getAllKeywords();
     int getWordCount();
-
+void buildDFA(QString *KeyWords,int numberWords);
 private slots:
     void on_pushButton_clicked();
 

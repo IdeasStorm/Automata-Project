@@ -42,7 +42,7 @@ public:
 
     void simplify();
 
-private:
+//private:
     NodeDFA *StartState ;
     NodeDFA *Separate_wordsState;
     NodeDFA *Finit_wordsState;

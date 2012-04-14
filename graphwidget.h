@@ -56,7 +56,7 @@ public:
 
     void itemMoved();
     void loadFromDFA(DFA* dfa);
-protected:
+//protected:
     void keyPressEvent(QKeyEvent *event);
     void timerEvent(QTimerEvent *event);
     void wheelEvent(QWheelEvent *event);
@@ -68,6 +68,7 @@ protected:
 
     void fillFromDFANode(NodeDFA* start,Node* first);
     Node *createNode(NodeDFA* node);
+    QGraphicsScene * getCurrentScene();
     QList<char> symbols;
     //stores the current scene
     QGraphicsScene *currentScene;
