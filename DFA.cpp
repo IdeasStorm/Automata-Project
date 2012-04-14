@@ -206,9 +206,6 @@ QHash<QString,int> DFA::SimulateDFA(QString input)
 
         str +=input[i];
         CurrentState = CurrentState->nextNode(input[i].cell());
-
-        //if (i==3)
-            //int myt = 0 ;
         // to caculate the last word
         if ((i ==input.length()-1)&&(input[i]!=' '))
         {
@@ -307,3 +304,4 @@ DFA::~DFA()
     {
     }
 }
+
