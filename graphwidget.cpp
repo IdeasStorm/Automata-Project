@@ -285,4 +285,9 @@ Node *GraphWidget::createNode(NodeDFA *node)
     nodeGUI->setText(QString(node->name));
     return nodeGUI;
 }
+
+QGraphicsScene GraphWidget::getCurrentScene()
+{
+    return currentScene;
+}
 //! [7]
