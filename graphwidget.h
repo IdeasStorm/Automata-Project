@@ -42,6 +42,7 @@
 #define GRAPHWIDGET_H
 
 #include <QtGui/QGraphicsView>
+#include <DFA.h>
 
 class Node;
 
@@ -54,7 +55,7 @@ public:
     GraphWidget(QWidget *parent = 0);
 
     void itemMoved();
-
+    void loadFromDFA(DFA* dfa);
 protected:
     void keyPressEvent(QKeyEvent *event);
     void timerEvent(QTimerEvent *event);
@@ -62,7 +63,12 @@ protected:
     void drawBackground(QPainter *painter, const QRectF &rect);
 
     void scaleView(qreal scaleFactor);
+    // loads the scene with some nodes for testing only
     void loadDefaultNodes();
+
+    fillFromDFANode(NodeDFA* start);
+    Node createNode(NodeDFA* node);
+
     //stores the current scene
     QGraphicsScene *currentScene;
 private:
