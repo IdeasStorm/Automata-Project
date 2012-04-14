@@ -66,7 +66,7 @@ GraphWidget::GraphWidget(QWidget *parent)
     currentScene = scene;
 //! [1]
     // loading default nodes .. just for demonstration
-    loadDefaultNodes();
+    //loadDefaultNodes();
 }
 //! [1]
 
@@ -252,13 +252,30 @@ void GraphWidget::loadFromDFA(DFA *dfa)
 
 void GraphWidget::fillFromDFANode(NodeDFA *start,Node* first)
 {
+    static QPointF p(-50,-50);
+    static int counter = 0;
+    static QSet<NodeDFA*> visited;
+
+    if (start->isFiniteState())
+        return;
+    p += QPointF(0,10);
+    if (visited.contains(start))
+        return;
+    else
+        visited.insert(start);
     foreach (char symbol, symbols) {
-        Node *other = createNode(start->nextNode(symbol));
+        if (counter++ >= 100)
+            return;
+        NodeDFA *next = start->nextNode(symbol);
+        Node *other = createNode(next);
+        other->setPos(p);
         Edge *edge = new Edge(first,other);
+        p += QPointF(10,0);
         edge->setSymbol(symbol);
         currentScene->addItem(edge);
-        fillFromDFANode(start,createNode(start));
+        fillFromDFANode(next,other);
     }
+
 }
 
 Node *GraphWidget::createNode(NodeDFA *node)
