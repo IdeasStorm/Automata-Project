@@ -2,33 +2,91 @@
 #include <QLinkedList>
 #include "nodedfa.h"
 
+
+//GET
 NodeDFA * DFA::getStartState()
 {
     return StartState ;
 }
 
-void DFA::setStartState(NodeDFA *state)
+NodeDFA * DFA::getFinit_WordsState()
 {
-    StartState = state;
+    return Finit_wordsState ;
 }
-void DFA::setAlphabetic(QList<char> alphabetic)
+
+NodeDFA * DFA::getSeparate_wordsState()
 {
-    Alphabetic = alphabetic ;
+    return Separate_wordsState ;
 }
 
 QList<char> DFA::getAlphabetic()
 {
     return Alphabetic ;
 }
+QList<char> DFA::getSeparate_wordsAlphabetic()
+{
+    return Separate_wordsAlphabetic;
+}
 
+QSet<NodeDFA*> DFA::getFinitStates()
+{
+    return FinitStates;
+}
+
+QSet<NodeDFA *> DFA::getAllStates()
+{
+    return AllStates;
+}
+QSet<NodeDFA*> DFA::getNonFinitStates()
+{
+    return AllStates.subtract(FinitStates);
+}
+
+//Set
+void DFA::setStartState(NodeDFA *state)
+{
+    StartState = state;
+}
+
+void DFA::setAlphabetic(QList<char> alphabetic)
+{
+    Alphabetic = alphabetic ;
+}
+
+void DFA::setFinit_WordsState(NodeDFA *state)
+{
+    Finit_wordsState = state ;
+}
+
+void DFA::setSeparate_wordsState(NodeDFA *state)
+{
+    Separate_wordsState = state ;
+}
+
+void DFA::addToFinitState(NodeDFA* state)
+{
+    FinitStates.insert(state);
+}
+
+void DFA::addToState(NodeDFA* state)
+{
+    AllStates.insert(state);
+}
+
+void DFA::setSeparate_wordsAlphabetic(QList<char> alphabetic)
+{
+    Separate_wordsAlphabetic = alphabetic;
+}
+
+/*
 DFA::DFA()
 {
     StartState = new NodeDFA('0') ;
-    Separate_words = new NodeDFA ('|'); // | ==> Loop Dead State
-    StartState->link('?',Separate_words);
+    Separate_wordsState = new NodeDFA ('|'); // | ==> Loop Dead State
+    StartState->link('?',Separate_wordsState);
     StartState->link(' ');
-    Separate_words->link(' ',StartState);
-    Separate_words->link('?'); // ? ==> a-->z
+    Separate_wordsState->link(' ',StartState);
+    Separate_wordsState->link('?'); // ? ==> a-->z
 //
     int i = 0 ;
     for (char ch = 'a';ch<'Z';ch++)
@@ -37,30 +95,34 @@ DFA::DFA()
     }
     Alphabetic.insert(i++,' ');
 }
-
+*/
 DFA::DFA(QString *KeyWords,int numberWords)
 {
     //DFA();
     StartState = new NodeDFA('0') ;
     AllStates.insert(StartState);
-    Separate_words = new NodeDFA ('|'); // | ==> Loop Dead State
-    AllStates.insert(Separate_words);
+    Separate_wordsState = new NodeDFA ('<'); // | ==> Loop Dead State
+    AllStates.insert(Separate_wordsState);
+
+    if (numberWords > 0)
+    {
+        Finit_wordsState = new NodeDFA('>');
+        Finit_wordsState->setFinite();
+        FinitStates.insert(Finit_wordsState);
+        AllStates.insert(Finit_wordsState);
+    }
+
     //StartState->link('?',Separate_words);
     //StartState->link(' ');
-    Separate_words->link(' ',StartState);
+//    Separate_wordsState->link(' ',StartState);
     //Separate_words->link('?'); // ? ==> a-->z
     //
     int i = 0 ;
     for (char ch = 'a';ch <= 'z';ch++)
-    {
         Alphabetic.insert(i++,ch);
-    }
     for (char ch = 'A';ch <= 'Z';ch++)
-    {
         Alphabetic.insert(i++,ch);
-    }
     Alphabetic.insert(i++,' ');
-
 
     LoadDFA(KeyWords,numberWords);
 }
@@ -92,13 +154,25 @@ void DFA::LoadDFA(QString *KeyWords,int numberWords)
                 CurrentState = CurrentState->nextNode(s[j].cell()) ;
         }
         //For set Finit of the last Node after node of ' '
-        NextState = new NodeDFA(CounterState++);
-        AllStates.insert(NextState);
-        CurrentState->link(' ',NextState);
-        NextState->setFinite();
-        FinitStates.insert(NextState);
+        //NextState = new NodeDFA(CounterState++);
+        //AllStates.insert(NextState);
+        CurrentState->link(' ',Finit_wordsState);
+        //NextState->setFinite();
+        //FinitStates.insert(NextState);
 
     }//For number Words
+
+
+    foreach (char ch,Alphabetic)
+    {
+        if (StartState->nextNode(ch)==NULL)
+        {
+            if (ch ==' ')
+                StartState->link(ch,StartState);
+            else
+                StartState->link(ch,Separate_wordsState);
+        }
+    }
 
     foreach(NodeDFA* state,AllStates)
     {
@@ -107,14 +181,15 @@ void DFA::LoadDFA(QString *KeyWords,int numberWords)
         {
             if (state->nextNode(ch)==NULL)
             {
-                //for copy of Start State map into Finite States
                 if (ch ==' ')
                     state->link(ch,StartState);
                 else
-                if (state->isFiniteState())
-                    state->link(ch,StartState->nextNode(ch));
-                else
-                    state->link(ch,Separate_words);
+                {
+                    if (FinitStates.contains(state))
+                        state->link(ch,StartState->nextNode(ch));
+                    else
+                        state->link(ch,Separate_wordsState);
+                }
             }
         }
     } // for a --> Z
@@ -128,15 +203,16 @@ QHash<QString,int> DFA::SimulateDFA(QString input)
     NodeDFA *CurrentState = StartState ;
     for (int i=0;i<input.length();i++)
     {
+
         str +=input[i];
         CurrentState = CurrentState->nextNode(input[i].cell());
-
-         // to caculate the last word
+        // to caculate the last word
         if ((i ==input.length()-1)&&(input[i]!=' '))
         {
             CurrentState = CurrentState->nextNode(' ');
             str+=" ";
         }
+
         // To add Key Words to Resault Hash
         if (CurrentState->isFiniteState())
         {
@@ -222,17 +298,10 @@ void DFA::simplify()
 
 }
 
-QSet<NodeDFA*> DFA::getFinitStates()
+DFA::~DFA()
 {
-    return FinitStates;
-}
-
-QSet<NodeDFA *> DFA::getAllStates()
-{
-    return AllStates;
-}
-QSet<NodeDFA*> DFA::getNonFinitStates()
-{
-    return AllStates.subtract(FinitStates);
+    foreach (NodeDFA* state , AllStates)
+    {
+    }
 }
 
