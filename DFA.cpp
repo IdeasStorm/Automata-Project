@@ -167,7 +167,7 @@ void DFA::LoadDFA(QString *KeyWords,int numberWords)
     {
         if (StartState->nextNode(ch)==NULL)
         {
-            if (ch =' ')
+            if (ch ==' ')
                 StartState->link(ch,StartState);
             else
                 StartState->link(ch,Separate_wordsState);
@@ -206,9 +206,6 @@ QHash<QString,int> DFA::SimulateDFA(QString input)
 
         str +=input[i];
         CurrentState = CurrentState->nextNode(input[i].cell());
-
-        if (i==3)
-            int myt = 0 ;
         // to caculate the last word
         if ((i ==input.length()-1)&&(input[i]!=' '))
         {
@@ -299,5 +296,12 @@ void DFA::simplify()
         }
     }
 
+}
+
+DFA::~DFA()
+{
+    foreach (NodeDFA* state , AllStates)
+    {
+    }
 }
 
