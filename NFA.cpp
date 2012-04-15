@@ -22,7 +22,7 @@ NFA::NFA()
 {
     StartState = new NodeNFA("q0") ;
     StartState->link(' ');
-    //
+    // fill alphabetic list
         int i = 0 ;
         for (char ch = 'a';ch<'Z';ch++)
         {
@@ -170,66 +170,65 @@ void NFA::toPureNFA(NFA * nfa)
 {
 
 QStack<NodeNFA*> s;
-NodeNFA* start=nfa->getStartState();
+NodeNFA* start=nfa->getStartState();    //get start state .
 s.push(start);
 NodeNFA* temp;
 while(! s.empty())
-{
-    temp=s.pop();
-    QMultiHash<char, NodeNFA*>* nodes=temp->getNextNodes();// after
-
-    foreach (NodeNFA* t , *nodes)
     {
-        s.push(t);
+        temp=s.pop();
+        QMultiHash<char, NodeNFA*>* nodes=temp->getNextNodes();
 
-    }
+        foreach (NodeNFA* t , *nodes)
+            s.push(t);
 
-  QList<char> keys=nodes->uniqueKeys();
 
-QList<NodeNFA*>* temp1=getClosure(temp);
-QList<NodeNFA*>* temp2=new QList<NodeNFA*>();
 
-temp->setNextNodes(new QMultiHash<char,NodeNFA*>());
-  foreach(char c,keys)
-  {
-      if(c!='\0')
+      QList<char> keys=nodes->uniqueKeys();
+
+    QList<NodeNFA*>* temp1=getClosure(temp);
+    QList<NodeNFA*>* temp2=new QList<NodeNFA*>();
+
+    temp->setNextNodes(new QMultiHash<char,NodeNFA*>());
+      foreach(char c,keys)
       {
-
-              foreach(NodeNFA* t,*temp1)
-              {
-                  if(t->isFiniteState())
-                      temp->setFinite();
-                  if(t->getNextNode(c).size()==0)
-                      temp2->append(t);
-
-              }
-
-
-      QList<NodeNFA*>* temp3=func(temp1,temp2);
-      QList<NodeNFA*>* temp4=new QList<NodeNFA*>();
-      foreach(NodeNFA* b,*temp3)
-      {
-
-
-        temp4->append(*getClosure(b));
-
-      }
-
-          foreach(NodeNFA* nfa ,*temp4)
+          if(c!='\0')
           {
-              temp->link(c,nfa);
+
+                  foreach(NodeNFA* t,*temp1)
+                  {
+                      if(t->isFiniteState())
+                          temp->setFinite();
+                      if(t->getNextNode(c).size()==0)
+                          temp2->append(t);
+
+                  }
+
+
+          QList<NodeNFA*>* temp3=func(temp1,temp2);
+          QList<NodeNFA*>* temp4=new QList<NodeNFA*>();
+          foreach(NodeNFA* b,*temp3)
+          {
+
+
+            temp4->append(*getClosure(b));
 
           }
 
-       }
+              foreach(NodeNFA* nfa ,*temp4)
+              {
+                  temp->link(c,nfa);
 
-  }
-temp1->clear();
-temp2->clear();
+              }
+
+           }
+
+      }
+    temp1->clear();
+    temp2->clear();
 
 
 
-}
+    }//end while loop
 
 }
 
