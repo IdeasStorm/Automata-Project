@@ -22,7 +22,7 @@ NFA::NFA()
 {
     StartState = new NodeNFA("q0") ;
     StartState->link(' ');
-    //
+    // fill alphabetic list
         int i = 0 ;
         for (char ch = 'a';ch<'Z';ch++)
         {
