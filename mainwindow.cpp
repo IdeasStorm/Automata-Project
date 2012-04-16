@@ -47,10 +47,10 @@ QString *MainWindow::getAllKeywords()
 void MainWindow::on_pushButton_3_clicked()
 {
     //ui->OutPut->clear();
-    NFA *myt = new NFA(getAllKeywords(),getWordCount());
-int mm = 0 ;
+  //  NFA *myt = new NFA(getAllKeywords(),getWordCount());
+//int mm = 0 ;
     // this code is Work 100%....
-    /*ui->OutPut->clear();
+    ui->OutPut->clear();
     DFA *myt = new DFA(getAllKeywords(),getWordCount());
     QHash<QString,int> reshash = myt->SimulateDFA(ui->plainTextEdit->toPlainText());
     QList<QString> res = reshash.keys();
@@ -63,7 +63,7 @@ int mm = 0 ;
         QString* str = new QString(key + number);
         ui->OutPut->addItem(new QListWidgetItem(*str));
     }
-    */
+
 }
 
 int MainWindow::getWordCount()
