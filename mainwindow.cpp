@@ -46,12 +46,12 @@ QString *MainWindow::getAllKeywords()
 
 void MainWindow::on_pushButton_3_clicked()
 {
-    //ui->OutPut->clear();
-    //NFA *mytt = new NFA(getAllKeywords(),getWordCount());
+    ui->OutPut->clear();
+    NFA *mytt = new NFA(getAllKeywords(),getWordCount());
 
     // this code is Work 100%....
-    //ui->OutPut->clear() ;
-    //DFA *myt = mytt->convertToDFA();
+    ui->OutPut->clear() ;
+    DFA *myt = mytt->convertToDFA();
     //myt->setStartState(mytt->convertToDFA());
 
     //new DFA(getAllKeywords(),getWordCount());

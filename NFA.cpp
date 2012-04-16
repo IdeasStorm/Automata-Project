@@ -174,27 +174,31 @@ DFA* NFA::convertToDFA()
     DFA* dfa = new DFA();
     QMap<QPair<QString, char>, NodeDFA*> *Helper =
             new QMap<QPair<QString, char>, NodeDFA*>();
+
     //usedState = new QSet<QString>();
     //nodeNum = 0;
     //addToSet(StartState->getName(), DFANode, ' ');
     QList< QSet<NodeNFA*> > groups;
+    QMap<QSet<NodeNFA*>, NodeDFA*>* nodes
+            = new QMap<QSet<NodeNFA*>, NodeDFA*>();
     QSet<NodeNFA*> set;
     set.insert(StartState);
     DFANode = new NodeDFA(0);
-    dfa->setStartState(DFANode);
+    //dfa->setStartState(DFANode);
     Helper->insert(QPair<QString, char>("q0", ' '), DFANode);
     //Helper = DFANode;
     groups.append(set);
-    //bool no_more_groups = false;
     int i=0, j=1, nodeNum=0;
     QString toSet;
     bool finite = false;
-    while (j != groups.length() ){
-        //no_more_groups = true;
-        for (char symbol = 'a'; symbol < 'z'; ++symbol) // all symbols
+    while (j > groups.length()-1 ){
+        foreach (char symbol, Alphabetic)
+        //for (char symbol = 'a'; symbol < 'z'; ++symbol) // all symbols
         {
+            nodeNum = 0;
             foreach (NodeNFA* node, groups.at(i)) // all nodes in group e.g. [A B C]=>each of A,B,C
             {
+                nodeNum++;
                 QList<NodeNFA*> list = node->getNextNode(symbol);
                 if (list.length() > 0)
                 {
@@ -202,7 +206,7 @@ DFA* NFA::convertToDFA()
                     {
                         addToList(list.at(k));
                         //QString* str =new QString("q" + nodeNum);
-                        toSet.append("q" + nodeNum);
+                        toSet.append(list.at(k)->getName());
                         if (list.at(k)->isFiniteState())
                             finite = true;
                     }
@@ -210,9 +214,10 @@ DFA* NFA::convertToDFA()
                 else
                 {
                     Helper->insert(QPair<QString, char>(toSet, '?'), dfa->DeadState);
+                    DFANode->link(symbol, dfa->DeadState);
                 }
                 set = list.toSet();
-                if (set == groups.at(i))
+                if (set.count()>0 && nodeNum == groups.at(i).count())
                 {
                     if (!groups.contains(temp.toSet()))
                     {
@@ -221,67 +226,28 @@ DFA* NFA::convertToDFA()
                         if (finite)
                             Dfa->setFinite();
                         Helper->insert(QPair<QString, char>(toSet, symbol), Dfa);
-                        nodeNum++;
-                        //no_more_groups = false;
-                        j++;
+                        //nodeNum++;
+                        if (nodes->count() < 0)
+                            DFANode->link(symbol, Dfa);
+                        else
+                            nodes->value(set)->link(symbol, Dfa);
+                        //nodes->insert(set, Dfa);
                     }
                     else
                     {
-                        NodeDFA* Dfa = Helper->value(QPair<QString, char>(toSet, symbol));
-                        Dfa->link(symbol, Dfa);
+                        //NodeDFA* Dfa = dfa->getStartState();Helper->value(QPair<QString, char>(toSet, symbol));
+                        //Dfa->link(symbol, Dfa);
+                        DFANode->link(symbol, dfa->getStartState());
                     }
-                    i++;
                     temp.clear();
                     finite = false;
                     toSet.clear();
                 }
             }
             temp.clear();
-         }
-
-        ////////////////////////////////////////////////
-        char symbol =' ';
-        foreach (NodeNFA* node, groups.at(i)) // all nodes in group e.g. [A B C]=>each of A,B,C
-        {
-            QList<NodeNFA*> list = node->getNextNode(symbol);
-            if (list.length() > 0)
-            {
-                for(int k=0;k<list.length();k++)
-                {
-                    addToList(list.at(k));
-                    //QString* str =new QString("q" + nodeNum);
-                    toSet.append("q" + nodeNum);
-                    if (list.at(k)->isFiniteState())
-                        finite = true;
-                }
-            }
-            set = list.toSet();
-            if (set == groups.at(i))
-            {
-                if (!groups.contains(temp.toSet()))
-                {
-                    groups.append(temp.toSet());
-                    NodeDFA* Dfa = new NodeDFA(j);
-                    if (finite)
-                        Dfa->setFinite();
-                    Helper->insert(QPair<QString, char>(toSet, symbol), Dfa);
-                    nodeNum++;
-                    //no_more_groups = false;
-                    j++;
-                }
-                else
-                {
-                    NodeDFA* Dfa = Helper->value(QPair<QString, char>(toSet, symbol));
-                    Dfa->link(symbol, Dfa);
-                }
-                i++;
-                temp.clear();
-                finite = false;
-                toSet.clear();
-            }
         }
-        temp.clear();
-        //////////////////////////////////
+        j++;
+        i++;
     }
     return dfa;
 }

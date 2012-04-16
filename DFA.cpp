@@ -2,6 +2,39 @@
 #include <QLinkedList>
 #include "nodedfa.h"
 
+DFA::DFA()
+{}
+
+DFA::DFA(QString *KeyWords,int numberWords)
+{
+    //DFA();
+    StartState = new NodeDFA('0') ;
+    AllStates.insert(StartState);
+    Separate_wordsState = new NodeDFA ('<'); // | ==> Loop Dead State
+    AllStates.insert(Separate_wordsState);
+
+    if (numberWords > 0)
+    {
+        Finit_wordsState = new NodeDFA('>');
+        Finit_wordsState->setFinite();
+        FinitStates.insert(Finit_wordsState);
+        AllStates.insert(Finit_wordsState);
+    }
+
+    //StartState->link('?',Separate_words);
+    //StartState->link(' ');
+//    Separate_wordsState->link(' ',StartState);
+    //Separate_words->link('?'); // ? ==> a-->z
+    //
+    int i = 0 ;
+    for (char ch = 'a';ch <= 'z';ch++)
+        Alphabetic.insert(i++,ch);
+    for (char ch = 'A';ch <= 'Z';ch++)
+        Alphabetic.insert(i++,ch);
+    Alphabetic.insert(i++,' ');
+
+    LoadDFA(KeyWords,numberWords);
+}
 
 //GET
 NodeDFA * DFA::getStartState()
@@ -96,36 +129,6 @@ DFA::DFA()
     Alphabetic.insert(i++,' ');
 }
 */
-DFA::DFA(QString *KeyWords,int numberWords)
-{
-    //DFA();
-    StartState = new NodeDFA('0') ;
-    AllStates.insert(StartState);
-    Separate_wordsState = new NodeDFA ('<'); // | ==> Loop Dead State
-    AllStates.insert(Separate_wordsState);
-
-    if (numberWords > 0)
-    {
-        Finit_wordsState = new NodeDFA('>');
-        Finit_wordsState->setFinite();
-        FinitStates.insert(Finit_wordsState);
-        AllStates.insert(Finit_wordsState);
-    }
-
-    //StartState->link('?',Separate_words);
-    //StartState->link(' ');
-//    Separate_wordsState->link(' ',StartState);
-    //Separate_words->link('?'); // ? ==> a-->z
-    //
-    int i = 0 ;
-    for (char ch = 'a';ch <= 'z';ch++)
-        Alphabetic.insert(i++,ch);
-    for (char ch = 'A';ch <= 'Z';ch++)
-        Alphabetic.insert(i++,ch);
-    Alphabetic.insert(i++,' ');
-
-    LoadDFA(KeyWords,numberWords);
-}
 
 void DFA::LoadDFA(QString *KeyWords,int numberWords)
 {
@@ -300,9 +303,12 @@ void DFA::simplify()
 
 DFA::~DFA()
 {
-    return FinitStates;
+    foreach (NodeDFA* state , AllStates)
+    {
+    }
 }
 
+/*
 QSet<NodeDFA *> DFA::getAllStates()
 {
     return AllStates;
@@ -311,4 +317,4 @@ QSet<NodeDFA*> DFA::getNonFinitStates()
 {
     return AllStates.subtract(FinitStates);
 }
-
+*/
