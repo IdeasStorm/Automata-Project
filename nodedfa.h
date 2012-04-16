@@ -17,9 +17,9 @@ public:
     bool isFiniteState();
     void setnextNodes( QMap<char, NodeDFA*>*);
     QMap<char, NodeDFA*>* getnextNodes();
-    char name;
+    char getName();
 private:
-
+    char name;
     QMap<char, NodeDFA*>* nextNodes;
     bool finite;
 };

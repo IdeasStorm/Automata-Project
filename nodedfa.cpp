@@ -16,6 +16,10 @@ NodeDFA::NodeDFA(int num)
 
 }
 
+char NodeDFA::getName()
+{
+    return name ;
+}
 void NodeDFA::link(char value, NodeDFA *second)
 {
     nextNodes->insert(value, second);

@@ -282,7 +282,7 @@ Node *GraphWidget::createNode(NodeDFA *node)
 {
     Node *nodeGUI = new Node(this);
     currentScene->addItem(nodeGUI);
-    nodeGUI->setText(QString(node->name));
+    nodeGUI->setText(QString(node->getName()));
     return nodeGUI;
 }
 
