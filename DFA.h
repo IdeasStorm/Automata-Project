@@ -43,9 +43,11 @@ public:
     void simplify();
 
 private:
+
     NodeDFA *StartState ;
     NodeDFA *Separate_wordsState;
     NodeDFA *Finit_wordsState;
+
     QList<char> Alphabetic ;
     QList<char> Separate_wordsAlphabetic ;
     QSet<NodeDFA*> FinitStates;
