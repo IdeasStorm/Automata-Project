@@ -136,36 +136,10 @@ void NFA::LoadNFA(QString *KeyWords,int numberWords)
     }
 }
 
-void NFA::addToSet(QString name, NodeDFA* dfa, char ch)
-{
-    usedState->insert(name);
-    if (dfa == NULL)
-        dfa = new NodeDFA(nodeNum);
-    else
-        dfa->link(ch, new NodeDFA(nodeNum));
-    nodeNum++;
-}
-
 void NFA::addToList(NodeNFA* node)
 {
     if (!temp.contains(node))
        temp.append(node);
-}
-
-QList<NodeNFA*>* NFA::getValueNodes(NodeNFA* node, NodeDFA* dfa)
-{
-    QList<char> keys = node->getNextNodes()->uniqueKeys();
-    for(int i=0;i<keys.length();i++)
-    {
-        QList<NodeNFA*> states = node->getNextNode(keys.at(i));
-        QString* toSet = new QString();
-        for(int j=0;j<states.length();j++)
-        {
-            toSet->append(states.at(i)->getName());
-            addToList(states.at(i));
-        }
-        addToSet(*toSet, dfa, keys.at(i));
-    }
 }
 
 DFA* NFA::convertToDFA()
@@ -231,7 +205,7 @@ DFA* NFA::convertToDFA()
                             DFANode->link(symbol, Dfa);
                         else
                             nodes->value(set)->link(symbol, Dfa);
-                        //nodes->insert(set, Dfa);
+                        nodes->insert(set, Dfa);
                     }
                     else
                     {
