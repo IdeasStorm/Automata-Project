@@ -14,6 +14,12 @@ NodeNFA::NodeNFA(int num)
     this->name = num;
     setNotFinite();
 }
+NodeNFA::NodeNFA(const NodeNFA & copy_from_me)
+{
+    name=copy_from_me.name;
+    finite=copy_from_me.finite;
+    nextNodes=new QMultiHash<char,NodeNFA*>(*(copy_from_me.nextNodes));
+}
 
 void NodeNFA::link(char value, NodeNFA *second)
 {
@@ -27,8 +33,9 @@ void NodeNFA::link(char value)
 
 QList<NodeNFA*> NodeNFA::getNextNode(char value)
 {
-    return nextNodes->values(value);
-}
+
+        return nextNodes->values(value);
+    }
 
 QMultiHash<char, NodeNFA*>* NodeNFA::getNextNodes()
 {

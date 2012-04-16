@@ -8,6 +8,7 @@ class NodeNFA
 public:
     NodeNFA(QString);
     NodeNFA(int);
+    NodeNFA(const NodeNFA&);
     void link(char, NodeNFA*);
     void link(char);
     QList<NodeNFA*> getNextNode(char);

@@ -31,7 +31,7 @@ NodeDFA* NodeDFA::nextNode(char value)
     if (nextNodes->contains(value))
         return nextNodes->value(value);
     else
-        return nextNodes->value('?'); // return Dead State
+        return NULL;
 }
 
 void NodeDFA::setFinite()
@@ -42,6 +42,7 @@ void NodeDFA::setNotFinite()
 
 bool NodeDFA::isFiniteState()
 { return finite; }
+
 void NodeDFA::setnextNodes( QMap<char, NodeDFA*>* nextnodes)
 {
     this->nextNodes = nextnodes ;
