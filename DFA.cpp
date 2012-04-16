@@ -293,6 +293,9 @@ void DFA::simplify()
                         node->link(symbol, new_node);
                 }
             }
+            foreach (NodeDFA* node, group){
+                delete node;
+            }
         }
     }
 
