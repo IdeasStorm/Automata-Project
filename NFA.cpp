@@ -6,81 +6,50 @@
 
 //GET
 NodeNFA * NFA::getStartState()
-{
-    return StartState ;
-}
+{ return StartState; }
 
 NodeNFA * NFA::getFinit_WordsState()
-{
-    return Finit_wordsState ;
-}
+{ return Finit_wordsState; }
 
 NodeNFA * NFA::getSeparate_wordsState()
-{
-    return Separate_wordsState ;
-}
+{ return Separate_wordsState; }
 
 QList<char> NFA::getAlphabetic()
-{
-    return Alphabetic ;
-}
+{ return Alphabetic; }
+
 QList<char> NFA::getSeparate_wordsAlphabetic()
-{
-    return Separate_wordsAlphabetic;
-}
+{ return Separate_wordsAlphabetic; }
 
 QSet<NodeNFA*> NFA::getFinitStates()
-{
-    return FinitStates;
-}
+{ return FinitStates; }
 
 QSet<NodeNFA *> NFA::getAllStates()
-{
-    return AllStates;
-}
-QSet<NodeNFA*> NFA::getNonFinitStates()
-{
-    return AllStates.subtract(FinitStates);
-}
+{ return AllStates; }
 
+QSet<NodeNFA*> NFA::getNonFinitStates()
+{ return AllStates.subtract(FinitStates); }
 
 //Set
 void NFA::setStartState(NodeNFA *state)
-{
-    StartState = state;
-}
+{ StartState = state; }
 
 void NFA::setAlphabetic(QList<char> alphabetic)
-{
-    Alphabetic = alphabetic ;
-}
+{ Alphabetic = alphabetic; }
 
 void NFA::setFinit_WordsState(NodeNFA *state)
-{
-    Finit_wordsState = state ;
-}
+{ Finit_wordsState = state; }
 
 void NFA::setSeparate_wordsState(NodeNFA *state)
-{
-    Separate_wordsState = state ;
-}
+{ Separate_wordsState = state; }
 
 void NFA::addToFinitState(NodeNFA* state)
-{
-    FinitStates.insert(state);
-}
+{ FinitStates.insert(state); }
 
 void NFA::addToState(NodeNFA* state)
-{
-    AllStates.insert(state);
-}
+{ AllStates.insert(state); }
 
 void NFA::setSeparate_wordsAlphabetic(QList<char> alphabetic)
-{
-    Separate_wordsAlphabetic = alphabetic;
-}
-
-
+{ Separate_wordsAlphabetic = alphabetic; }
 
 /*
 NFA::NFA()
@@ -88,15 +57,15 @@ NFA::NFA()
     StartState = new NodeNFA('0') ;
     StartState->link(' ');
     // fill alphabetic list
-        int i = 0 ;
-        for (char ch = 'a';ch<'Z';ch++)
-        {
-            Alphabetic.insert(i++,ch);
-        }
-        Alphabetic.insert(i++,' ');
-
+    int i = 0 ;
+    for (char ch = 'a';ch<'Z';ch++)
+    {
+        Alphabetic.insert(i++,ch);
+    }
+    Alphabetic.insert(i++,' ');
 }
 */
+
 NFA::NFA(QString *KeyWords,int numberWords)
 {
     //NFA();
@@ -164,7 +133,6 @@ void NFA::LoadNFA(QString *KeyWords,int numberWords)
                 state->link(ch,temp);
             }
         }
-
     }
 }
 
@@ -202,7 +170,6 @@ QList<NodeNFA*>* NFA::getValueNodes(NodeNFA* node, NodeDFA* dfa)
 
 DFA* NFA::convertToDFA()
 {
-
     NodeDFA* DFANode;
     DFA* dfa = new DFA();
     QMap<QPair<QString, char>, NodeDFA*> *Helper =
@@ -322,13 +289,12 @@ DFA* NFA::convertToDFA()
 
 QList<NodeNFA *>*  NFA::getClosure(NodeNFA * state)
 {
-QStack <NodeNFA*> s;
+    QStack <NodeNFA*> s;
     QList<NodeNFA*>* list;         // the final set
     list->push_front(state);
     s.push(state);
     NodeNFA* q;
     QList<NodeNFA*> r;
-
     while(  ! s.empty() )
     {
 
@@ -347,87 +313,60 @@ QStack <NodeNFA*> s;
     return list;
 }
 
-
-
 void NFA::toPureNFA(NFA * nfa)
 {
-
-QStack<NodeNFA*> s;
-NodeNFA* start=nfa->getStartState();    //get start state .
-s.push(start);
-NodeNFA* temp;
-while(! s.empty())
+    QStack<NodeNFA*> s;
+    NodeNFA* start=nfa->getStartState();    //get start state .
+    s.push(start);
+    NodeNFA* temp;
+    while(! s.empty())
     {
         temp=s.pop();
         QMultiHash<char, NodeNFA*>* nodes=temp->getNextNodes();
 
         foreach (NodeNFA* t , *nodes)
             s.push(t);
+        QList<char> keys=nodes->uniqueKeys();
 
+        QList<NodeNFA*>* temp1=getClosure(temp);
+        QList<NodeNFA*>* temp2=new QList<NodeNFA*>();
 
-
-      QList<char> keys=nodes->uniqueKeys();
-
-    QList<NodeNFA*>* temp1=getClosure(temp);
-    QList<NodeNFA*>* temp2=new QList<NodeNFA*>();
-
-    temp->setNextNodes(new QMultiHash<char,NodeNFA*>());
-      foreach(char c,keys)
-      {
-          if(c!='\0')
-          {
-
-                  foreach(NodeNFA* t,*temp1)
-                  {
-                      if(t->isFiniteState())
-                          temp->setFinite();
-                      if(t->getNextNode(c).size()==0)
-                          temp2->append(t);
-
-                  }
-
-
-          QList<NodeNFA*>* temp3=func(temp1,temp2);
-          QList<NodeNFA*>* temp4=new QList<NodeNFA*>();
-          foreach(NodeNFA* b,*temp3)
-          {
-
-
-            temp4->append(*getClosure(b));
-
-          }
-
-              foreach(NodeNFA* nfa ,*temp4)
-              {
-                  temp->link(c,nfa);
-
-              }
-
-           }
-
-      }
-    temp1->clear();
-    temp2->clear();
-
-
-
+        temp->setNextNodes(new QMultiHash<char,NodeNFA*>());
+        foreach(char c,keys)
+        {
+            if(c!='\0')
+            {
+                foreach(NodeNFA* t,*temp1)
+                {
+                    if(t->isFiniteState())
+                        temp->setFinite();
+                    if(t->getNextNode(c).size()==0)
+                        temp2->append(t);
+                }
+                QList<NodeNFA*>* temp3=func(temp1,temp2);
+                QList<NodeNFA*>* temp4=new QList<NodeNFA*>();
+                foreach(NodeNFA* b,*temp3)
+                {
+                    temp4->append(*getClosure(b));
+                }
+                foreach(NodeNFA* nfa ,*temp4)
+                {
+                    temp->link(c,nfa);
+                }
+            }
+        }
+        temp1->clear();
+        temp2->clear();
     }//end while loop
-
 }
-
-
 
 QList<NodeNFA*> * NFA::func(QList<NodeNFA*>* a,QList<NodeNFA*>*b)
 {
     QList<NodeNFA*> *list=new QList<NodeNFA*>();
-
     foreach (NodeNFA* t,*a)
     {
         if(! b->contains(t))
           list->append(t);
-
-
     }
-
-return list;
+    return list;
 }
