@@ -254,6 +254,12 @@ void MainWindow::on_pushButton_3_clicked()
  //   ui->graphicsView->loadFromDFA(myt);
     //return;
     /*
+  //  NFA *myt = new NFA(getAllKeywords(),getWordCount());
+//int mm = 0 ;
+    // this code is Work 100%....
+    ui->OutPut->clear();
+    DFA *myt = new DFA(getAllKeywords(),getWordCount());
+
     QHash<QString,int> reshash = myt->SimulateDFA(ui->plainTextEdit->toPlainText());
 
     QList<QString> res = reshash.keys();
@@ -267,6 +273,9 @@ void MainWindow::on_pushButton_3_clicked()
         ui->OutPut->addItem(new QListWidgetItem(*str));
     }*/
     ViewGraphOfDFA(myt);
+    }
+
+>>>>>>> aa2f0506911cf0f2c03dbe21961309d025f08bff
 }
 
 int MainWindow::getWordCount()
