@@ -273,9 +273,6 @@ void MainWindow::on_pushButton_3_clicked()
         ui->OutPut->addItem(new QListWidgetItem(*str));
     }*/
     ViewGraphOfDFA(myt);
-    }
-
->>>>>>> aa2f0506911cf0f2c03dbe21961309d025f08bff
 }
 
 int MainWindow::getWordCount()
