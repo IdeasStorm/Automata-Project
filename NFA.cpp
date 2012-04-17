@@ -156,10 +156,6 @@ DFA* NFA::convertToDFA()
     DFA* dfa = new DFA();
     QMap<QPair<QString, char>, NodeDFA*> *Helper =
             new QMap<QPair<QString, char>, NodeDFA*>();
-
-    //usedState = new QSet<QString>();
-    //nodeNum = 0;
-    //addToSet(StartState->getName(), DFANode, ' ');
     QList< QSet<NodeNFA*> > groups;
     QHash<QString, NodeDFA*>* nodes
             = new QHash<QString, NodeDFA*>();
@@ -167,20 +163,17 @@ DFA* NFA::convertToDFA()
     set.insert(StartState);
     DFANode = new NodeDFA(StartState->getName());
     nodes->insert(DFANode->getName(), DFANode);
-    //dfa->setStartState(DFANode);
+    dfa->setStartState(DFANode);
     Helper->insert(QPair<QString, char>("q0", ' '), DFANode);
-    //Helper = DFANode;
     groups.append(set);
     int i=0, j=1, nodeNum=0;
     QString toSet;
     bool finite = false;
     while (i != groups.count()){
         foreach (char symbol, Alphabetic)
-        //for (char symbol = 'a'; symbol < 'z'; ++symbol) // all symbols
         {
             nodeNum = 0;
-            //foreach (char symbol, Alphabetic)
-            foreach (NodeNFA* node, groups.at(i)) // all nodes in group e.g. [A B C]=>each of A,B,C
+            foreach (NodeNFA* node, groups.at(i))
             {
                 nodeNum++;
                 QList<NodeNFA*> list = node->getNextNode(symbol);
@@ -189,7 +182,6 @@ DFA* NFA::convertToDFA()
                     for(int k=0;k<list.length();k++)
                     {
                         addToList(list.at(k));
-                        //QString* str =new QString("q" + nodeNum);
                         toSet.append(list.at(k)->getName());
                         if (list.at(k)->isFiniteState())
                             finite = true;
@@ -198,9 +190,6 @@ DFA* NFA::convertToDFA()
                 else
                 {
                     Helper->insert(QPair<QString, char>(toSet, '?'), dfa->DeadState);
-                    //DFANode->link(symbol, dfa->DeadState);
-                    //must link with DeadState
-                    //nodes->value(toSet)->link(symbol, dfa->DeadState);
                     QString str = *setToString(groups.at(i));
                     nodes->value(str)->link(symbol, dfa->DeadState);
                 }
@@ -212,9 +201,11 @@ DFA* NFA::convertToDFA()
                         groups.append(temp.toSet());
                         NodeDFA* Dfa = new NodeDFA(j);
                         if (finite)
+                        {
                             Dfa->setFinite();
+                            DFA.addToFinitState(Dfa);
+                        }
                         Helper->insert(QPair<QString, char>(toSet, symbol), Dfa);
-                        //nodeNum++;
                         if (nodes->count()-1 < 1)
                             DFANode->link(symbol, Dfa);
                         else
@@ -224,14 +215,12 @@ DFA* NFA::convertToDFA()
                         }
                         QString str = *setToString(groups.last());
                         nodes->insert(str, Dfa);
+                        dfa->addToState(Dfa);
                     }
                     else
                     {
-                        //NodeDFA* Dfa = dfa->getStartState();Helper->value(QPair<QString, char>(toSet, symbol));
-                        //Dfa->link(symbol, Dfa);
                         QString str = *setToString(groups.at(i));
                         nodes->value(str)->link(symbol, DFANode);
-                        //DFANode->link(symbol, dfa->getStartState());
                     }
                     temp.clear();
                     finite = false;
@@ -240,7 +229,6 @@ DFA* NFA::convertToDFA()
             }
             temp.clear();
         }
-        //j++;
         i++;
     }
     return dfa;
