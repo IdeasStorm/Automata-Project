@@ -245,8 +245,8 @@ void DFA::simplify()
         QSet<NodeDFA*> group = *group_iter;
         // just giving a default value
         no_more_groups = true;
-        if (group.count() <=1 ) continue;
-        else {
+
+        if (group.count() >1 ) {
             foreach (char symbol, Alphabetic) { // all symbols
                 // initialising a group to add out-going nodes to it
                 QSet<NodeDFA*> new_group;
