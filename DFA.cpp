@@ -237,7 +237,7 @@ QHash<QString,int> DFA::SimulateDFA(QString input)
 // simplifies the DFA Automata
 void DFA::simplify()
 {
-    QSet<NodeDFA*> non_finit ;//= get
+    QSet<NodeDFA*> non_finit = getNonFinitStates();
     QSet<NodeDFA*> finit = getFinitStates();
     QList<QSet<NodeDFA*> > groups;
     groups.append(finit);
@@ -250,7 +250,7 @@ void DFA::simplify()
         no_more_groups = true;
         if (group.count() <=1 ) continue;
         else {
-            for (char symbol = 'a'; symbol < 'Z'; ++symbol) { // all symbols
+            foreach (char symbol, Alphabetic) { // all symbols
                 // initialising a group to add out-going nodes to it
                 QSet<NodeDFA*> new_group;
 
@@ -286,15 +286,18 @@ void DFA::simplify()
             // merge nodes
             NodeDFA* new_node = new NodeDFA(1); //TODO must change name
             foreach (NodeDFA* node, group) {
-                for (char symbol = 'a'; symbol < 'Z'; ++symbol) { // all symbols
+                foreach (char symbol, Alphabetic) { // all symbols
                     new_node->link(symbol, node->nextNode(symbol));
                 }
             }
             foreach (NodeDFA*node, getAllStates()) {
-                for (char symbol = 'a'; symbol < 'Z'; ++symbol) { // all symbols
+                foreach (char symbol, Alphabetic) { // all symbols
                     if (group.contains(node->nextNode(symbol)))
                         node->link(symbol, new_node);
                 }
+            }
+            foreach (NodeDFA* node, group){
+                delete node;
             }
         }
     }
