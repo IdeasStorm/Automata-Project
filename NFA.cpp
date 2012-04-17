@@ -165,6 +165,7 @@ DFA* NFA::convertToDFA()
     nodes->insert(DFANode->getName(), DFANode);
     dfa->setStartState(DFANode);
     dfa->addToState(DFANode);
+    //dfa->getSeparate_wordsState()->link(' ',dfa->getStartState());
     Helper->insert(QPair<QString, char>("q0", ' '), DFANode);
     groups.append(set);
     int i=0, j=1, nodeNum=0;
@@ -238,15 +239,6 @@ DFA* NFA::convertToDFA()
             temp.clear();
         }
         i++;
-    }
-    dfa->getSeparate_wordsState()->link(' ',dfa->getStartState());
-    //for copy of Start State map into Finite States
-    foreach (NodeDFA *state , dfa->getFinitStates())
-    {
-        foreach (char ch ,dfa->getAlphabetic())
-        {
-            state->link(ch,dfa->getStartState()->nextNode(ch));
-        }
     }
     return dfa;
 }

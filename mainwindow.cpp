@@ -267,7 +267,7 @@ void MainWindow::on_pushButton_3_clicked()
         QString* str = new QString(key + number);
         ui->OutPut->addItem(new QListWidgetItem(*str));
     }
-  //  ViewGraphOfDFA(myt);
+    //ViewGraphOfDFA(myt);
 }
 
 int MainWindow::getWordCount()

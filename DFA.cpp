@@ -125,6 +125,7 @@ QSet<NodeDFA*> DFA::getNonFinitStates()
 void DFA::setStartState(NodeDFA *state)
 {
     StartState = state;
+    Separate_wordsState->link(' ', StartState);
 }
 
 void DFA::setAlphabetic(QList<char> alphabetic)
