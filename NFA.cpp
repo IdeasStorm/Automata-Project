@@ -3,6 +3,37 @@
 #include <stack>
 #include"QStack"
 
+NFA::NFA(QString *KeyWords,int numberWords)
+{
+    //NFA();
+    StartState = new NodeNFA('0') ;
+    AllStates.insert(StartState);
+    StartState->link(' ',StartState);
+    //Separate_wordsState = new NodeNFA ('<'); // | ==> Loop Dead State
+    //Separate_wordsState->link(' ',StartState);
+    //AllStates.insert(Separate_wordsState);
+
+    if (numberWords > 0)
+    {
+        Finit_wordsState = new NodeNFA('>');
+        Finit_wordsState->setFinite();
+        FinitStates.insert(Finit_wordsState);
+        AllStates.insert(Finit_wordsState);
+    }
+    //
+    int i = 0 ;
+    for (char ch = 'a';ch<='z';ch++)
+    {
+        Alphabetic.insert(i++,ch);
+    }
+    for (char ch = 'A';ch<='Z';ch++)
+    {
+        Alphabetic.insert(i++,ch);
+    }
+    Alphabetic.insert(i++,' ');
+
+    LoadNFA(KeyWords,numberWords);
+}
 
 //GET
 NodeNFA * NFA::getStartState()
@@ -65,38 +96,6 @@ NFA::NFA()
     Alphabetic.insert(i++,' ');
 }
 */
-
-NFA::NFA(QString *KeyWords,int numberWords)
-{
-    //NFA();
-    StartState = new NodeNFA('0') ;
-    AllStates.insert(StartState);
-    StartState->link(' ',StartState);
-    //Separate_wordsState = new NodeNFA ('<'); // | ==> Loop Dead State
-    //Separate_wordsState->link(' ',StartState);
-    //AllStates.insert(Separate_wordsState);
-
-    if (numberWords > 0)
-    {
-        Finit_wordsState = new NodeNFA('>');
-        Finit_wordsState->setFinite();
-        FinitStates.insert(Finit_wordsState);
-        AllStates.insert(Finit_wordsState);
-    }
-    //
-    int i = 0 ;
-    for (char ch = 'a';ch<'z';ch++)
-    {
-        Alphabetic.insert(i++,ch);
-    }
-    for (char ch = 'A';ch<'Z';ch++)
-    {
-        Alphabetic.insert(i++,ch);
-    }
-    Alphabetic.insert(i++,' ');
-
-    LoadNFA(KeyWords,numberWords);
-}
 
 void NFA::LoadNFA(QString *KeyWords,int numberWords)
 {
