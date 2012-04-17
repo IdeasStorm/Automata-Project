@@ -280,13 +280,17 @@ void DFA::simplify()
     // searching for groups including more than one node
     foreach (QSet<NodeDFA*> group, groups) {
         if (group.count() > 1) {
+            bool at_first_node = false;
             // merge nodes
             NodeDFA* new_node = new NodeDFA(1); //TODO must change name
             foreach (NodeDFA* node, group) {
                 foreach (char symbol, Alphabetic) { // all symbols
                     new_node->link(symbol, node->nextNode(symbol));
                 }
+                if (node == this->StartState)
+                    at_first_node = true;
             }
+            this->StartState = new_node;
             foreach (NodeDFA*node, getAllStates()) {
                 foreach (char symbol, Alphabetic) { // all symbols
                     if (group.contains(node->nextNode(symbol)))
