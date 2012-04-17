@@ -52,7 +52,7 @@ void MainWindow::on_pushButton_3_clicked()
     // this code is Working 100%....
     ui->OutPut->clear();
     DFA *myt = new DFA(getAllKeywords(),getWordCount());
-    //myt->simplify();
+    myt->simplify();
     QHash<QString,int> reshash = myt->SimulateDFA(ui->plainTextEdit->toPlainText());
     QList<QString> res = reshash.keys();
 

@@ -281,6 +281,7 @@ void DFA::simplify()
     foreach (QSet<NodeDFA*> group, groups) {
         if (group.count() > 1) {
             bool at_first_node = false;
+            bool at_last_node = false;
             // merge nodes
             NodeDFA* new_node = new NodeDFA(1); //TODO must change name
             foreach (NodeDFA* node, group) {
@@ -289,8 +290,15 @@ void DFA::simplify()
                 }
                 if (node == this->StartState)
                     at_first_node = true;
+                if (node->isFiniteState())
+                    at_last_node = true;
             }
-            this->StartState = new_node;
+            if (at_first_node)  this->StartState = new_node;
+            if (at_last_node) {
+                this->FinitStates.insert(new_node);
+                new_node->setFinite();
+            }
+            this->AllStates.insert(new_node);
             foreach (NodeDFA*node, getAllStates()) {
                 foreach (char symbol, Alphabetic) { // all symbols
                     if (group.contains(node->nextNode(symbol)))
@@ -298,6 +306,8 @@ void DFA::simplify()
                 }
             }
             foreach (NodeDFA* node, group){
+                FinitStates.remove(node);
+                AllStates.remove(node);
                 delete node;
             }
         }
