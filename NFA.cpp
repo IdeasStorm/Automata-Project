@@ -142,6 +142,14 @@ void NFA::addToList(NodeNFA* node)
        temp.append(node);
 }
 
+QString* NFA::setToString(QSet<NodeNFA*> set)
+{
+    QString* str = new QString();
+    foreach (NodeNFA* node, set)
+        str->append(node->getName());
+    return str;
+}
+
 DFA* NFA::convertToDFA()
 {
     NodeDFA* DFANode;
@@ -153,11 +161,12 @@ DFA* NFA::convertToDFA()
     //nodeNum = 0;
     //addToSet(StartState->getName(), DFANode, ' ');
     QList< QSet<NodeNFA*> > groups;
-    QHash<QSet<NodeNFA*>, NodeDFA*>* nodes
-            = new QHash<QSet<NodeNFA*>, NodeDFA*>();
+    QHash<QString, NodeDFA*>* nodes
+            = new QHash<QString, NodeDFA*>();
     QSet<NodeNFA*> set;
     set.insert(StartState);
-    DFANode = new NodeDFA(0);
+    DFANode = new NodeDFA(StartState->getName());
+    nodes->insert(DFANode->getName(), DFANode);
     //dfa->setStartState(DFANode);
     Helper->insert(QPair<QString, char>("q0", ' '), DFANode);
     //Helper = DFANode;
@@ -185,10 +194,14 @@ DFA* NFA::convertToDFA()
                             finite = true;
                     }
                 }
-                else
+                else if (nodeNum == groups.at(i).count())
                 {
                     Helper->insert(QPair<QString, char>(toSet, '?'), dfa->DeadState);
-                    DFANode->link(symbol, dfa->DeadState);
+                    //DFANode->link(symbol, dfa->DeadState);
+                    //must link with DeadState
+                    //nodes->value(toSet)->link(symbol, dfa->DeadState);
+                    QString str = *setToString(groups.at(i));
+                    nodes->value(str)->link(symbol, dfa->DeadState);
                 }
                 set = list.toSet();
                 if (set.count()>0 && nodeNum == groups.at(i).count())
@@ -201,17 +214,23 @@ DFA* NFA::convertToDFA()
                             Dfa->setFinite();
                         Helper->insert(QPair<QString, char>(toSet, symbol), Dfa);
                         //nodeNum++;
-                        if (nodes->count() < 0)
+                        if (nodes->count()-1 < 1)
                             DFANode->link(symbol, Dfa);
                         else
-                            nodes->value(set)->link(symbol, Dfa);
-                        nodes->insert(set, Dfa);
+                        {
+                            QString str = *setToString(groups.at(i));
+                            nodes->value(str)->link(symbol, Dfa);
+                        }
+                        QString str = *setToString(groups.last());
+                        nodes->insert(str, Dfa);
                     }
                     else
                     {
                         //NodeDFA* Dfa = dfa->getStartState();Helper->value(QPair<QString, char>(toSet, symbol));
                         //Dfa->link(symbol, Dfa);
-                        DFANode->link(symbol, dfa->getStartState());
+                        QString str = *setToString(groups.at(i));
+                        nodes->value(str)->link(symbol, DFANode);
+                        //DFANode->link(symbol, dfa->getStartState());
                     }
                     temp.clear();
                     finite = false;

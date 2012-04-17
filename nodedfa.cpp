@@ -1,7 +1,7 @@
 #include "nodedfa.h"
 #include <QString>
 
-NodeDFA::NodeDFA(char name)
+NodeDFA::NodeDFA(QString name)
 {
     nextNodes = new QMap<char, NodeDFA *>();
     this->name = name;
@@ -11,7 +11,8 @@ NodeDFA::NodeDFA(char name)
 NodeDFA::NodeDFA(int num)
 {
     nextNodes = new QMap<char, NodeDFA *>();
-    this->name = num;
+    this->name = "q";
+    this->name.append(char('0'-num));
     setNotFinite();
 
 }
@@ -51,4 +52,9 @@ void NodeDFA::setnextNodes( QMap<char, NodeDFA*>* nextnodes)
 QMap<char, NodeDFA*>* NodeDFA::getnextNodes()
 {
     return nextNodes;
+}
+
+QString NodeDFA::getName()
+{
+    return name;
 }
