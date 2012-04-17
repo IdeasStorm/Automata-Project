@@ -218,10 +218,16 @@ DFA* NFA::convertToDFA()
                         nodes->insert(str, Dfa);
                         dfa->addToState(Dfa);
                     }
-                    else
+                    else if (symbol != ' ')
                     {
                         QString str = *setToString(groups.at(i));
                         nodes->value(str)->link(symbol, DFANode);
+                    }
+                    else
+                    {
+                        QString str = *setToString(groups.at(i));
+                        QString str2 = *setToString(temp.toSet());
+                        nodes->value(str)->link(symbol, nodes->value(str2));
                     }
                     temp.clear();
                     finite = false;
