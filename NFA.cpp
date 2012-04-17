@@ -222,7 +222,7 @@ DFA* NFA::convertToDFA()
                     else if (symbol != ' ')
                     {
                         QString str = *setToString(groups.at(i));
-                        nodes->value(str)->link(symbol, DFANode);
+                        nodes->value(str)->link(symbol, dfa->getSeparate_wordsState());
                     }*/
                     else
                     {
