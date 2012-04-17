@@ -41,10 +41,7 @@ public:
     QHash<QString,int>  SimulateDFA(QString input); //Simulate DFA and return True or false
 
     void simplify();
-
-    NodeDFA *DeadState;
-private:
-
+//private:
     NodeDFA *StartState ;
     NodeDFA *Separate_wordsState;
     NodeDFA *Finit_wordsState;

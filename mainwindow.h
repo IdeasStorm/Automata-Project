@@ -2,7 +2,7 @@
 #define MAINWINDOW_H
 
 #include <QMainWindow>
-
+#include "graphwidget.h"
 namespace Ui {
     class MainWindow;
 }
@@ -16,6 +16,9 @@ public:
     ~MainWindow();
     QString *getAllKeywords();
     int getWordCount();
+void buildDFA(QString *KeyWords,int numberWords);
+void ViewGraphOfDFA(DFA* dfa);
+void fillFromDFANode(NodeDFA* currentstate , DFA* dfa,GraphWidget *graph,QPointF p,QSet<NodeDFA*>&,QHash<NodeDFA*,Node*>&);
 
 private slots:
     void on_pushButton_clicked();

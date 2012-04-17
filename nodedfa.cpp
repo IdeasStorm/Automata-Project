@@ -17,6 +17,11 @@ NodeDFA::NodeDFA(int num)
 
 }
 
+QString NodeDFA::getName()
+{
+    return name;
+}
+
 void NodeDFA::link(char value, NodeDFA *second)
 {
     nextNodes->insert(value, second);
@@ -52,9 +57,4 @@ void NodeDFA::setnextNodes( QMap<char, NodeDFA*>* nextnodes)
 QMap<char, NodeDFA*>* NodeDFA::getnextNodes()
 {
     return nextNodes;
-}
-
-QString NodeDFA::getName()
-{
-    return name;
 }

@@ -111,9 +111,11 @@ void DFA::setSeparate_wordsAlphabetic(QList<char> alphabetic)
     Separate_wordsAlphabetic = alphabetic;
 }
 
-/*
-DFA::DFA()
-{
+
+//DFA::DFA()
+//{
+//}
+    /*
     StartState = new NodeDFA('0') ;
     Separate_wordsState = new NodeDFA ('|'); // | ==> Loop Dead State
     StartState->link('?',Separate_wordsState);
