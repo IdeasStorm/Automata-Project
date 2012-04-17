@@ -153,8 +153,8 @@ DFA* NFA::convertToDFA()
     //nodeNum = 0;
     //addToSet(StartState->getName(), DFANode, ' ');
     QList< QSet<NodeNFA*> > groups;
-    QMap<QSet<NodeNFA*>, NodeDFA*>* nodes
-            = new QMap<QSet<NodeNFA*>, NodeDFA*>();
+    QHash<QSet<NodeNFA*>, NodeDFA*>* nodes
+            = new QHash<QSet<NodeNFA*>, NodeDFA*>();
     QSet<NodeNFA*> set;
     set.insert(StartState);
     DFANode = new NodeDFA(0);
