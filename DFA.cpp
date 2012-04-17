@@ -101,14 +101,19 @@ DFA::DFA(QString *KeyWords,int numberWords)
     //DFA();
     StartState = new NodeDFA('0') ;
     AllStates.insert(StartState);
+    StartState->link(' ');
     Separate_wordsState = new NodeDFA ('<'); // | ==> Loop Dead State
     AllStates.insert(Separate_wordsState);
+    Separate_wordsState->link(' ',StartState);
+    foreach(char ch , Alphabetic)
+        Separate_wordsState->link(ch);
 
     if (numberWords > 0)
     {
         Finit_wordsState = new NodeDFA('>');
         Finit_wordsState->setFinite();
         FinitStates.insert(Finit_wordsState);
+        Finit_wordsState->link(' ',StartState);
         AllStates.insert(Finit_wordsState);
     }
 
