@@ -174,11 +174,12 @@ DFA* NFA::convertToDFA()
     int i=0, j=1, nodeNum=0;
     QString toSet;
     bool finite = false;
-    while (j > groups.length()-1 ){
+    while (i != groups.count()){
         foreach (char symbol, Alphabetic)
         //for (char symbol = 'a'; symbol < 'z'; ++symbol) // all symbols
         {
             nodeNum = 0;
+            //foreach (char symbol, Alphabetic)
             foreach (NodeNFA* node, groups.at(i)) // all nodes in group e.g. [A B C]=>each of A,B,C
             {
                 nodeNum++;
@@ -194,7 +195,7 @@ DFA* NFA::convertToDFA()
                             finite = true;
                     }
                 }
-                else if (nodeNum == groups.at(i).count())
+                else
                 {
                     Helper->insert(QPair<QString, char>(toSet, '?'), dfa->DeadState);
                     //DFANode->link(symbol, dfa->DeadState);
@@ -204,7 +205,7 @@ DFA* NFA::convertToDFA()
                     nodes->value(str)->link(symbol, dfa->DeadState);
                 }
                 set = list.toSet();
-                if (set.count()>0 && nodeNum == groups.at(i).count())
+                if (temp.count()>0 && nodeNum == groups.at(i).count())
                 {
                     if (!groups.contains(temp.toSet()))
                     {
@@ -239,7 +240,7 @@ DFA* NFA::convertToDFA()
             }
             temp.clear();
         }
-        j++;
+        //j++;
         i++;
     }
     return dfa;
