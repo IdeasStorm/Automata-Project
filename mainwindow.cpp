@@ -254,6 +254,7 @@ void MainWindow::on_pushButton_3_clicked()
     //ui->graphicsView->loadFromDFA(myt);
     //return;
 
+
     QHash<QString,int> reshash = myt->SimulateDFA(ui->plainTextEdit->toPlainText());
 
     QList<QString> res = reshash.keys();
