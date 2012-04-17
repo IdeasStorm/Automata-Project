@@ -3,15 +3,66 @@
 #include "nodedfa.h"
 
 DFA::DFA()
-{}
+{
+    int i = 0 ;
+    for (char ch = 'a';ch <= 'z';ch++)
+        Alphabetic.insert(i++,ch);
+    for (char ch = 'A';ch <= 'Z';ch++)
+        Alphabetic.insert(i++,ch);
+    Alphabetic.insert(i++,' ');
+
+    StartState = new NodeDFA('0') ;
+    AllStates.insert(StartState);
+    StartState->link(' ');
+    Separate_wordsState = new NodeDFA ('<'); // | ==> Loop Dead State
+    AllStates.insert(Separate_wordsState);
+    foreach (char ch ,Alphabetic)
+    {
+        if (ch !=' ')
+            Separate_wordsState->link(ch);
+        else
+            Separate_wordsState->link(' ',StartState);
+    }
+
+    Finit_wordsState = new NodeDFA('>');
+    Finit_wordsState->setFinite();
+    Finit_wordsState->link(' ',StartState);
+    FinitStates.insert(Finit_wordsState);
+    AllStates.insert(Finit_wordsState);
+
+    //StartState->link('?',Separate_words);
+    //StartState->link(' ');
+//    Separate_wordsState->link(' ',StartState);
+    //Separate_words->link('?'); // ? ==> a-->z
+    //
+
+
+}
 
 DFA::DFA(QString *KeyWords,int numberWords)
 {
     //DFA();
+    int i = 0 ;
+    for (char ch = 'a';ch <= 'z';ch++)
+        Alphabetic.insert(i++,ch);
+    for (char ch = 'A';ch <= 'Z';ch++)
+        Alphabetic.insert(i++,ch);
+    Alphabetic.insert(i++,' ');
+
     StartState = new NodeDFA('0') ;
     AllStates.insert(StartState);
+    StartState->link(' ');
     Separate_wordsState = new NodeDFA ('<'); // | ==> Loop Dead State
     AllStates.insert(Separate_wordsState);
+    foreach (char ch ,Alphabetic)
+    {
+        if (ch !=' ')
+            Separate_wordsState->link(ch);
+        else
+            Separate_wordsState->link(' ',StartState);
+    }
+
+
 
     if (numberWords > 0)
     {
@@ -26,12 +77,7 @@ DFA::DFA(QString *KeyWords,int numberWords)
 //    Separate_wordsState->link(' ',StartState);
     //Separate_words->link('?'); // ? ==> a-->z
     //
-    int i = 0 ;
-    for (char ch = 'a';ch <= 'z';ch++)
-        Alphabetic.insert(i++,ch);
-    for (char ch = 'A';ch <= 'Z';ch++)
-        Alphabetic.insert(i++,ch);
-    Alphabetic.insert(i++,' ');
+
 
     LoadDFA(KeyWords,numberWords);
 }
@@ -208,7 +254,8 @@ QHash<QString,int> DFA::SimulateDFA(QString input)
     NodeDFA *CurrentState = StartState ;
     for (int i=0;i<input.length();i++)
     {
-
+        if (i==4)
+            int myt = 0 ;
         str +=input[i];
         CurrentState = CurrentState->nextNode(input[i].cell());
         // to caculate the last word
