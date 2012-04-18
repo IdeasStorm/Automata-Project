@@ -199,24 +199,28 @@ DFA* NFA::convertToDFA()
                 {
                     if (!groups.contains(temp.toSet()))
                     {
-                        groups.append(temp.toSet());
-                        NodeDFA* Dfa = new NodeDFA(j);
+
                         if (finite)
                         {
-                            Dfa->setFinite();
-                            dfa->addToFinitState(Dfa);
+                            QString str = *setToString(groups.at(i));
+                            nodes->value(str)->link(symbol, dfa->getFinit_WordsState());
                         }
-                        Helper->insert(QPair<QString, char>(toSet, symbol), Dfa);
-                        if (nodes->count()-1 < 1)
-                            DFANode->link(symbol, Dfa);
                         else
                         {
-                            QString str = *setToString(groups.at(i));
-                            nodes->value(str)->link(symbol, Dfa);
+                            groups.append(temp.toSet());
+                            NodeDFA* Dfa = new NodeDFA(j);
+                            Helper->insert(QPair<QString, char>(toSet, symbol), Dfa);
+                            if (nodes->count()-1 < 1)
+                                DFANode->link(symbol, Dfa);
+                            else
+                            {
+                                QString str = *setToString(groups.at(i));
+                                nodes->value(str)->link(symbol, Dfa);
+                            }
+                            QString str = *setToString(groups.last());
+                            nodes->insert(str, Dfa);
+                            dfa->addToState(Dfa);
                         }
-                        QString str = *setToString(groups.last());
-                        nodes->insert(str, Dfa);
-                        dfa->addToState(Dfa);
                     }
                     /*
                     else if (symbol != ' ')

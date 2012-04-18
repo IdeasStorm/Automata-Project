@@ -11,9 +11,9 @@ DFA::DFA()
         Alphabetic.insert(i++,ch);
     Alphabetic.insert(i++,' ');
 
-    StartState = new NodeDFA('0') ;
-    AllStates.insert(StartState);
-    StartState->link(' ');
+    //StartState = new NodeDFA('0');
+    //AllStates.insert(StartState);
+    //StartState->link(' ');
     Separate_wordsState = new NodeDFA ('<'); // | ==> Loop Dead State
     AllStates.insert(Separate_wordsState);
     foreach (char ch ,Alphabetic)
@@ -126,6 +126,7 @@ void DFA::setStartState(NodeDFA *state)
 {
     StartState = state;
     Separate_wordsState->link(' ', StartState);
+    Finit_wordsState->setnextNodes(StartState->getnextNodes());
 }
 
 void DFA::setAlphabetic(QList<char> alphabetic)
