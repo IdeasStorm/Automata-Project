@@ -301,11 +301,16 @@ void DFA::simplify()
                             // adding new out-going node to the temp new_group
                             new_group.insert(node);
                         }
-                    }
-                    if (group.count() == new_group.count())
-                        new_group.clear();
-                    else
+                    }                    
+                    if (group.count() != new_group.count() && !no_diff) {
                         break;
+                    }
+                    else {
+                        new_group.clear();
+                        no_diff = true;
+                    }
+
+
                 }
                 // checking whether there is any out-going nodes
                 if (!no_diff) {
