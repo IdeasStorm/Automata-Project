@@ -162,11 +162,10 @@ DFA* NFA::convertToDFA()
             = new QHash<QString, NodeDFA*>();
     QSet<NodeNFA*> set;
     set.insert(StartState);
-    DFANode = new NodeDFA(StartState->getName());
-    nodes->insert(DFANode->getName(), DFANode);
+    DFANode = new NodeDFA(0);
+    nodes->insert(StartState->getName(), DFANode);
     dfa->setStartState(DFANode);
     dfa->addToState(DFANode);
-    //dfa->getSeparate_wordsState()->link(' ',dfa->getStartState());
     Helper->insert(QPair<QString, char>("q0", ' '), DFANode);
     groups.append(set);
     int i=0, j=1, nodeNum=0;
@@ -210,7 +209,7 @@ DFA* NFA::convertToDFA()
                         else
                         {
                             groups.append(temp.toSet());
-                            NodeDFA* Dfa = new NodeDFA(j);
+                            NodeDFA* Dfa = new NodeDFA(i+1);
                             Helper->insert(QPair<QString, char>(toSet, symbol), Dfa);
                             if (nodes->count()-1 < 1)
                                 DFANode->link(symbol, Dfa);

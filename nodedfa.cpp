@@ -12,7 +12,7 @@ NodeDFA::NodeDFA(int num)
 {
     nextNodes = new QMap<char, NodeDFA *>();
     this->name = "q";
-    this->name.append(char('0'-num));
+    this->name.append(char('0' + num));
     setNotFinite();
 
 }

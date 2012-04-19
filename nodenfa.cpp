@@ -12,7 +12,8 @@ NodeNFA::NodeNFA(QString name)
 NodeNFA::NodeNFA(int num)
 {
     nextNodes = new QMultiHash<char, NodeNFA*>();
-    this->name = num;
+    this->name = "q";
+    this->name.append(char('0' + num));
     setNotFinite();
 }
 NodeNFA::NodeNFA(const NodeNFA & copy_from_me)
