@@ -39,7 +39,8 @@ QSet<NodeDFA *> DFA::getAllStates()
 }
 QSet<NodeDFA*> DFA::getNonFinitStates()
 {
-    return AllStates.subtract(FinitStates);
+    QSet<NodeDFA*> nonFinit(AllStates);
+    return nonFinit.subtract(FinitStates);
 }
 
 //Set
@@ -239,43 +240,42 @@ void DFA::simplify()
     QList<QSet<NodeDFA*> > groups;
     groups.append(finit);
     groups.append(non_finit);
-    bool no_more_groups = false;
-    QList<QSet<NodeDFA*> >::iterator group_iter = groups.begin();
-    while (!no_more_groups){
-        QSet<NodeDFA*> group = *group_iter;
-        // just giving a default value
-        no_more_groups = true;
 
-        if (group.count() >1 ) {
-            foreach (char symbol, Alphabetic) { // all symbols
+    QList<QSet<NodeDFA*> >::iterator group_iter = groups.begin();
+    while (group_iter < groups.end()){
+        QSet<NodeDFA*> group = *group_iter;
+        // just giving a default value        
+
+        if (group.count() > 1 ) {
                 // initialising a group to add out-going nodes to it
                 QSet<NodeDFA*> new_group;
-
+                bool no_diff = true;
                 foreach (NodeDFA* node, group) { // all nodes in group e.g. [A B C]=>each of A,B,C
-                    // the next state delta(node,symbol)
-                    NodeDFA *next_node = node->nextNode(symbol);
 
-                    if (!group.contains(next_node)) { //same group => divide
-                        // dividing and making a new group
-                        no_more_groups = false;
-                        // adding new out-going node to the temp new_group
-                        new_group.insert(node);
+                    foreach (char symbol,Alphabetic) {
+                        // the next state delta(node,symbol)
+                        NodeDFA *next_node = node->nextNode(symbol);
+
+                        if (!group.contains(next_node)) { //same group => divide
+                            // dividing and making a new group
+                            no_diff = false;
+                            // adding new out-going node to the temp new_group
+                            new_group.insert(node);
+                            break; // one symbol is enough to take out the node
+                        }
                     }
                 }
                 // checking whether there is any out-going nodes
-                if (!no_more_groups) {
+                if (!no_diff) {
                     // extracting out-going nodes from the old group
-                    group.subtract(new_group);
+                    *group_iter = group.subtract(new_group);
                     // adding the new group
                     groups.append(new_group);
                     //break; // not reliable
                 }
-            }
         }
-        if (group_iter != groups.end())
+        if (group_iter < groups.end())
             group_iter++;
-        else
-            no_more_groups = true;
     }
     // searching for groups including more than one node
     foreach (QSet<NodeDFA*> group, groups) {
