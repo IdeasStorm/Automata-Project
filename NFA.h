@@ -17,7 +17,7 @@ public:
     // Get
     NodeNFA * getStartState();
     NodeNFA * getFinit_WordsState();
-    NodeNFA * getSeparate_wordsState();
+  //  NodeNFA * getSeparate_wordsState();
 
     QSet<NodeNFA*> getFinitStates();
     QSet<NodeNFA*> getAllStates();
@@ -31,13 +31,13 @@ public:
     //Set
     void setStartState(NodeNFA *state);
     void setFinit_WordsState(NodeNFA *state);
-    void setSeparate_wordsState(NodeNFA *state);
+ //   void setSeparate_wordsState(NodeNFA *state);
 
     void setAlphabetic(QList<char> alphabetic);
     void setSeparate_wordsAlphabetic(QList<char> alphabetic);
 
     //Convert from NFA to DFA
-    NodeDFA* convertToDFA();
+    DFA* convertToDFA();
 
     //closure
      QList<NodeNFA *>* getClosure(NodeNFA*);
@@ -47,7 +47,7 @@ public:
      QList<NodeNFA*> * func(QList<NodeNFA*>* a,QList<NodeNFA*>*b);
 private:
      NodeNFA *StartState ;
-     NodeNFA *Separate_wordsState;
+ //    NodeNFA *Separate_wordsState;
      NodeNFA *Finit_wordsState;
 
      QList<char> Alphabetic ;
@@ -57,11 +57,9 @@ private:
 
     QSet<QString>* usedState;
     QList<NodeNFA*> temp;
-    int nodeNum;
 
-    void addToSet(QString, NodeDFA*, char);
     void addToList(NodeNFA* node);
-    QList<NodeNFA*>* getValueNodes(NodeNFA* node, NodeDFA* dfa);
+    QString* setToString(QSet<NodeNFA*> set);
 };
 
 #endif // NFA_H
