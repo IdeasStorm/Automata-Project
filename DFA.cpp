@@ -174,7 +174,9 @@ void DFA::LoadDFA(QString *KeyWords,int numberWords)
 //            if (CurrentState->nextNode(s[j].cell()) == CurrentState->nextNode('?'))
             if (CurrentState->nextNode(s[j].cell()) == NULL )
             {
-                NextState = new NodeDFA(CounterState++);
+                QString num;
+                num.setNum(CounterState++);
+                NextState = new NodeDFA(num);
                 AllStates.insert(NextState);
   //              NextState->link('?',Separate_words); //  Link to Dead State
                 CurrentState->link(s[j].cell(),NextState);
