@@ -168,7 +168,7 @@ DFA* NFA::convertToDFA()
     dfa->addToState(DFANode);
     Helper->insert(QPair<QString, char>("q0", ' '), DFANode);
     groups.append(set);
-    int i=0, j=1, nodeNum=0;
+    int i=0, j=1, nodeNum=0, AllNodes = 1;
     QString toSet;
     bool finite = false;
     while (i != groups.count()){
@@ -209,7 +209,8 @@ DFA* NFA::convertToDFA()
                         else
                         {
                             groups.append(temp.toSet());
-                            NodeDFA* Dfa = new NodeDFA(i+1);
+                            NodeDFA* Dfa = new NodeDFA(AllNodes);
+                            AllNodes++;
                             Helper->insert(QPair<QString, char>(toSet, symbol), Dfa);
                             if (nodes->count()-1 < 1)
                                 DFANode->link(symbol, Dfa);
