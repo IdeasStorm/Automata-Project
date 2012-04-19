@@ -11,6 +11,7 @@ class NFA {
 public:
     NFA();
     NFA(QString *KeyWords,int numberWord);
+    ~NFA();
     //Build NFA
     void LoadNFA(QString *KeyWords,int numberWord);
 

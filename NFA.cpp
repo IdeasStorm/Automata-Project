@@ -329,3 +329,11 @@ QList<NodeNFA*> * NFA::func(QList<NodeNFA*>* a,QList<NodeNFA*>*b)
     }
     return list;
 }
+
+NFA::~NFA()
+{
+    foreach (NodeNFA* state , AllStates)
+    {
+        delete state ;
+    }
+}
