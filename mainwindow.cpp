@@ -274,4 +274,3 @@ int MainWindow::getWordCount()
 {
     return ui->listWidget->count();
 }
-

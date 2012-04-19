@@ -359,16 +359,6 @@ DFA::~DFA()
 {
     foreach (NodeDFA* state , AllStates)
     {
+        delete state ;
     }
 }
-
-/*
-QSet<NodeDFA *> DFA::getAllStates()
-{
-    return AllStates;
-}
-QSet<NodeDFA*> DFA::getNonFinitStates()
-{
-    return AllStates.subtract(FinitStates);
-}
-*/

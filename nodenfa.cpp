@@ -63,5 +63,5 @@ bool NodeNFA::isFiniteState()
 NodeNFA::~NodeNFA()
 {
     nextNodes->clear();
-    nextNodes->~QHash();
+    delete nextNodes;
 }
