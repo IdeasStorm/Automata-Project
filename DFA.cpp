@@ -49,7 +49,7 @@ DFA::DFA(QString *KeyWords,int numberWords)
         Alphabetic.insert(i++,ch);
     Alphabetic.insert(i++,' ');
 
-    StartState = new NodeDFA('0') ;
+    StartState = new NodeDFA("q0") ;
     AllStates.insert(StartState);
     StartState->link(' ');
     Separate_wordsState = new NodeDFA ('<'); // | ==> Loop Dead State
