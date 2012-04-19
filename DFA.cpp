@@ -52,7 +52,7 @@ DFA::DFA(QString *KeyWords,int numberWords)
     StartState = new NodeDFA("q0") ;
     AllStates.insert(StartState);
     StartState->link(' ');
-    Separate_wordsState = new NodeDFA ('<'); // | ==> Loop Dead State
+    Separate_wordsState = new NodeDFA ("<"); // | ==> Loop Dead State
     AllStates.insert(Separate_wordsState);
     foreach (char ch ,Alphabetic)
     {
@@ -66,7 +66,7 @@ DFA::DFA(QString *KeyWords,int numberWords)
 
     if (numberWords > 0)
     {
-        Finit_wordsState = new NodeDFA('>');
+        Finit_wordsState = new NodeDFA(">");
         Finit_wordsState->setFinite();
         FinitStates.insert(Finit_wordsState);
         AllStates.insert(Finit_wordsState);
@@ -279,34 +279,44 @@ void DFA::simplify()
     QList<QSet<NodeDFA*> >::iterator group_iter = groups.begin();
     while (group_iter < groups.end()){
         QSet<NodeDFA*> group = *group_iter;
-        // just giving a default value        
-
+        // just giving a default value
+        bool no_diff = true;
         if (group.count() > 1 ) {
                 // initialising a group to add out-going nodes to it
                 QSet<NodeDFA*> new_group;
-                bool no_diff = true;
-                foreach (NodeDFA* node, group) { // all nodes in group e.g. [A B C]=>each of A,B,C
-
-                    foreach (char symbol,Alphabetic) {
+                foreach (char symbol,Alphabetic) {
+                    no_diff = true;
+                    foreach (NodeDFA* node, group) { // all nodes in group e.g. [A B C]=>each of A,B,C
                         // the next state delta(node,symbol)
                         NodeDFA *next_node = node->nextNode(symbol);
-
+#if DEBUG
+                        if (node->getName() == "1" && (symbol == ' '  || symbol == 'a' || symbol == 'b'))
+                            sleep(1);
+                        if (node->getName() == "2" && (symbol == ' '  || symbol == 'a'))
+                            sleep(1);
+#endif
                         if (!group.contains(next_node)) { //same group => divide
                             // dividing and making a new group
                             no_diff = false;
                             // adding new out-going node to the temp new_group
                             new_group.insert(node);
-                            break; // one symbol is enough to take out the node
                         }
                     }
+                    if (group.count() == new_group.count())
+                        new_group.clear();
+                    else
+                        break;
                 }
                 // checking whether there is any out-going nodes
                 if (!no_diff) {
                     // extracting out-going nodes from the old group
-                    *group_iter = group.subtract(new_group);
-                    // adding the new group
-                    groups.append(new_group);
-                    //break; // not reliable
+                    if (!new_group.contains(group)) {
+                        *group_iter = group.subtract(new_group);
+                        // adding the new group
+                        groups.append(new_group);
+                        group_iter = groups.begin();
+                        no_diff = true;
+                    }
                 }
         }
         if (group_iter < groups.end())
