@@ -8,6 +8,7 @@ class NodeNFA
 public:
     NodeNFA(QString);
     NodeNFA(int);
+    ~NodeNFA();
     NodeNFA(const NodeNFA&);
     void link(char, NodeNFA*);
     void link(char);

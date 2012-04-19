@@ -58,3 +58,9 @@ QMap<char, NodeDFA*>* NodeDFA::getnextNodes()
 {
     return nextNodes;
 }
+
+NodeDFA::~NodeDFA()
+{
+    nextNodes->clear();
+    nextNodes->~QMap();
+}

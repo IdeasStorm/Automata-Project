@@ -15,7 +15,8 @@ public:
     void LoadNFA(QString *KeyWords,int numberWord);
 
     // Get
-    NodeNFA * getStartState();
+    NodeNFA *
+    getStartState();
     NodeNFA * getFinit_WordsState();
   //  NodeNFA * getSeparate_wordsState();
 
@@ -23,7 +24,7 @@ public:
     QSet<NodeNFA*> getAllStates();
     QSet<NodeNFA*> getNonFinitStates();
 
-    QList<char> getAlphabetic();
+    static QList<char> getAlphabetic();
     QList<char> getSeparate_wordsAlphabetic();
     void addToFinitState(NodeNFA* state);
 
@@ -47,10 +48,10 @@ public:
      QList<NodeNFA*> * func(QList<NodeNFA*>* a,QList<NodeNFA*>*b);
 private:
      NodeNFA *StartState ;
- //    NodeNFA *Separate_wordsState;
+     //NodeNFA *Separate_wordsState;
      NodeNFA *Finit_wordsState;
 
-     QList<char> Alphabetic ;
+     static QList<char> Alphabetic ;
      QList<char> Separate_wordsAlphabetic ;
      QSet<NodeNFA*> FinitStates;
      QSet<NodeNFA*> AllStates;

@@ -1,4 +1,5 @@
 #include "nodenfa.h"
+#include "NFA.h"
 
 
 NodeNFA::NodeNFA(QString name)
@@ -58,3 +59,9 @@ void NodeNFA::setNotFinite()
 
 bool NodeNFA::isFiniteState()
 { return finite; }
+
+NodeNFA::~NodeNFA()
+{
+    nextNodes->clear();
+    nextNodes->~QHash();
+}

@@ -9,6 +9,7 @@ class NodeDFA
 public:
     NodeDFA(QString);
     NodeDFA(int);
+    ~NodeDFA();
     void link(char, NodeDFA*);
     void link(char);
     NodeDFA* nextNode(char);

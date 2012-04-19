@@ -3,6 +3,8 @@
 #include <stack>
 #include"QStack"
 
+QList<char> NFA::Alphabetic;
+
 NFA::NFA(QString *KeyWords,int numberWords)
 {
     //NFA();
