@@ -15,24 +15,20 @@ SOURCES += main.cpp\
     DFA.cpp \
     NFA.cpp \
     nodenfa.cpp \
-    nodedfa.cpp
+    nodedfa.cpp \
+    test.cpp \
+    node.cpp \
+    graphwidget.cpp \
+    edge.cpp
 
 HEADERS  += mainwindow.h \
     DFA.h \
     NFA.h \
     nodenfa.h \
-    nodedfa.h
+    nodedfa.h \
+    test.h \
+    node.h \
+    graphwidget.h \
+    edge.h
 
 FORMS    += mainwindow.ui
-
-
-
-
-
-
-
-
-
-
-
-
