@@ -102,6 +102,7 @@ void MainWindow::fillFromDFANode(NodeDFA* currentstate , DFA* dfa,GraphWidget *g
 
 void MainWindow::on_pushButton_3_clicked()
 {
+    /*
     NFA *mytt = new NFA(getAllKeywords(),getWordCount());
     DFA *myt = mytt->convertToDFA();
     ui->graphicsView->currentScene->clear();
@@ -114,7 +115,9 @@ void MainWindow::on_pushButton_3_clicked()
     //ui->graphicsView->loadFromDFA(myt);
     //return;
 
-
+*/
+    DFA * myt = new DFA(getAllKeywords(),getWordCount());
+    myt->simplify();
     QHash<QString,int> reshash = myt->SimulateDFA(ui->plainTextEdit->toPlainText());
 
     QList<QString> res = reshash.keys();
@@ -127,7 +130,7 @@ void MainWindow::on_pushButton_3_clicked()
         QString* str = new QString(key + number);
         ui->OutPut->addItem(new QListWidgetItem(*str));
     }
-    ViewGraphOfDFA(myt);
+    //ViewGraphOfDFA(myt);
 }
 
 int MainWindow::getWordCount()
