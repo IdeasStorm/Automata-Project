@@ -5,19 +5,42 @@
 
 QList<char> NFA::Alphabetic;
 
-NFA::NFA(QString *KeyWords,int numberWords)
+NFA::NFA()
 {
-    //NFA();
-    StartState = new NodeNFA('0') ;
+
+    StartState = new NodeNFA("q0") ;
     AllStates.insert(StartState);
     StartState->link(' ',StartState);
-    //Separate_wordsState = new NodeNFA ('<'); // | ==> Loop Dead State
-    //Separate_wordsState->link(' ',StartState);
-    //AllStates.insert(Separate_wordsState);
+
+    Finit_wordsState = new NodeNFA(">");
+    Finit_wordsState->setFinite();
+    FinitStates.insert(Finit_wordsState);
+    AllStates.insert(Finit_wordsState);
+
+    //
+    int i = 0 ;
+    for (char ch = 'a';ch<='z';ch++)
+    {
+        Alphabetic.insert(i++,ch);
+    }
+    for (char ch = 'A';ch<='Z';ch++)
+    {
+        Alphabetic.insert(i++,ch);
+    }
+    Alphabetic.insert(i++,' ');
+
+}
+
+NFA::NFA(QString *KeyWords,int numberWords)
+{
+
+    StartState = new NodeNFA("q0") ;
+    AllStates.insert(StartState);
+    StartState->link(' ',StartState);
 
     if (numberWords > 0)
     {
-        Finit_wordsState = new NodeNFA('>');
+        Finit_wordsState = new NodeNFA(">");
         Finit_wordsState->setFinite();
         FinitStates.insert(Finit_wordsState);
         AllStates.insert(Finit_wordsState);
@@ -44,9 +67,6 @@ NodeNFA * NFA::getStartState()
 NodeNFA * NFA::getFinit_WordsState()
 { return Finit_wordsState; }
 
-/*NodeNFA * NFA::getSeparate_wordsState()
-{ return Separate_wordsState; }
-*/
 QList<char> NFA::getAlphabetic()
 { return Alphabetic; }
 
@@ -72,9 +92,6 @@ void NFA::setAlphabetic(QList<char> alphabetic)
 void NFA::setFinit_WordsState(NodeNFA *state)
 { Finit_wordsState = state; }
 
-/*void NFA::setSeparate_wordsState(NodeNFA *state)
-{ Separate_wordsState = state; }
-*/
 void NFA::addToFinitState(NodeNFA* state)
 { FinitStates.insert(state); }
 
@@ -83,21 +100,6 @@ void NFA::addToState(NodeNFA* state)
 
 void NFA::setSeparate_wordsAlphabetic(QList<char> alphabetic)
 { Separate_wordsAlphabetic = alphabetic; }
-
-/*
-NFA::NFA()
-{
-    StartState = new NodeNFA('0') ;
-    StartState->link(' ');
-    // fill alphabetic list
-    int i = 0 ;
-    for (char ch = 'a';ch<'Z';ch++)
-    {
-        Alphabetic.insert(i++,ch);
-    }
-    Alphabetic.insert(i++,' ');
-}
-*/
 
 void NFA::LoadNFA(QString *KeyWords,int numberWords)
 {
@@ -111,6 +113,10 @@ void NFA::LoadNFA(QString *KeyWords,int numberWords)
         //For link each NodeNFA with another NodeNFA Based input
         for (int j=0;j<s.length();j++)
         {
+            QString num;
+            num.setNum(CounterState++);
+            NextState = new NodeNFA(num);
+
             NextState = new NodeNFA(CounterState++);
             AllStates.insert(NextState);
             CurrentState->link(s[j].cell(),NextState);

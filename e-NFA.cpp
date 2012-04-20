@@ -52,6 +52,7 @@ e_NFA::e_NFA(QString *KeyWords,int numberWords)
     }
     Alphabetic.insert(i++,' ');
 
+    LoadE_NFA(KeyWords,numberWords);
 }
 
 //GET
@@ -104,10 +105,16 @@ void e_NFA::LoadE_NFA(QString *KeyWords,int numberWords)
     {
         QString s = KeyWords[i];
         CurrentState = StartState;
+        NextState = new NodeNFA("Epsilon");
+        AllStates.insert(NextState);
+        CurrentState->link('\0',NextState);
+        CurrentState = NextState ;
         //For link each NodeNFA with another NodeNFA Based input
         for (int j=0;j<s.length();j++)
         {
-            NextState = new NodeNFA(CounterState++);
+            QString num;
+            num.setNum(CounterState++);
+            NextState = new NodeNFA(num);
             AllStates.insert(NextState);
             CurrentState->link(s[j].cell(),NextState);
             if (j!=s.length()-1)
@@ -119,18 +126,7 @@ void e_NFA::LoadE_NFA(QString *KeyWords,int numberWords)
 
     }//For number Words
 
-    //for copy of Start State map into Finite States
-    foreach (NodeNFA *state , FinitStates)
-    {
-        foreach (char ch ,Alphabetic)
-        {
-            QList<NodeNFA*> nodes = StartState->getNextNode(ch);
-            foreach(NodeNFA* temp , nodes)
-            {
-                state->link(ch,temp);
-            }
-        }
-    }
+    Finit_wordsState->link('\0',StartState);
 }
 
 
