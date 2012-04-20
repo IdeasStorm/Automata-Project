@@ -3,7 +3,7 @@
 
 
 #include "NFA.h"
-#include "nodeNFA.h"
+#include "nodenfa.h"
 #include <QString>
 #include <QSet>
 #include <stack>
@@ -36,6 +36,8 @@ public:
 
     void setAlphabetic(QList<char> alphabetic);
     void setSeparate_wordsAlphabetic(QList<char> alphabetic);
+
+    QList<QString> getTokens(QString str);
 
     //Convert from e_NFA to NFA
     NFA* convertToNFA();
