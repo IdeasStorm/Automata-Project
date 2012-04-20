@@ -289,12 +289,6 @@ void DFA::simplify()
                     foreach (NodeDFA* node, group) { // all nodes in group e.g. [A B C]=>each of A,B,C
                         // the next state delta(node,symbol)
                         NodeDFA *next_node = node->nextNode(symbol);
-#if DEBUG
-                        if (node->getName() == "1" && (symbol == ' '  || symbol == 'a' || symbol == 'b'))
-                            sleep(1);
-                        if (node->getName() == "2" && (symbol == ' '  || symbol == 'a'))
-                            sleep(1);
-#endif
                         if (!group.contains(next_node)) { //same group => divide
                             // dividing and making a new group
                             no_diff = false;
