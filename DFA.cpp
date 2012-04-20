@@ -14,7 +14,7 @@ DFA::DFA()
     //StartState = new NodeDFA('0');
     //AllStates.insert(StartState);
     //StartState->link(' ');
-    Separate_wordsState = new NodeDFA ('<'); // | ==> Loop Dead State
+    Separate_wordsState = new NodeDFA ("<"); // | ==> Loop Dead State
     AllStates.insert(Separate_wordsState);
     foreach (char ch ,Alphabetic)
     {
@@ -24,7 +24,7 @@ DFA::DFA()
             Separate_wordsState->link(' ',StartState);
     }
 
-    Finit_wordsState = new NodeDFA('>');
+    Finit_wordsState = new NodeDFA(">");
     Finit_wordsState->setFinite();
     Finit_wordsState->link(' ',StartState);
     FinitStates.insert(Finit_wordsState);
@@ -49,10 +49,10 @@ DFA::DFA(QString *KeyWords,int numberWords)
         Alphabetic.insert(i++,ch);
     Alphabetic.insert(i++,' ');
 
-    StartState = new NodeDFA('0') ;
+    StartState = new NodeDFA("q0") ;
     AllStates.insert(StartState);
     StartState->link(' ');
-    Separate_wordsState = new NodeDFA ('<'); // | ==> Loop Dead State
+    Separate_wordsState = new NodeDFA ("<"); // | ==> Loop Dead State
     AllStates.insert(Separate_wordsState);
     foreach (char ch ,Alphabetic)
     {
@@ -66,7 +66,7 @@ DFA::DFA(QString *KeyWords,int numberWords)
 
     if (numberWords > 0)
     {
-        Finit_wordsState = new NodeDFA('>');
+        Finit_wordsState = new NodeDFA(">");
         Finit_wordsState->setFinite();
         FinitStates.insert(Finit_wordsState);
         AllStates.insert(Finit_wordsState);
@@ -160,26 +160,6 @@ void DFA::setSeparate_wordsAlphabetic(QList<char> alphabetic)
 }
 
 
-//DFA::DFA()
-//{
-//}
-    /*
-    StartState = new NodeDFA('0') ;
-    Separate_wordsState = new NodeDFA ('|'); // | ==> Loop Dead State
-    StartState->link('?',Separate_wordsState);
-    StartState->link(' ');
-    Separate_wordsState->link(' ',StartState);
-    Separate_wordsState->link('?'); // ? ==> a-->z
-//
-    int i = 0 ;
-    for (char ch = 'a';ch<'Z';ch++)
-    {
-        Alphabetic.insert(i++,ch);
-    }
-    Alphabetic.insert(i++,' ');
-}
-*/
-
 void DFA::LoadDFA(QString *KeyWords,int numberWords)
 {
     NodeDFA *CurrentState = StartState,*NextState = StartState;
@@ -195,7 +175,10 @@ void DFA::LoadDFA(QString *KeyWords,int numberWords)
 //            if (CurrentState->nextNode(s[j].cell()) == CurrentState->nextNode('?'))
             if (CurrentState->nextNode(s[j].cell()) == NULL )
             {
-                NextState = new NodeDFA(CounterState++);
+                QString num;
+                num.setNum(CounterState++);
+                NextState = new NodeDFA(num);
+
                 AllStates.insert(NextState);
   //              NextState->link('?',Separate_words); //  Link to Dead State
                 CurrentState->link(s[j].cell(),NextState);

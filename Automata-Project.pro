@@ -19,7 +19,8 @@ SOURCES += main.cpp\
     test.cpp \
     node.cpp \
     graphwidget.cpp \
-    edge.cpp
+    edge.cpp \
+    e-NFA.cpp
 
 HEADERS  += mainwindow.h \
     DFA.h \
@@ -29,6 +30,7 @@ HEADERS  += mainwindow.h \
     test.h \
     node.h \
     graphwidget.h \
-    edge.h
+    edge.h \
+    e-NFA.h
 
 FORMS    += mainwindow.ui
