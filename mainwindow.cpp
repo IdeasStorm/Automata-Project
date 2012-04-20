@@ -107,17 +107,17 @@ void MainWindow::on_pushButton_3_clicked()
     //DFA *myt = new DFA(getAllKeywords(),getWordCount());
 
     //Build E-NFA
-    e_NFA *myt = new e_NFA(getAllKeywords(),getWordCount());
+    //e_NFA *myt = new e_NFA(getAllKeywords(),getWordCount());
 
     //Build NFA
-    //NFA *myt = new NFA(getAllKeywords(),getWordCount());
-    //DFA *myt = mytt->convertToDFA();
+    NFA *mytt = new NFA(getAllKeywords(),getWordCount());
+    DFA *myt = mytt->convertToDFA();
 
     ui->graphicsView->currentScene->clear();
 
     ui->OutPut->clear();
 
-/*
+
     QHash<QString,int> reshash = myt->SimulateDFA(ui->plainTextEdit->toPlainText());
 
     QList<QString> res = reshash.keys();
@@ -131,7 +131,7 @@ void MainWindow::on_pushButton_3_clicked()
         ui->OutPut->addItem(new QListWidgetItem(*str));
     }
     ViewGraphOfDFA(myt);
-    */
+
 }
 
 int MainWindow::getWordCount()
