@@ -12,6 +12,7 @@ class e_NFA {
 public:
     e_NFA();
     ~e_NFA();
+    e_NFA(QString*, int, QString);
     e_NFA(QString *KeyWords,int numberWord);
     //Build e_NFA
     void LoadE_NFA(QString *KeyWords,int numberWord);
@@ -29,6 +30,7 @@ public:
 
     void addToFinitState(NodeNFA* state);
     void addToState(NodeNFA* state);
+    void addToState(QSet<NodeNFA*> states);
     //Set
     void setStartState(NodeNFA *state);
     void setFinit_WordsState(NodeNFA *state);
