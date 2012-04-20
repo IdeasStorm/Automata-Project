@@ -37,6 +37,7 @@ public:
     void setAlphabetic(QList<char> alphabetic);
     void setSeparate_wordsAlphabetic(QList<char> alphabetic);
 
+    // Parses a string and returns a list of tokens
     QList<QString> getTokens(QString str);
 
     //Convert from e_NFA to NFA
