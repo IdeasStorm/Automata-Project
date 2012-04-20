@@ -3,7 +3,7 @@
 
 
 #include "NFA.h"
-#include "nodeNFA.h"
+#include "nodenfa.h"
 #include <QString>
 #include <QSet>
 #include <stack>

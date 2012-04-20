@@ -62,6 +62,7 @@ private:
 
     void addToList(NodeNFA* node);
     QString* setToString(QSet<NodeNFA*> set);
+    QString* listToString(QList<NodeNFA*> list);
 };
 
 #endif // NFA_H
