@@ -176,4 +176,20 @@ e_NFA::~e_NFA()
     }
 }
 
+QList<QString> e_NFA::getTokens(QString str)
+{
+    QList<QString> result;
+    QString buffer;
+    foreach (QChar c, str) {
+        if (c == '*') {
+            result.append(buffer);
+            result.append("*");
+            buffer.clear();
+        } else {
+            buffer.append(c);
+        }    }
+    if (buffer.isEmpty())
+        result.append(buffer);
+}
+
 
