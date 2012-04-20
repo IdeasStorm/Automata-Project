@@ -46,23 +46,25 @@ e_NFA::e_NFA(QString* KeyWords, int numberWords, QString expression)
         else
         {
             //create NFA
-            NFA* nfa = new NFA(KeyWords, numberWords);
+            e_NFA* nfa = new e_NFA(KeyWords, numberWords);
             node->link('\0', nfa->getStartState());
             node = nfa->getFinit_WordsState();
+            node->link('\0', nfa->StartState);
             node->setNotFinite();
             nfa->getFinitStates().remove(node);
             nodeNum += nfa->getAllStates().count();
             addToState(nfa->getFinitStates());
         }
     }
+    /*
     if(tokens.last() == "*")
     {
         NodeNFA* NFAnode = new NodeNFA(nodeNum);
         nodeNum++;
         node->link('\0', NFAnode);
         node = NFAnode;
-    }
-    node->link('\0', StartState);
+    }*/
+    StartState->link('\0', node);
     node->setFinite();
     addToFinitState(node);
     Finit_wordsState = node;
