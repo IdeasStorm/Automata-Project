@@ -33,46 +33,49 @@ e_NFA::e_NFA(QString* KeyWords, int numberWords, QString expression)
     QList<QString> tokens = getTokens(expression);
     StartState = new NodeNFA("q0");
     NodeNFA* node = StartState;
-    int nodeNum = 1;
+    int nodesNum = 1;
     foreach (QString token, tokens)
     {
         if(token == "*")
         {
-            NodeNFA* NFAnode = new NodeNFA(nodeNum);
-            nodeNum++;
-            node->link('\0', NFAnode);
-            node = NFAnode;
+            node->link('|');
         }
         else
         {
             //create NFA
             e_NFA* nfa = new e_NFA(KeyWords, numberWords);
+            //connect node with start state of e_nfa by eps
             node->link('\0', nfa->getStartState());
+            //node is the last state
             node = nfa->getFinit_WordsState();
-            node->link('\0', nfa->StartState);
+            //node is not finite state now
             node->setNotFinite();
+            //remove it from FiniteState set
             nfa->getFinitStates().remove(node);
-            nodeNum += nfa->getAllStates().count();
+            //add node to nodesNum
+            nodesNum += nfa->getAllStates().count();
+            //add nodes to AllState set
             addToState(nfa->getFinitStates());
+            //create new node
+            NodeNFA* NFAnode = new NodeNFA(nodesNum);
+            nodeNum++;
+            //link the last node of nfa with new node by eps
+            node->link('\0', NFAnode);
+            //make it the node
+            node = NFAnode;
         }
     }
-    /*
-    if(tokens.last() == "*")
-    {
-        NodeNFA* NFAnode = new NodeNFA(nodeNum);
-        nodeNum++;
-        node->link('\0', NFAnode);
-        node = NFAnode;
-    }*/
-    StartState->link('\0', node);
+    //make the node finite
     node->setFinite();
+    //add it to finite set
     addToFinitState(node);
+    //make it the finit words State
     Finit_wordsState = node;
 }
 
 e_NFA::e_NFA(QString *KeyWords,int numberWords)
 {
-    StartState = new NodeNFA("q0") ;
+    StartState = new NodeNFA("q0") UPDATED POSTS;
     AllStates.insert(StartState);
     StartState->link(' ',StartState);
     if (numberWords > 0)
