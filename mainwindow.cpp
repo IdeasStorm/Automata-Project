@@ -35,14 +35,13 @@ void MainWindow::on_pushButton_2_clicked()
     delete current_item;
 }
 
-QString *MainWindow::getAllKeywords()
+QList<QString> MainWindow::getAllKeywords()
 {
     QList<QListWidgetItem*> all_items = ui->listWidget->findItems("*", Qt::MatchWrap | Qt::MatchWildcard);
-    int n = all_items.count();
-    QString *all_words = new QString[n];
+    QList<QString> all_words ;
     int i = 0;
     foreach (QListWidgetItem* item, all_items) {
-        all_words[i++] = item->text();
+        all_words.insert(i++,item->text());
     }
     return all_words;
 }
@@ -104,20 +103,20 @@ void MainWindow::fillFromDFANode(NodeDFA* currentstate , DFA* dfa,GraphWidget *g
 void MainWindow::on_pushButton_3_clicked()
 {
     //Build DFA
-    //DFA *myt = new DFA(getAllKeywords(),getWordCount());
+    //DFA *myt = new DFA(getAllKeywords());
 
     //Build E-NFA
-    //e_NFA *myt = new e_NFA(getAllKeywords(),getWordCount());
+    e_NFA *myt = new e_NFA(getAllKeywords());
 
     //Build NFA
-    NFA *mytt = new NFA(getAllKeywords(),getWordCount());
-    DFA *myt = mytt->convertToDFA();
+    //NFA *mytt = new NFA(getAllKeywords());
+    //DFA *myt = mytt->convertToDFA();
 
     ui->graphicsView->currentScene->clear();
 
     ui->OutPut->clear();
 
-
+/*
     QHash<QString,int> reshash = myt->SimulateDFA(ui->plainTextEdit->toPlainText());
 
     QList<QString> res = reshash.keys();
@@ -131,7 +130,7 @@ void MainWindow::on_pushButton_3_clicked()
         ui->OutPut->addItem(new QListWidgetItem(*str));
     }
     ViewGraphOfDFA(myt);
-
+*/
 }
 
 int MainWindow::getWordCount()

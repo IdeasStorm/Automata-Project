@@ -12,9 +12,9 @@ class e_NFA {
 public:
     e_NFA();
     ~e_NFA();
-    e_NFA(QString *KeyWords,int numberWord);
+    e_NFA(QList<QString>KeyWords);
     //Build e_NFA
-    void LoadE_NFA(QString *KeyWords,int numberWord);
+    void LoadE_NFA(QList<QString>KeyWords);
     // Get
     NodeNFA* getStartState();
     NodeNFA* getFinit_WordsState();

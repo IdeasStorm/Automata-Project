@@ -14,7 +14,7 @@ class MainWindow : public QMainWindow
 public:
     explicit MainWindow(QWidget *parent = 0);
     ~MainWindow();
-    QString *getAllKeywords();
+    QList<QString>getAllKeywords();
     int getWordCount();
 void buildDFA(QString *KeyWords,int numberWords);
 void ViewGraphOfDFA(DFA* dfa);

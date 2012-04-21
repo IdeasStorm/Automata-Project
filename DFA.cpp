@@ -29,19 +29,11 @@ DFA::DFA()
     Finit_wordsState->link(' ',StartState);
     FinitStates.insert(Finit_wordsState);
     AllStates.insert(Finit_wordsState);
-
-    //StartState->link('?',Separate_words);
-    //StartState->link(' ');
-//    Separate_wordsState->link(' ',StartState);
-    //Separate_words->link('?'); // ? ==> a-->z
-    //
-
-
 }
 
-DFA::DFA(QString *KeyWords,int numberWords)
+DFA::DFA(QList<QString>KeyWords)
 {
-    //DFA();
+
     int i = 0 ;
     for (char ch = 'a';ch <= 'z';ch++)
         Alphabetic.insert(i++,ch);
@@ -64,7 +56,7 @@ DFA::DFA(QString *KeyWords,int numberWords)
 
 
 
-    if (numberWords > 0)
+    if (KeyWords.length() > 0)
     {
         Finit_wordsState = new NodeDFA(">");
         Finit_wordsState->setFinite();
@@ -72,14 +64,9 @@ DFA::DFA(QString *KeyWords,int numberWords)
         AllStates.insert(Finit_wordsState);
     }
 
-    //StartState->link('?',Separate_words);
-    //StartState->link(' ');
-//    Separate_wordsState->link(' ',StartState);
-    //Separate_words->link('?'); // ? ==> a-->z
-    //
 
 
-    LoadDFA(KeyWords,numberWords);
+    LoadDFA(KeyWords);
 }
 
 //GET
@@ -160,14 +147,14 @@ void DFA::setSeparate_wordsAlphabetic(QList<char> alphabetic)
 }
 
 
-void DFA::LoadDFA(QString *KeyWords,int numberWords)
+void DFA::LoadDFA(QList<QString>KeyWords)
 {
     NodeDFA *CurrentState = StartState,*NextState = StartState;
     int CounterState = 1 ; //for generate and save name of states(NodeDFA) q0,1,2,3....
 
-    for (int i=0;i<numberWords;i++)
+    //for (int i=0;i<numberWords;i++)
+    foreach (QString s , KeyWords)
     {
-        QString s = KeyWords[i];
         CurrentState = StartState;
         //For link each NodeNFA with another NodeNFA Based input
         for (int j=0;j<s.length();j++)

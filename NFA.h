@@ -11,9 +11,9 @@ class NFA {
 public:
     NFA();
     ~NFA();
-    NFA(QString *KeyWords,int numberWord);
+    NFA(QList<QString>KeyWords);
     //Build NFA
-    void LoadNFA(QString *KeyWords,int numberWord);
+    void LoadNFA(QList<QString>KeyWords);
 
     // Get
     NodeNFA* getStartState();
