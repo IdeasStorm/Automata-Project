@@ -114,33 +114,33 @@ void MainWindow::fillFromDFANode(NodeDFA* currentstate , DFA* dfa,GraphWidget *g
 void MainWindow::on_pushButton_3_clicked()
 {
     //Build DFA
-    DFA *myt = new DFA(getAllKeywords());
+        DFA *myt = new DFA(getAllKeywords());
 
-    //Build E-NFA
-    //e_NFA *myt = new e_NFA(getAllKeywords());
+        //Build E-NFA
+        //e_NFA *myt = new e_NFA(getAllKeywords());
 
-    //Build NFA
-    //NFA *mytt = new NFA(getAllKeywords());
-    //DFA *myt = mytt->convertToDFA();
+        //Build NFA
+        //NFA *mytt = new NFA(getAllKeywords());
+        //DFA *myt = mytt->convertToDFA();
 
-    ui->graphicsView->currentScene->clear();
+        ui->graphicsView->currentScene->clear();
 
-    ui->OutPut->clear();
+        ui->OutPut->clear();
 
 
-    QHash<QString,int> reshash = myt->SimulateDFA(ui->plainTextEdit->toPlainText());
+        QHash<QString,int> reshash = myt->SimulateDFA(ui->plainTextEdit->toPlainText());
 
-    QList<QString> res = reshash.keys();
+        QList<QString> res = reshash.keys();
 
-    foreach(QString key,res)
-    {
-        int num = reshash.value(key);
-        QString number;
-        number.setNum(num);
-        QString* str = new QString(key + number);
-        ui->OutPut->addItem(new QListWidgetItem(*str));
-    }
-    ViewGraphOfDFA(myt);
+        foreach(QString key,res)
+        {
+            int num = reshash.value(key);
+            QString number;
+            number.setNum(num);
+            QString* str = new QString(key + number);
+            ui->OutPut->addItem(new QListWidgetItem(*str));
+        }
+        ViewGraphOfDFA(myt);
 
 }
 

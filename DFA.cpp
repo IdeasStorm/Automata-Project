@@ -105,7 +105,8 @@ QSet<NodeDFA *> DFA::getAllStates()
 }
 QSet<NodeDFA*> DFA::getNonFinitStates()
 {
-    return AllStates.subtract(FinitStates);
+    QSet<NodeDFA*> nonFinit(AllStates);
+    return nonFinit.subtract(FinitStates);
 }
 
 //Set
@@ -263,54 +264,74 @@ void DFA::simplify()
     QList<QSet<NodeDFA*> > groups;
     groups.append(finit);
     groups.append(non_finit);
-    bool no_more_groups = false;
+
     QList<QSet<NodeDFA*> >::iterator group_iter = groups.begin();
-    while (!no_more_groups){
+    while (group_iter < groups.end()){
         QSet<NodeDFA*> group = *group_iter;
         // just giving a default value
-        no_more_groups = true;
-        if (group.count() <=1 ) continue;
-        else {
-            foreach (char symbol, Alphabetic) { // all symbols
+        bool no_diff = true;
+        if (group.count() > 1 ) {
                 // initialising a group to add out-going nodes to it
                 QSet<NodeDFA*> new_group;
-
-                foreach (NodeDFA* node, group) { // all nodes in group e.g. [A B C]=>each of A,B,C
-                    // the next state delta(node,symbol)
-                    NodeDFA *next_node = node->nextNode(symbol);
-
-                    if (!group.contains(next_node)) { //same group => divide
-                        // dividing and making a new group
-                        no_more_groups = false;
-                        // adding new out-going node to the temp new_group
-                        new_group.insert(node);
+                foreach (char symbol,Alphabetic) {
+                    no_diff = true;
+                    foreach (NodeDFA* node, group) { // all nodes in group e.g. [A B C]=>each of A,B,C
+                        // the next state delta(node,symbol)
+                        NodeDFA *next_node = node->nextNode(symbol);
+                        if (!group.contains(next_node)) { //same group => divide
+                            // dividing and making a new group
+                            no_diff = false;
+                            // adding new out-going node to the temp new_group
+                            new_group.insert(node);
+                        }
+                    }                    
+                    if (group.count() != new_group.count() && !no_diff) {
+                        break;
                     }
+                    else {
+                        new_group.clear();
+                        no_diff = true;
+                    }
+
+
                 }
                 // checking whether there is any out-going nodes
-                if (!no_more_groups) {
+                if (!no_diff) {
                     // extracting out-going nodes from the old group
-                    group.subtract(new_group);
-                    // adding the new group
-                    groups.append(new_group);
-                    break; // not reliable
+                    if (!new_group.contains(group)) {
+                        *group_iter = group.subtract(new_group);
+                        // adding the new group
+                        groups.append(new_group);
+                        group_iter = groups.begin();
+                        no_diff = true;
+                    }
                 }
-            }
         }
-        if (group_iter != groups.end())
+        if (group_iter < groups.end())
             group_iter++;
-        else
-            no_more_groups = true;
     }
     // searching for groups including more than one node
     foreach (QSet<NodeDFA*> group, groups) {
         if (group.count() > 1) {
+            bool at_first_node = false;
+            bool at_last_node = false;
             // merge nodes
             NodeDFA* new_node = new NodeDFA(1); //TODO must change name
             foreach (NodeDFA* node, group) {
                 foreach (char symbol, Alphabetic) { // all symbols
                     new_node->link(symbol, node->nextNode(symbol));
                 }
+                if (node == this->StartState)
+                    at_first_node = true;
+                if (node->isFiniteState())
+                    at_last_node = true;
             }
+            if (at_first_node)  this->StartState = new_node;
+            if (at_last_node) {
+                this->FinitStates.insert(new_node);
+                new_node->setFinite();
+            }
+            this->AllStates.insert(new_node);
             foreach (NodeDFA*node, getAllStates()) {
                 foreach (char symbol, Alphabetic) { // all symbols
                     if (group.contains(node->nextNode(symbol)))
@@ -318,6 +339,8 @@ void DFA::simplify()
                 }
             }
             foreach (NodeDFA* node, group){
+                FinitStates.remove(node);
+                AllStates.remove(node);
                 delete node;
             }
         }
