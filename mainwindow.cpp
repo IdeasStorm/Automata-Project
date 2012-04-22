@@ -7,11 +7,15 @@
 #include "edge.h"
 #include <QString>
 
+bool graphic;
+
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
+    graphic = true;
+    ui->tableView->hide();
 }
 
 MainWindow::~MainWindow()
@@ -54,6 +58,12 @@ void MainWindow::ViewGraphOfDFA(DFA* dfa)
     QHash<NodeDFA*,Node*> hash ;
     fillFromDFANode(dfa->getStartState(),dfa,graph,p,visited,hash);
 }
+
+void MainWindow::createTable(NFA* nfa)
+{
+    QMultiMap<QString, QPair<QString, char> >* table = nfa->getConvertTable();
+}
+
 void MainWindow::fillFromDFANode(NodeDFA* currentstate , DFA* dfa,GraphWidget *graph,QPointF p,QSet<NodeDFA*>& visited,QHash<NodeDFA*,Node*>& nodeOfState)
 {
     if (visited.contains(currentstate))
@@ -114,37 +124,61 @@ void MainWindow::fillFromDFANode(NodeDFA* currentstate , DFA* dfa,GraphWidget *g
 void MainWindow::on_pushButton_3_clicked()
 {
     //Build DFA
-        DFA *myt = new DFA(getAllKeywords());
+    //DFA *myt = new DFA(getAllKeywords());
 
-        //Build E-NFA
-        //e_NFA *myt = new e_NFA(getAllKeywords());
+    //Build E-NFA
+    //e_NFA *myt = new e_NFA(getAllKeywords());
 
-        //Build NFA
-        //NFA *mytt = new NFA(getAllKeywords());
-        //DFA *myt = mytt->convertToDFA();
+    //Build NFA
+    NFA *mytt = new NFA(getAllKeywords());
+    DFA *myt = mytt->convertToDFA();
 
-        ui->graphicsView->currentScene->clear();
+    ui->graphicsView->currentScene->clear();
 
-        ui->OutPut->clear();
+    ui->OutPut->clear();
 
+    QHash<QString,int> reshash = myt->SimulateDFA(ui->plainTextEdit->toPlainText());
 
-        QHash<QString,int> reshash = myt->SimulateDFA(ui->plainTextEdit->toPlainText());
+    QList<QString> res = reshash.keys();
 
-        QList<QString> res = reshash.keys();
-
-        foreach(QString key,res)
-        {
-            int num = reshash.value(key);
-            QString number;
-            number.setNum(num);
-            QString* str = new QString(key + number);
-            ui->OutPut->addItem(new QListWidgetItem(*str));
-        }
+    foreach(QString key,res)
+    {
+        int num = reshash.value(key);
+        QString number;
+        number.setNum(num);
+        QString* str = new QString(key + number);
+        ui->OutPut->addItem(new QListWidgetItem(*str));
+    }
+    if (graphic)
+    {
+        ui->tableView->hide();
+        ui->graphicsView->show();
         ViewGraphOfDFA(myt);
+    }
+    else
+    {
+        ui->graphicsView->hide();
+        ui->tableView->show();
+        createTable(mytt);
+    }
 
 }
 
 int MainWindow::getWordCount()
 {
     return ui->listWidget->count();
+}
+
+void MainWindow::on_radioButton_clicked()
+{
+    ui->tableView->hide();
+    ui->graphicsView->show();
+    graphic = true;
+}
+
+void MainWindow::on_radioButton_2_clicked()
+{
+    ui->graphicsView->hide();
+    ui->tableView->show();
+    graphic = false;
 }

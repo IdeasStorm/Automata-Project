@@ -3,6 +3,8 @@
 
 #include <QMainWindow>
 #include "graphwidget.h"
+#include "NFA.h"
+
 namespace Ui {
     class MainWindow;
 }
@@ -16,9 +18,12 @@ public:
     ~MainWindow();
     QList<QString>getAllKeywords();
     int getWordCount();
-void buildDFA(QString *KeyWords,int numberWords);
-void ViewGraphOfDFA(DFA* dfa);
-void fillFromDFANode(NodeDFA* currentstate , DFA* dfa,GraphWidget *graph,QPointF p,QSet<NodeDFA*>&,QHash<NodeDFA*,Node*>&);
+    void buildDFA(QString *KeyWords, int numberWords);
+    void ViewGraphOfDFA(DFA* dfa);
+    void createTable(NFA* nfa);
+    void fillFromDFANode(NodeDFA* currentstate, DFA* dfa,
+                         GraphWidget *graph, QPointF p,
+                         QSet<NodeDFA*>&, QHash<NodeDFA*, Node*>&);
 
 private slots:
     void on_pushButton_clicked();
@@ -26,6 +31,10 @@ private slots:
     void on_pushButton_2_clicked();
 
     void on_pushButton_3_clicked();
+
+    void on_radioButton_clicked();
+
+    void on_radioButton_2_clicked();
 
 private:
     Ui::MainWindow *ui;

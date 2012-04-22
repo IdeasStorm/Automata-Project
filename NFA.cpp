@@ -56,6 +56,12 @@ QSet<NodeNFA *> NFA::getAllStates()
 QSet<NodeNFA*> NFA::getNonFinitStates()
 { return AllStates.subtract(FinitStates); }
 
+
+QMultiMap<QString, QPair<QString, char> >* NFA::getConvertTable()
+{
+    return convertTable;
+}
+
 //Set
 void NFA::setStartState(NodeNFA *state)
 { StartState = state; }
@@ -142,8 +148,7 @@ DFA* NFA::convertToDFA()
     DFA* dfa = new DFA();
     //QMap<QPair<QString, char>, QString> *Helper =
     //        new QMap<QPair<QString, char>, QString>();
-    QMultiMap<QString, QPair<QString, char> > *Helper =
-            new QMultiMap<QString, QPair<QString, char> >();
+    convertTable = new QMultiMap<QString, QPair<QString, char> >();
     QList< QSet<NodeNFA*> > groups;
     QHash<QString, NodeDFA*>* nodes
             = new QHash<QString, NodeDFA*>();
@@ -192,7 +197,7 @@ DFA* NFA::convertToDFA()
                             nodes->value(str)->link(symbol, dfa->getFinit_WordsState());
                             /*Helper->insert(QPair<QString, char>(str, symbol),
                                            *listToString(temp));*/
-                            Helper->insert(str, QPair<QString, char>(*listToString(temp), symbol));
+                            convertTable->insert(str, QPair<QString, char>(*listToString(temp), symbol));
                         }
                         else
                         {
@@ -204,7 +209,7 @@ DFA* NFA::convertToDFA()
                                 DFANode->link(symbol, Dfa);
                                 /*Helper->insert(QPair<QString, char>("q0", symbol),
                                                *listToString(temp));*/
-                                Helper->insert("q0", QPair<QString, char>(*listToString(temp), symbol));
+                                convertTable->insert("q0", QPair<QString, char>(*listToString(temp), symbol));
                             }
                             else
                             {
@@ -212,7 +217,7 @@ DFA* NFA::convertToDFA()
                                 nodes->value(str)->link(symbol, Dfa);
                                 /*Helper->insert(QPair<QString, char>(str, symbol),
                                                *listToString(temp));*/
-                                Helper->insert(str, QPair<QString, char>(*listToString(temp), symbol));
+                                convertTable->insert(str, QPair<QString, char>(*listToString(temp), symbol));
                             }
                             QString str = *setToString(groups.last());
                             nodes->insert(str, Dfa);
@@ -225,7 +230,7 @@ DFA* NFA::convertToDFA()
                         QString str2 = *setToString(temp.toSet());
                         nodes->value(str)->link(symbol, nodes->value(str2));
                         //Helper->insert(QPair<QString, char>(str, symbol), str2);
-                        Helper->insert(str, QPair<QString, char>(str2, symbol));
+                        convertTable->insert(str, QPair<QString, char>(str2, symbol));
                     }
                     temp.clear();
                     finite = false;

@@ -62,8 +62,6 @@ DFA::DFA(QList<QString>KeyWords)
         AllStates.insert(Finit_wordsState);
     }
 
-
-
     LoadDFA(KeyWords);
 }
 
