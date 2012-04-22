@@ -109,6 +109,7 @@ void MainWindow::on_pushButton_3_clicked()
     //Build E-NFA
     e_NFA *myt = new e_NFA(getAllKeywords(),getWordCount());
 
+
     //Build NFA
     //NFA *myt = new NFA(getAllKeywords(),getWordCount());
     //DFA *myt = mytt->convertToDFA();

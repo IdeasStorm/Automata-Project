@@ -218,11 +218,6 @@ NFA* e_NFA::convertToNFA()
            }
 
        }
-
-
-
-
-
     }
 
     return result;
