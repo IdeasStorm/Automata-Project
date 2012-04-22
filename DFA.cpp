@@ -62,8 +62,6 @@ DFA::DFA(QString *KeyWords,int numberWords)
             Separate_wordsState->link(' ',StartState);
     }
 
-
-
     if (numberWords > 0)
     {
         Finit_wordsState = new NodeDFA(">");
