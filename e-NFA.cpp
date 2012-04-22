@@ -28,12 +28,12 @@ e_NFA::e_NFA()
     Alphabetic.insert(i++,' ');
 }
 
-e_NFA::e_NFA(QString *KeyWords,int numberWords)
+e_NFA::e_NFA(QList<QString>KeyWords)
 {
     StartState = new NodeNFA("q0") ;
     AllStates.insert(StartState);
     StartState->link(' ',StartState);
-    if (numberWords > 0)
+    if (KeyWords.length() > 0)
     {
         Finit_wordsState = new NodeNFA(">");
         Finit_wordsState->setFinite();
@@ -52,7 +52,7 @@ e_NFA::e_NFA(QString *KeyWords,int numberWords)
     }
     Alphabetic.insert(i++,' ');
 
-    LoadE_NFA(KeyWords,numberWords);
+    LoadE_NFA(KeyWords);
 }
 
 //GET
@@ -96,14 +96,14 @@ void e_NFA::addToState(NodeNFA* state)
 void e_NFA::setSeparate_wordsAlphabetic(QList<char> alphabetic)
 { Separate_wordsAlphabetic = alphabetic; }
 
-void e_NFA::LoadE_NFA(QString *KeyWords,int numberWords)
+void e_NFA::LoadE_NFA(QList<QString>KeyWords)
 {
     NodeNFA *CurrentState = StartState,*NextState = StartState;
     int CounterState = 1 ; //for generate and save name of states(NodeDFA) q0,1,2,3....
 
-    for (int i=0;i<numberWords;i++)
+    //for (int i=0;i<numberWords;i++)
+    foreach (QString s ,KeyWords)
     {
-        QString s = KeyWords[i];
         CurrentState = StartState;
         NextState = new NodeNFA("Epsilon");
         AllStates.insert(NextState);
