@@ -3,7 +3,7 @@
 
 
 #include "NFA.h"
-#include "nodeNFA.h"
+#include "nodenfa.h"
 #include <QString>
 #include <QSet>
 #include <stack>
@@ -41,7 +41,7 @@ public:
     NFA* convertToNFA();
 
     //closure
-    QList<NodeNFA *>* getClosure(NodeNFA*);
+    QSet<NodeNFA *>* getClosure(NodeNFA*);
 
 private:
     NodeNFA *StartState ;
