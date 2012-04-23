@@ -166,44 +166,39 @@ NFA* e_NFA::convertToNFA()
     s.push(start1);
     QHash<QString,NodeNFA*> hash;
     hash.insert(start2->getName(),start2);
-   // QList<char> keys;
     QSet<NodeNFA*> temp1;
     QSet<NodeNFA*> temp2;
-   // QSet<NodeNFA*> temp3;
-    QSet<NodeNFA*> temp4;
+    QSet<NodeNFA*> temp3;
     QSet<NodeNFA*> done;
     while(!s.empty())
     {
-       start1=s.pop();          done.insert(start1);
+       start1=s.pop();
+       done.insert(start1);
        start2=hash.value(start1->getName());
-       //QMultiHash<char,NodeNFA*>* nodes=start1->getNextNodes();
-       //keys=start1->getNextNodes()->uniqueKeys();
-       temp1=getClosure(start1);
+       temp1=getClosure(start1);    
        foreach(char c ,getAlphabetic())
        {
            if (c!='\0')
            {
+                temp2.clear();
+                temp3.clear();
                foreach(NodeNFA* node,temp1)
                {
-                   if(node->getNextNode(c).size()!=0)
-                       temp2.insert(node);
+                   foreach(NodeNFA* n,node->getNextNode(c))
+                       temp2.insert(n);
                }
-
-               QSet<NodeNFA*> temp3 (temp1);
-               temp3.intersect(temp2);
-               foreach(NodeNFA* node,temp3)
+               foreach(NodeNFA* n,temp2)
                {
-                   QSet<NodeNFA*> oo=getClosure(node);
-                   foreach(NodeNFA* n,oo)
+                   QSet<NodeNFA*> myset=getClosure(n);
+                   foreach(NodeNFA* node,myset)
                    {
-                       if(!temp4.contains(n))
-                            temp4.insert(n);
+                       if(!temp3.contains(node))
+                          temp3.insert(node);
                    }
                }
-
-               foreach(NodeNFA* node,temp4)
+               foreach(NodeNFA* node,temp3)
                {
-                   if(!hash.keys().contains(node->getName()))
+                   if(!(hash.keys().contains(node->getName())))
                    {
                        NodeNFA* temp=new NodeNFA(node->getName());
                         start2->link(c,temp);
@@ -220,17 +215,14 @@ NFA* e_NFA::convertToNFA()
                        NodeNFA* temp=hash.value(node->getName());
                        start2->link(c,temp);
                    }
-               }
-               QMultiHash<char,NodeNFA*> *nodes=start1->getNextNodes();
-               foreach(NodeNFA* node,*nodes)
-               {
-                   if(!done.contains(node))
-                        s.push_back(node);
-               }
-               temp2.clear();
-               temp3.clear();
-               temp4.clear();
+               }            
            }   
+       }
+       QMultiHash<char,NodeNFA*> *nodes=start1->getNextNodes();
+       foreach(NodeNFA* node,*nodes)
+       {
+           if(!done.contains(node))
+                s.push_back(node);
        }
         temp1.clear();
     }
