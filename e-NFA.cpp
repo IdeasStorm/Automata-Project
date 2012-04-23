@@ -203,11 +203,11 @@ NFA* e_NFA::convertToNFA()
 
                foreach(NodeNFA* node,temp4)
                {
-                   if(!hash.values().contains(node))
+                   if(!hash.keys().contains(node->getName()))
                    {
                        NodeNFA* temp=new NodeNFA(node->getName());
+                        start2->link(c,temp);
                        result->getAllStates().insert(temp);
-                       start2->link(c,temp);
                        hash.insert(temp->getName(),temp);
                        if(node->isFiniteState())
                        {
