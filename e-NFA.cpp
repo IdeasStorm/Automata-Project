@@ -151,7 +151,6 @@ QSet<NodeNFA *> e_NFA::getClosure(NodeNFA * state)
               s.push(n);
             }
         }
-
     }
     return set;
 }
@@ -166,7 +165,7 @@ NFA* e_NFA::convertToNFA()
     QStack<NodeNFA*> s;
     s.push(start1);
     QHash<QString,NodeNFA*> hash;
-    hash.insert(start1->getName(),start2);
+    hash.insert(start2->getName(),start2);
     QList<char> keys;
     QSet<NodeNFA*> temp1;
     QSet<NodeNFA*> temp2;
@@ -175,7 +174,7 @@ NFA* e_NFA::convertToNFA()
     while(!s.empty())
     {
        start1=s.pop();          done.insert(start1);
-       start2=*(hash.find(start1->getName()));
+       start2=(hash.find(start1->getName())).value();
        //QMultiHash<char,NodeNFA*>* nodes=start1->getNextNodes();
        keys=start1->getNextNodes()->uniqueKeys();
        temp1=getClosure(start1);
@@ -205,20 +204,21 @@ NFA* e_NFA::convertToNFA()
                    }
                    else
                    {
-                       NodeNFA* temp=*(hash.find(node->getName()));
+                       NodeNFA* temp=(hash.find(node->getName())).value();
                        start2->link(c,temp);
                    }
                }
-               foreach(NodeNFA* node,*(start1->getNextNodes()))
+               QMultiHash<char,NodeNFA*> *nodes=start1->getNextNodes();
+               foreach(NodeNFA* node,*nodes)
                {
                    if(!done.contains(node))
                         s.push_back(node);
                }
-               temp1.clear();
+
                temp2.clear();
                temp3.clear();
            }
-
+            temp1.clear();
        }
     }
 
