@@ -115,6 +115,8 @@ void MainWindow::on_pushButton_3_clicked()
 {
     //Build DFA
      //   DFA *myt = new DFA(getAllKeywords());
+
+
     //Build E-NFA
     e_NFA *myt3 = new e_NFA(getAllKeywords());
     NFA *myt2 = myt3->convertToNFA();
