@@ -14,10 +14,10 @@ public:
     DFA();
     ~DFA();
     // Default Constructer of DFA and build DFA
-    DFA(QString *KeyWord,int numberWords);
+    DFA(QList<QString>KeyWords);
 
     //Build DFA
-    void LoadDFA(QString *KeyWord,int numberWords);
+    void LoadDFA(QList<QString>KeyWords);
 
     // Get
     NodeDFA * getStartState();

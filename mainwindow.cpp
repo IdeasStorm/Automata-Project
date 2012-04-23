@@ -35,14 +35,13 @@ void MainWindow::on_pushButton_2_clicked()
     delete current_item;
 }
 
-QString *MainWindow::getAllKeywords()
+QList<QString> MainWindow::getAllKeywords()
 {
     QList<QListWidgetItem*> all_items = ui->listWidget->findItems("*", Qt::MatchWrap | Qt::MatchWildcard);
-    int n = all_items.count();
-    QString *all_words = new QString[n];
+    QList<QString> all_words ;
     int i = 0;
     foreach (QListWidgetItem* item, all_items) {
-        all_words[i++] = item->text();
+        all_words.insert(i++,item->text());
     }
     return all_words;
 }
@@ -69,22 +68,33 @@ void MainWindow::fillFromDFANode(NodeDFA* currentstate , DFA* dfa,GraphWidget *g
         else if (currentstate==dfa->getStartState())
             node->setPos(-150,-70) ;
         else if (currentstate==dfa->getFinit_WordsState())
-            node->setPos(150,100) ;
+            node->setPos(160,30) ;
         else
             node->setPos(p) ;
 
         ui->graphicsView->currentScene->addItem(node);
+        bool One = false ;
+        QPointF t = QPointF(0,0);
         foreach(char ch, dfa->getAlphabetic())
         {
-
             if (currentstate->nextNode(ch)!=dfa->getSeparate_wordsState())
             {
                 NodeDFA *nextstate = currentstate->nextNode(ch);
-                p += QPointF(50,20);
-                fillFromDFANode(nextstate,dfa,graph,p,visited,nodeOfState);
+                if (!One)
+                {
+                    fillFromDFANode(nextstate,dfa,graph,p+QPointF(50,0),visited,nodeOfState);
+                    One = true ;
+                }
+                else
+                {
+                    t += QPointF(-50,+70);
+                    fillFromDFANode(nextstate,dfa,graph,p+t,visited,nodeOfState);
+                }
+
                 Edge *edge = new Edge(node,nodeOfState.value(nextstate));
                 (ch==' ')?edge->setSymbol('|'):edge->setSymbol(ch);
                 ui->graphicsView->currentScene->addItem(edge);
+
             }
             else
             {
@@ -95,42 +105,42 @@ void MainWindow::fillFromDFANode(NodeDFA* currentstate , DFA* dfa,GraphWidget *g
                 }
             }
         }
-        Edge *edgeToSeperatedWords = new Edge(node,nodeOfState.value(dfa->Separate_wordsState));
-        edgeToSeperatedWords->setSymbol('?');
-        ui->graphicsView->currentScene->addItem(edgeToSeperatedWords);
+//        Edge *edgeToSeperatedWords = new Edge(node,nodeOfState.value(dfa->Separate_wordsState));
+  //      edgeToSeperatedWords->setSymbol('?');
+    //    ui->graphicsView->currentScene->addItem(edgeToSeperatedWords);
     }//from else
 }
 
 void MainWindow::on_pushButton_3_clicked()
 {
     //Build DFA
-    //DFA *myt = new DFA(getAllKeywords(),getWordCount());
+        DFA *myt = new DFA(getAllKeywords());
 
-    //Build E-NFA
-    //e_NFA *myt = new e_NFA(getAllKeywords(),getWordCount());
+        //Build E-NFA
+        //e_NFA *myt = new e_NFA(getAllKeywords());
 
-    //Build NFA
-    NFA *mytt = new NFA(getAllKeywords(),getWordCount());
-    DFA *myt = mytt->convertToDFA();
+        //Build NFA
+        //NFA *mytt = new NFA(getAllKeywords());
+        //DFA *myt = mytt->convertToDFA();
 
-    ui->graphicsView->currentScene->clear();
+        ui->graphicsView->currentScene->clear();
 
-    ui->OutPut->clear();
+        ui->OutPut->clear();
 
 
-    QHash<QString,int> reshash = myt->SimulateDFA(ui->plainTextEdit->toPlainText());
+        QHash<QString,int> reshash = myt->SimulateDFA(ui->plainTextEdit->toPlainText());
 
-    QList<QString> res = reshash.keys();
+        QList<QString> res = reshash.keys();
 
-    foreach(QString key,res)
-    {
-        int num = reshash.value(key);
-        QString number;
-        number.setNum(num);
-        QString* str = new QString(key + number);
-        ui->OutPut->addItem(new QListWidgetItem(*str));
-    }
-    ViewGraphOfDFA(myt);
+        foreach(QString key,res)
+        {
+            int num = reshash.value(key);
+            QString number;
+            number.setNum(num);
+            QString* str = new QString(key + number);
+            ui->OutPut->addItem(new QListWidgetItem(*str));
+        }
+        ViewGraphOfDFA(myt);
 
 }
 

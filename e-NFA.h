@@ -12,10 +12,11 @@ class e_NFA {
 public:
     e_NFA();
     ~e_NFA();
-    e_NFA(QString*, int, QString);
-    e_NFA(QString *KeyWords,int numberWord);
+
+    e_NFA(QList<QString> , QString);
+    e_NFA* Regex(QList<QString>KeyWords);
     //Build e_NFA
-    void LoadE_NFA(QString *KeyWords,int numberWord);
+    void LoadE_NFA(QList<QString>KeyWords);
     // Get
     NodeNFA* getStartState();
     NodeNFA* getFinit_WordsState();
