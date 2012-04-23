@@ -130,11 +130,11 @@ void e_NFA::LoadE_NFA(QString *KeyWords,int numberWords)
 }
 
 
-QSet<NodeNFA *>* e_NFA::getClosure(NodeNFA * state)
+QSet<NodeNFA *> e_NFA::getClosure(NodeNFA * state)
 {
     QStack <NodeNFA*> s;
-    QSet<NodeNFA*>* set=new QSet<NodeNFA*>();
-    set->insert(state);
+    QSet<NodeNFA*> set;
+    set.insert(state);
     s.push(state);
     NodeNFA* q;
     QList<NodeNFA*> r;
@@ -145,12 +145,13 @@ QSet<NodeNFA *>* e_NFA::getClosure(NodeNFA * state)
 
         foreach (NodeNFA* n,r)
         {
-            if (!set->contains(n))
+            if (!set.contains(n))
             {
-              set->insert(n);
+              set.insert(n);
               s.push(n);
             }
         }
+
     }
     return set;
 }
@@ -164,17 +165,17 @@ NFA* e_NFA::convertToNFA()
     NodeNFA* start2=result->getStartState();
     QStack<NodeNFA*> s;
     s.push(start1);
-    QHash<QString,NodeNFA*> *hash=new QHash<QString,NodeNFA*>();
-    hash->insert(start2->getName(),start2);
+    QHash<QString,NodeNFA*> hash;
+    hash.insert(start1->getName(),start2);
     QList<char> keys;
-    QSet<NodeNFA*>* temp1;
+    QSet<NodeNFA*> temp1;
     QSet<NodeNFA*> temp2;
     QSet<NodeNFA*> temp3;
     QSet<NodeNFA*> done;
     while(!s.empty())
     {
        start1=s.pop();          done.insert(start1);
-       start2=*(hash->find(start1->getName()));
+       start2=*(hash.find(start1->getName()));
        //QMultiHash<char,NodeNFA*>* nodes=start1->getNextNodes();
        keys=start1->getNextNodes()->uniqueKeys();
        temp1=getClosure(start1);
@@ -182,39 +183,40 @@ NFA* e_NFA::convertToNFA()
        {
            if (c!='\0')
            {
-               foreach(NodeNFA* node,*temp1)
+               foreach(NodeNFA* node,temp1)
                {
                    if(node->getNextNode(c).size()!=0)
                        temp2.insert(node);
                }
-               temp3=temp1->intersect(temp2);
+               temp3=temp1.intersect(temp2);
                foreach(NodeNFA* node,temp3)
                {
-                   if(!result->getAllStates().contains(node))
+                   if(!hash.values().contains(node))
                    {
                        NodeNFA* temp=new NodeNFA(node->getName());
                        result->getAllStates().insert(temp);
                        start2->link(c,temp);
-                       hash->insert(node->getName(),node);
+                       hash.insert(node->getName(),node);
                        if(node->isFiniteState())
                        {
                          temp->setFinite();
                          result->getFinitStates().insert(temp);
                        }
-
                    }
                    else
                    {
-                       NodeNFA* temp=*(hash->find(node->getName()));
+                       NodeNFA* temp=*(hash.find(node->getName()));
                        start2->link(c,temp);
                    }
-
                }
                foreach(NodeNFA* node,*(start1->getNextNodes()))
                {
                    if(!done.contains(node))
                         s.push_back(node);
                }
+               temp1.clear();
+               temp2.clear();
+               temp3.clear();
            }
 
        }

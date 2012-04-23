@@ -41,7 +41,7 @@ public:
     NFA* convertToNFA();
 
     //closure
-    QSet<NodeNFA *>* getClosure(NodeNFA*);
+    QSet<NodeNFA *> getClosure(NodeNFA*);
 
 private:
     NodeNFA *StartState ;
