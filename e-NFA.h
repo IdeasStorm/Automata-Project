@@ -14,7 +14,7 @@ public:
     ~e_NFA();
 
     e_NFA(QList<QString> , QString);
-    e_NFA* Regex(QList<QString>KeyWords);
+    e_NFA* Regex(QString);
     //Build e_NFA
     void LoadE_NFA(QList<QString>KeyWords);
     // Get

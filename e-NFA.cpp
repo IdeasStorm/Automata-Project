@@ -156,7 +156,15 @@ void e_NFA::LoadE_NFA(QList<QString>KeyWords)
     //for (int i=0;i<numberWords;i++)
     foreach (QString s ,KeyWords)
     {
-        CurrentState = StartState;
+        CurrentState = StartState ;
+        if (s.contains('*'))
+        {
+            e_NFA* temp = Regex(s);
+            CurrentState->link('\0',temp->StartState);
+            temp->Finit_wordsState->link(' ',Finit_wordsState);
+            continue;
+        }
+
         NextState = new NodeNFA("Epsilon");
         AllStates.insert(NextState);
         CurrentState->link('\0',NextState);
