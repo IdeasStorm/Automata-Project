@@ -32,9 +32,11 @@ e_NFA::e_NFA()
 e_NFA* e_NFA::Regex(QString expression)
 {
     QList<QString> tokens = getTokens(expression);
-    StartState = new NodeNFA("q0");
-    NodeNFA* node = StartState;
-    int nodesNum = 1;
+    //StartState = new NodeNFA("q0");
+    e_NFA* e_nfa = new e_NFA();
+    e_nfa->setStartState(new NodeNFA("q1"));
+    NodeNFA* node = e_nfa->getStartState();//StartState;
+    int nodesNum = 2;
     foreach (QString token, tokens)
     {
         if(token == "*")
@@ -67,11 +69,11 @@ e_NFA* e_NFA::Regex(QString expression)
         }
     }
     //make the node finite
-    node->setFinite();
+    //node->setFinite();
     //add it to finite set
-    addToFinitState(node);
+    //addToFinitState(node);
     //make it the finit words State
-    Finit_wordsState = node;
+    //Finit_wordsState = node;
 }
 
 
