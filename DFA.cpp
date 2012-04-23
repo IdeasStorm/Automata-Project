@@ -227,8 +227,6 @@ QHash<QString,int> DFA::SimulateDFA(QString input)
     NodeDFA *CurrentState = StartState ;
     for (int i=0;i<input.length();i++)
     {
-        if (i==4)
-            int myt = 0 ;
         str +=input[i];
         CurrentState = CurrentState->nextNode(input[i].cell());
         // to caculate the last word

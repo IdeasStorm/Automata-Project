@@ -4,10 +4,32 @@
 #include"QStack"
 
 QList<char> NFA::Alphabetic;
+NFA::NFA()
+{
+    StartState = new NodeNFA("q0") ;
+    AllStates.insert(StartState);
+    StartState->link(' ',StartState);
+
+    Finit_wordsState = new NodeNFA(">");
+    Finit_wordsState->setFinite();
+    FinitStates.insert(Finit_wordsState);
+    AllStates.insert(Finit_wordsState);
+
+    int i = 0 ;
+    for (char ch = 'a';ch<='z';ch++)
+    {
+        Alphabetic.insert(i++,ch);
+    }
+    for (char ch = 'A';ch<='Z';ch++)
+    {
+        Alphabetic.insert(i++,ch);
+    }
+    Alphabetic.insert(i++,' ');
+
+}
 
 NFA::NFA(QList<QString>KeyWords)
 {
-    //NFA();
     StartState = new NodeNFA("q0") ;
     AllStates.insert(StartState);
     StartState->link(' ',StartState);
@@ -308,7 +330,7 @@ QList<NodeNFA*> * NFA::func(QList<NodeNFA*>* a,QList<NodeNFA*>*b)
     }
     return list;
 }
-
+*/
 NFA::~NFA()
 {
     foreach (NodeNFA* state , AllStates)
@@ -316,4 +338,4 @@ NFA::~NFA()
         delete state ;
     }
 }
-*/
+

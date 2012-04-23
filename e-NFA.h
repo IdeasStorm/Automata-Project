@@ -3,6 +3,7 @@
 
 
 #include "NFA.h"
+#include "QStack"
 #include "nodenfa.h"
 #include <QString>
 #include <QSet>
@@ -18,7 +19,6 @@ public:
     // Get
     NodeNFA* getStartState();
     NodeNFA* getFinit_WordsState();
-        //Nodee_NFA * getSeparate_wordsState();
 
     QSet<NodeNFA*> getFinitStates();
     QSet<NodeNFA*> getAllStates();
@@ -32,7 +32,6 @@ public:
     //Set
     void setStartState(NodeNFA *state);
     void setFinit_WordsState(NodeNFA *state);
-        //void setSeparate_wordsState(Nodee_NFA *state);
 
     void setAlphabetic(QList<char> alphabetic);
     void setSeparate_wordsAlphabetic(QList<char> alphabetic);
@@ -54,5 +53,5 @@ private:
 
 };
 
-
 #endif // E_NFA_H
+

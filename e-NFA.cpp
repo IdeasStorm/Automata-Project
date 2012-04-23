@@ -1,7 +1,4 @@
 #include "e-NFA.h"
-#include "nodenfa.h"
-#include <stack>
-#include "QStack"
 
 QList<char>e_NFA::Alphabetic;
 
@@ -156,7 +153,6 @@ QSet<NodeNFA *> e_NFA::getClosure(NodeNFA * state)
 }
 
 
-//TODO Mazen
 NFA* e_NFA::convertToNFA()
 {
     NFA* result = new NFA();
@@ -170,16 +166,15 @@ NFA* e_NFA::convertToNFA()
     QSet<NodeNFA*> temp2;
     QSet<NodeNFA*> temp3;
     QSet<NodeNFA*> done;
+
     while(!s.empty())
     {
        start1=s.pop();
        done.insert(start1);
        start2=hash.value(start1->getName());
-       temp1=getClosure(start1);    
+       temp1=getClosure(start1);
        foreach(char c ,getAlphabetic())
        {
-           if (c == 'Z')
-               int myt = 0 ;
            if (c!='\0')
            {
                 temp2.clear();
@@ -202,28 +197,24 @@ NFA* e_NFA::convertToNFA()
                {
 
                    if(!(hash.keys().contains(node->getName())))
-                   {
-
-                       //if (node->getName()!="Epsilon")
-                        {
-                           NodeNFA* temp=new NodeNFA(node->getName());
-                            start2->link(c,temp);
-                           result->getAllStates().insert(temp);
-                           hash.insert(temp->getName(),temp);
-                           if(node->isFiniteState())
-                           {
-                             temp->setFinite();
-                             result->getFinitStates().insert(temp);
-                           }
-                        }
+                   {   //if (node->getName()!="Epsilon")
+                       NodeNFA* temp=new NodeNFA(node->getName());
+                        start2->link(c,temp);
+                       result->getAllStates().insert(temp);
+                       hash.insert(temp->getName(),temp);
+                       if(node->isFiniteState())
+                       {
+                         temp->setFinite();
+                         result->getFinitStates().insert(temp);
+                       }
                    }
                    else
                    {
                        NodeNFA* temp=hash.value(node->getName());
                        start2->link(c,temp);
                    }
-               }            
-           }   
+               }
+           }
        }
        QMultiHash<char,NodeNFA*> *nodes=start1->getNextNodes();
        foreach(NodeNFA* node,*nodes)
@@ -235,7 +226,6 @@ NFA* e_NFA::convertToNFA()
     }
     return result;
 }
-//TODO Mazen
 
 e_NFA::~e_NFA()
 {
@@ -244,5 +234,4 @@ e_NFA::~e_NFA()
         delete state ;
     }
 }
-
 
