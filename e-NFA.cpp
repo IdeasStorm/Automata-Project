@@ -5,6 +5,7 @@
 
 QList<char>e_NFA::Alphabetic;
 
+
 e_NFA::e_NFA()
 {
     StartState = new NodeNFA("q0") ;
