@@ -160,7 +160,7 @@ QSet<NodeNFA *> e_NFA::getClosure(NodeNFA * state)
 NFA* e_NFA::convertToNFA()
 {
     NFA* result = new NFA();
-     NodeNFA* start1=getStartState();
+    NodeNFA* start1=getStartState();
     NodeNFA* start2=result->getStartState();
     QStack<NodeNFA*> s;
     s.push(start1);
@@ -169,7 +169,8 @@ NFA* e_NFA::convertToNFA()
     QList<char> keys;
     QSet<NodeNFA*> temp1;
     QSet<NodeNFA*> temp2;
-    QSet<NodeNFA*> temp3;
+   // QSet<NodeNFA*> temp3;
+    QSet<NodeNFA*> temp4;
     QSet<NodeNFA*> done;
     while(!s.empty())
     {
@@ -187,8 +188,19 @@ NFA* e_NFA::convertToNFA()
                    if(node->getNextNode(c).size()!=0)
                        temp2.insert(node);
                }
-               temp3=temp1.intersect(temp2);
+
+               QSet<NodeNFA*> temp3 (temp1);
+               temp3.intersect(temp2);
                foreach(NodeNFA* node,temp3)
+               {
+                   QSet<NodeNFA*> oo=getClosure(node);
+                   foreach(NodeNFA* n,oo)
+                   {
+                       temp4.insert(n);
+                   }
+               }
+
+               foreach(NodeNFA* node,temp4)
                {
                    if(!hash.values().contains(node))
                    {
@@ -214,14 +226,13 @@ NFA* e_NFA::convertToNFA()
                    if(!done.contains(node))
                         s.push_back(node);
                }
-
                temp2.clear();
                temp3.clear();
-           }
-            temp1.clear();
+               temp4.clear();
+           }   
        }
+        temp1.clear();
     }
-
     return result;
 }
 //TODO Mazen
