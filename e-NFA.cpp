@@ -161,7 +161,7 @@ QSet<NodeNFA *> e_NFA::getClosure(NodeNFA * state)
 NFA* e_NFA::convertToNFA()
 {
     NFA* result = new NFA();
-     NodeNFA* start1=getStartState();
+    NodeNFA* start1=getStartState();
     NodeNFA* start2=result->getStartState();
     QStack<NodeNFA*> s;
     s.push(start1);
@@ -175,7 +175,7 @@ NFA* e_NFA::convertToNFA()
     while(!s.empty())
     {
        start1=s.pop();          done.insert(start1);
-       start2=*(hash.find(start1->getName()));
+       start2=hash.value(start1->getName());
        //QMultiHash<char,NodeNFA*>* nodes=start1->getNextNodes();
        keys=start1->getNextNodes()->uniqueKeys();
        temp1=getClosure(start1);
