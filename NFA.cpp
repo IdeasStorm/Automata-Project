@@ -224,7 +224,7 @@ DFA* NFA::convertToDFA()
     }
     return dfa;
 }
-
+/*
 QList<NodeNFA *>*  NFA::getClosure(NodeNFA * state)
 {
     QStack <NodeNFA*> s;
@@ -316,3 +316,4 @@ NFA::~NFA()
         delete state ;
     }
 }
+*/
