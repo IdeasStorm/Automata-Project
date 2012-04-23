@@ -1,7 +1,6 @@
 #ifndef E_NFA_H
 #define E_NFA_H
 
-
 #include "NFA.h"
 #include "nodenfa.h"
 #include <QString>
@@ -12,8 +11,8 @@ class e_NFA {
 public:
     e_NFA();
     ~e_NFA();
-
-    e_NFA(QList<QString> , QString);
+    e_NFA(QString str);
+    e_NFA(QList<QString>);
     e_NFA* Regex(QString);
     //Build e_NFA
     void LoadE_NFA(QList<QString>KeyWords);

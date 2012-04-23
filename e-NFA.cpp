@@ -29,6 +29,38 @@ e_NFA::e_NFA()
     Alphabetic.insert(i++,' ');
 }
 
+e_NFA::e_NFA (QString str)
+{
+    StartState = new NodeNFA("q0") ;
+    AllStates.insert(StartState);
+    StartState->link(' ',StartState);
+
+    //
+    int i = 0 ;
+    for (char ch = 'a';ch<='z';ch++)
+    {
+        Alphabetic.insert(i++,ch);
+    }
+    for (char ch = 'A';ch<='Z';ch++)
+    {
+        Alphabetic.insert(i++,ch);
+    }
+    Alphabetic.insert(i++,' ');
+
+    NodeNFA* current  = StartState, *Next ;
+    int count = 0 ;
+    foreach (QChar c , str)
+    {
+        Next = new NodeNFA(QString(++count));
+        AllStates.insert(Next);
+        current->link(c.cell(),Next);
+        current = Next ;
+    }
+    current->setFinite();
+    FinitStates.insert(current);
+    setFinit_WordsState(current);
+}
+
 e_NFA* e_NFA::Regex(QString expression)
 {
     QList<QString> tokens = getTokens(expression);
@@ -75,7 +107,6 @@ e_NFA* e_NFA::Regex(QString expression)
     //make it the finit words State
     //Finit_wordsState = node;
 }
-
 
 e_NFA::e_NFA(QList<QString>KeyWords)
 {
