@@ -145,7 +145,8 @@ void MainWindow::on_pushButton_3_clicked()
             ui->OutPut->addItem(new QListWidgetItem(*str));
         }
         GraphWidget *graph = new GraphWidget();
-        ViewGraphOfDFA(myt,graph);
+        //ViewGraphOfDFA(myt,graph);
+        graph->loadFromDFA(myt);
 }
 
 int MainWindow::getWordCount()
