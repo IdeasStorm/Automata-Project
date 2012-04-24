@@ -18,6 +18,7 @@ public:
     int getWordCount();
 void buildDFA(QString *KeyWords,int numberWords);
 void ViewGraphOfDFA(DFA* dfa, GraphWidget *graph);
+QString filterText(QString);
 void fillFromDFANode(NodeDFA* currentstate , DFA* dfa,GraphWidget *graph,QPointF p,QSet<NodeDFA*>&,QHash<NodeDFA*,Node*>&);
 
 private slots:

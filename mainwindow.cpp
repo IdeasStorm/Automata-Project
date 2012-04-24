@@ -134,7 +134,8 @@ void MainWindow::on_pushButton_3_clicked()
 
         ui->OutPut->clear();
 
-        QHash<QString,int> reshash = myt->SimulateDFA(ui->plainTextEdit->toPlainText());
+
+        QHash<QString,int> reshash = myt->SimulateDFA(filterText(ui->plainTextEdit->toPlainText()));
 
         QList<QString> res = reshash.keys();
 
@@ -147,8 +148,21 @@ void MainWindow::on_pushButton_3_clicked()
             ui->OutPut->addItem(new QListWidgetItem(*str));
         }
         GraphWidget *graph = new GraphWidget();
-        //ViewGraphOfDFA(myt,graph);
-    //    graph->loadFromDFA(myt);
+        ViewGraphOfDFA(myt,graph);
+        //graph->loadFromDFA(myt);
+}
+
+QString MainWindow::filterText(QString s)
+{
+    QString res ;
+    for (int i=0 ; i<s.length();i++)
+    {
+        if ((NFA::getAlphabetic()).contains(s[i].cell()) )
+            res +=s[i];
+        else
+            res +=' ';
+    }
+    return res ;
 }
 
 int MainWindow::getWordCount()
