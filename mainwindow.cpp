@@ -92,7 +92,7 @@ void MainWindow::fillFromDFANode(NodeDFA* currentstate , DFA* dfa,GraphWidget *g
                 }
 
                 Edge *edge = new Edge(node,nodeOfState.value(nextstate));
-                (ch==' ')?edge->setSymbol('|'):edge->setSymbol(ch);
+                (ch==' ')?edge->setSymbol('___'):edge->setSymbol(ch);
                 graph->currentScene->addItem(edge);
                 ui->graphicsView->currentScene->addItem(edge);
 
@@ -122,7 +122,7 @@ void MainWindow::on_pushButton_3_clicked()
     e_NFA *myt3 = new e_NFA(getAllKeywords());
     NFA *myt2 = myt3->convertToNFA();
     DFA *myt = myt2->convertToDFA();
-    //myt->simplify();
+    myt->simplify();
 
     //Build NFA
     //NFA *myt2 = new NFA(getAllKeywords(),getWordCount());
