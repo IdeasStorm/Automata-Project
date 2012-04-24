@@ -218,6 +218,6 @@ void MainWindow::on_radioButton_2_clicked()
 
 void MainWindow::on_tableWidget_cellClicked(int row, int column)
 {
-
-    QMessageBox::information(this,"alert",QString("%1 , %2").arg(row).arg(column),0);
+    // just for debugging
+    //QMessageBox::information(this,"alert",QString("%1 , %2").arg(row).arg(column),0);
 }
