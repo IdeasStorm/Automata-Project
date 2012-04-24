@@ -292,8 +292,6 @@ NFA* e_NFA::convertToNFA()
        temp1=getClosure(start1);
        foreach(char c ,getAlphabetic())
        {
-           if (c == 't')
-               int myttt =0 ;
            if (c!='\0')
            {
                 temp2.clear();
@@ -332,7 +330,6 @@ NFA* e_NFA::convertToNFA()
                        start2->link(c,temp);
                    }
                }
-
                foreach(NodeNFA* node,temp3)
                {
                    if ( (!done.contains(node)) && (node->getName()!="Epsilon"))
@@ -344,7 +341,7 @@ NFA* e_NFA::convertToNFA()
                        added = true ;
                        s.push_back(node);
                    }
-                   if (!(done.contains(node)))
+                   if (!(done.contains(node)) && !(s.contains(node)))
                         s.push(node);
                }
            }

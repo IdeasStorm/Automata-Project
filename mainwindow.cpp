@@ -137,6 +137,7 @@ void MainWindow::on_pushButton_3_clicked()
         NFA *myt2 = myt3->convertToNFA();
         DFA *myt = myt2->convertToDFA();
         myt->simplify();
+
     //Build NFA
 /*    NFA *myt2 = new NFA(getAllKeywords());
     DFA *myt = myt2->convertToDFA();
