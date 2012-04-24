@@ -25,7 +25,8 @@ NodeNFA::NodeNFA(const NodeNFA & copy_from_me)
 
 void NodeNFA::link(char value, NodeNFA *second)
 {
-    nextNodes->insert(value, second);
+    if (!((nextNodes->keys().contains(value)) && (second == nextNodes->value(value))))
+        nextNodes->insert(value, second);
 }
 
 void NodeNFA::link(char value)

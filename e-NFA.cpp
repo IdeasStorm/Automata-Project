@@ -177,6 +177,8 @@ NFA* e_NFA::convertToNFA()
        temp1=getClosure(start1);    
        foreach(char c ,getAlphabetic())
        {
+           if (c == 'Z')
+               int myt = 0 ;
            if (c!='\0')
            {
                 temp2.clear();
@@ -197,17 +199,22 @@ NFA* e_NFA::convertToNFA()
                }
                foreach(NodeNFA* node,temp3)
                {
+
                    if(!(hash.keys().contains(node->getName())))
                    {
-                       NodeNFA* temp=new NodeNFA(node->getName());
-                        start2->link(c,temp);
-                       result->getAllStates().insert(temp);
-                       hash.insert(temp->getName(),temp);
-                       if(node->isFiniteState())
-                       {
-                         temp->setFinite();
-                         result->getFinitStates().insert(temp);
-                       }
+
+                       //if (node->getName()!="Epsilon")
+                        {
+                           NodeNFA* temp=new NodeNFA(node->getName());
+                            start2->link(c,temp);
+                           result->getAllStates().insert(temp);
+                           hash.insert(temp->getName(),temp);
+                           if(node->isFiniteState())
+                           {
+                             temp->setFinite();
+                             result->getFinitStates().insert(temp);
+                           }
+                        }
                    }
                    else
                    {
@@ -220,7 +227,7 @@ NFA* e_NFA::convertToNFA()
        QMultiHash<char,NodeNFA*> *nodes=start1->getNextNodes();
        foreach(NodeNFA* node,*nodes)
        {
-           if(!done.contains(node))
+           if (!done.contains(node))//&&(node->getName()!="Epsilon"))
                 s.push_back(node);
        }
         temp1.clear();
