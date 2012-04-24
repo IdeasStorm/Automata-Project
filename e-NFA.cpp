@@ -278,7 +278,7 @@ NFA* e_NFA::convertToNFA()
     QSet<NodeNFA*> temp2;
     QSet<NodeNFA*> temp3;
     QSet<NodeNFA*> done;
-
+    bool added = false ;
     while(!s.empty())
     {
        start1=s.pop();
@@ -287,6 +287,8 @@ NFA* e_NFA::convertToNFA()
        temp1=getClosure(start1);
        foreach(char c ,getAlphabetic())
        {
+           if (c == 't')
+               int myttt =0 ;
            if (c!='\0')
            {
                 temp2.clear();
@@ -325,10 +327,18 @@ NFA* e_NFA::convertToNFA()
                        start2->link(c,temp);
                    }
                }
+
                foreach(NodeNFA* node,temp3)
                {
-                   if (!done.contains(node))
+                   if ( (!done.contains(node)) && (node->getName()!="Epsilon"))
+                   {
                         s.push_back(node);
+                   }
+                   else if ( (node->getName()=="Epsilon") && (!added) )
+                   {
+                       added = true ;
+                       s.push_back(node);
+                   }
                }
            }
        }
