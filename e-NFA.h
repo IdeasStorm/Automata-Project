@@ -1,7 +1,6 @@
 #ifndef E_NFA_H
 #define E_NFA_H
 
-
 #include "NFA.h"
 #include "QStack"
 #include "nodenfa.h"
@@ -13,13 +12,16 @@ class e_NFA {
 public:
     e_NFA();
     ~e_NFA();
-    e_NFA(QList<QString>KeyWords);
+    e_NFA(QString str);
+    e_NFA(QList<QString>);
+    e_NFA* Regex(QString);
     //Build e_NFA
     void LoadE_NFA(QList<QString>KeyWords);
     // Get
     NodeNFA* getStartState();
     NodeNFA* getFinit_WordsState();
 
+    void addState(NodeNFA*);
     QSet<NodeNFA*> getFinitStates();
     QSet<NodeNFA*> getAllStates();
     QSet<NodeNFA*> getNonFinitStates();
@@ -29,12 +31,16 @@ public:
 
     void addToFinitState(NodeNFA* state);
     void addToState(NodeNFA* state);
+    void addToState(QSet<NodeNFA*> states);
     //Set
     void setStartState(NodeNFA *state);
     void setFinit_WordsState(NodeNFA *state);
 
     void setAlphabetic(QList<char> alphabetic);
     void setSeparate_wordsAlphabetic(QList<char> alphabetic);
+
+    // Parses a string and returns a list of tokens
+    QList<QString> getTokens(QString str);
 
     //Convert from e_NFA to NFA
     NFA* convertToNFA();

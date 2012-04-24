@@ -20,6 +20,7 @@ public:
     NodeNFA* getFinit_WordsState();
 	//NodeNFA * getSeparate_wordsState();
   
+    void addState(NodeNFA*);
     QSet<NodeNFA*> getFinitStates();
     QSet<NodeNFA*> getAllStates();
     QSet<NodeNFA*> getNonFinitStates();
@@ -62,6 +63,7 @@ private:
 
     void addToList(NodeNFA* node);
     QString* setToString(QSet<NodeNFA*> set);
+    QString* listToString(QList<NodeNFA*> list);
 };
 
 #endif // NFA_H
