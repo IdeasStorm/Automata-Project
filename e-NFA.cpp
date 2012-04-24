@@ -334,8 +334,6 @@ NFA* e_NFA::convertToNFA()
        }
         temp1.clear();
     }
-    if(result->getAllStates().size()==2)
-        exit(0);
     return result;
 }
 
