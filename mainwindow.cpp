@@ -100,12 +100,13 @@ void MainWindow::fillFromDFANode(NodeDFA* currentstate , DFA* dfa,GraphWidget *g
                 }
                 else
                 {
-                    t += QPointF(-50,+70);
+                    if ((t.x() >= -300) && (t.y()<=300) )
+                        t += QPointF(-50,+30);
                     fillFromDFANode(nextstate,dfa,graph,p+t,visited,nodeOfState);
                 }
 
                 Edge *edge = new Edge(node,nodeOfState.value(nextstate));
-                (ch==' ')?edge->setSymbol('___'):edge->setSymbol(ch);
+                (ch==' ')?edge->setSymbol('_'):edge->setSymbol(ch);
                 graph->currentScene->addItem(edge);
                 ui->graphicsView->currentScene->addItem(edge);
 
@@ -127,31 +128,24 @@ void MainWindow::fillFromDFANode(NodeDFA* currentstate , DFA* dfa,GraphWidget *g
 }
 
 void MainWindow::on_pushButton_3_clicked()
-{
-    // Build DFA
-     //DFA *myt = new DFA(getAllKeywords());
+{   
 
-
-    // Build E-NFA
-    e_NFA *myt3 = new e_NFA(getAllKeywords());
-    NFA *myt2 = myt3->convertToNFA();
-    DFA *myt = myt2->convertToDFA();
-    myt->simplify();
-
+        // Build DFA
+         //DFA *myt = new DFA(getAllKeywords());
+        // Build E-NFA
+        e_NFA *myt3 = new e_NFA(getAllKeywords());
+        NFA *myt2 = myt3->convertToNFA();
+        DFA *myt = myt2->convertToDFA();
+        myt->simplify();
     //Build NFA
 /*    NFA *myt2 = new NFA(getAllKeywords());
     DFA *myt = myt2->convertToDFA();
     myt->simplify();
 */
         ui->graphicsView->currentScene->clear();
-
         ui->OutPut->clear();
-
-
         QHash<QString,int> reshash = myt->SimulateDFA(filterText(ui->plainTextEdit->toPlainText()));
-
         QList<QString> res = reshash.keys();
-
         foreach(QString key,res)
         {
             int num = reshash.value(key);
