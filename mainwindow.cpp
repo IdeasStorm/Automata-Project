@@ -7,6 +7,8 @@
 #include "edge.h"
 #include <QString>
 #include <QStringList>
+#include <QHeaderView>
+#include <QMessageBox>
 bool graphic;
 
 MainWindow::MainWindow(QWidget *parent) :
@@ -62,28 +64,37 @@ void MainWindow::ViewGraphOfDFA(DFA* dfa)
 void MainWindow::createTable(NFA* nfa)
 {
     QMultiMap<QString, QPair<QString, char> >* table = nfa->getConvertTable();   
-    QStringList rowList;
-    QStringList symbols;
-    typedef QPair<QString,char> char_string;
+    QHash<QString,int> rowList;
+    QHash<QString,int> symbols;
+    typedef QPair<QString,char> char_string ;
+    int counter = 0;
     foreach (char_string value, table->values()) {
-        symbols.append(QString(value.second));
+        if (!symbols.contains(QString(value.second)))
+            symbols.insert(QString(value.second),counter++);
+    }
+    counter = 0;
+    foreach (QString key, table->keys()) {
+        if (!rowList.contains(key))
+            rowList.insert(key,counter++);
     }
 
-    foreach (QString key, table->keys()) {
-        rowList.append(key);
-    }
 
-    ui->tableWidget->setVerticalHeaderLabels(rowList);
-    ui->tableWidget->setHorizontalHeaderLabels(symbols);
-
+    ui->tableWidget->setColumnCount(symbols.count());
+    ui->tableWidget->setRowCount(rowList.count());
     foreach (QString key, table->keys()) {
-        QString str;
         QList<QPair<QString, char> > values = table->values(key);
         foreach (char_string pair, values) {
-            pair;
+            QString str = pair.first;
+            QTableWidgetItem *item = new QTableWidgetItem(str);
+            int row = rowList.value(key);
+            int col = symbols.value(QString(pair.second));
+            QMessageBox::information(this,QString("%1,%2").arg(row).arg(col),str,0);
+            ui->tableWidget->setItem(row,col,item);
+            ui->tableWidget->repaint();
         }
-        QTableWidgetItem item(str);
     }
+    ui->tableWidget->setVerticalHeaderLabels(rowList.keys());
+    ui->tableWidget->setHorizontalHeaderLabels(symbols.keys());
 }
 
 void MainWindow::fillFromDFANode(NodeDFA* currentstate , DFA* dfa,GraphWidget *graph,QPointF p,QSet<NodeDFA*>& visited,QHash<NodeDFA*,Node*>& nodeOfState)
@@ -203,4 +214,10 @@ void MainWindow::on_radioButton_2_clicked()
     ui->graphicsView->hide();
     ui->tableWidget->show();
     graphic = false;
+}
+
+void MainWindow::on_tableWidget_cellClicked(int row, int column)
+{
+
+    QMessageBox::information(this,"alert",QString("%1 , %2").arg(row).arg(column),0);
 }
