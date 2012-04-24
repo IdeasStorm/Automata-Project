@@ -58,7 +58,7 @@ public:
     void loadFromDFA(DFA* dfa);
     Node *createNode(NodeDFA* node);
     QGraphicsScene * getCurrentScene();
-    QGraphicsScene *currentScene;
+    QGraphicsScene * currentScene;
 protected:
     void keyPressEvent(QKeyEvent *event);
     void timerEvent(QTimerEvent *event);

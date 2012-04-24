@@ -17,7 +17,7 @@ public:
     QList<QString>getAllKeywords();
     int getWordCount();
 void buildDFA(QString *KeyWords,int numberWords);
-void ViewGraphOfDFA(DFA* dfa);
+void ViewGraphOfDFA(DFA* dfa, GraphWidget *graph);
 void fillFromDFANode(NodeDFA* currentstate , DFA* dfa,GraphWidget *graph,QPointF p,QSet<NodeDFA*>&,QHash<NodeDFA*,Node*>&);
 
 private slots:

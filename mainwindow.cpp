@@ -46,9 +46,8 @@ QList<QString> MainWindow::getAllKeywords()
     return all_words;
 }
 
-void MainWindow::ViewGraphOfDFA(DFA* dfa)
+void MainWindow::ViewGraphOfDFA(DFA* dfa ,GraphWidget * graph)
 {
-    GraphWidget *graph = new GraphWidget();
     QPointF p(-80,-70);
     QSet<NodeDFA*> visited ;
     QHash<NodeDFA*,Node*> hash ;
@@ -61,6 +60,7 @@ void MainWindow::fillFromDFANode(NodeDFA* currentstate , DFA* dfa,GraphWidget *g
     else{
         visited.insert(currentstate);
         Node *node = graph->createNode(currentstate);
+        graph->currentScene->addItem(node);
         node->setText(QString(currentstate->getName()));
         nodeOfState.insert(currentstate,node);
         if (currentstate==dfa->getSeparate_wordsState())
@@ -92,7 +92,8 @@ void MainWindow::fillFromDFANode(NodeDFA* currentstate , DFA* dfa,GraphWidget *g
                 }
 
                 Edge *edge = new Edge(node,nodeOfState.value(nextstate));
-                (ch==' ')?edge->setSymbol('|'):edge->setSymbol(ch);
+                (ch==' ')?edge->setSymbol('___'):edge->setSymbol(ch);
+                graph->currentScene->addItem(edge);
                 ui->graphicsView->currentScene->addItem(edge);
 
             }
@@ -105,28 +106,32 @@ void MainWindow::fillFromDFANode(NodeDFA* currentstate , DFA* dfa,GraphWidget *g
                 }
             }
         }
-//        Edge *edgeToSeperatedWords = new Edge(node,nodeOfState.value(dfa->Separate_wordsState));
-  //      edgeToSeperatedWords->setSymbol('?');
-    //    ui->graphicsView->currentScene->addItem(edgeToSeperatedWords);
+        Edge *edgeToSeperatedWords = new Edge(node,nodeOfState.value(dfa->Separate_wordsState));
+        edgeToSeperatedWords->setSymbol('?');
+        graph->currentScene->addItem(edgeToSeperatedWords);
+        ui->graphicsView->currentScene->addItem(edgeToSeperatedWords);
     }//from else
 }
 
 void MainWindow::on_pushButton_3_clicked()
 {
-    //Build DFA
-        //DFA *myt = new DFA(getAllKeywords());
+    // Build DFA
+    // DFA *myt = new DFA(getAllKeywords());
 
-        //Build E-NFA
-        //e_NFA *myt = new e_NFA(getAllKeywords());
 
-        //Build NFA
-        NFA *mytt = new NFA(getAllKeywords());
-        DFA *myt = mytt->convertToDFA();
+    // Build E-NFA
+    e_NFA *myt3 = new e_NFA(getAllKeywords());
+    NFA *myt2 = myt3->convertToNFA();
+    DFA *myt = myt2->convertToDFA();
+    myt->simplify();
+
+    //Build NFA
+    //NFA *myt2 = new NFA(getAllKeywords(),getWordCount());
+    //DFA *myt = myt2->convertToDFA();
 
         ui->graphicsView->currentScene->clear();
 
         ui->OutPut->clear();
-
 
         QHash<QString,int> reshash = myt->SimulateDFA(ui->plainTextEdit->toPlainText());
 
@@ -140,8 +145,8 @@ void MainWindow::on_pushButton_3_clicked()
             QString* str = new QString(key + number);
             ui->OutPut->addItem(new QListWidgetItem(*str));
         }
-        ViewGraphOfDFA(myt);
-
+        GraphWidget *graph = new GraphWidget();
+        ViewGraphOfDFA(myt,graph);
 }
 
 int MainWindow::getWordCount()
