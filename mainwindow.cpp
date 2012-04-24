@@ -100,7 +100,7 @@ void MainWindow::fillFromDFANode(NodeDFA* currentstate , DFA* dfa,GraphWidget *g
                 }
                 else
                 {
-                    if ((t.x() >= -300) && (t.y()<=300) )
+                    if ((t.x() >= -50) && (t.y() <= 100) )
                         t += QPointF(-50,+30);
                     fillFromDFANode(nextstate,dfa,graph,p+t,visited,nodeOfState);
                 }

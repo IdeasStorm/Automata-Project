@@ -330,6 +330,7 @@ NFA* e_NFA::convertToNFA()
                        start2->link(c,temp);
                    }
                }
+
                foreach(NodeNFA* node,temp3)
                {
                    if ( (!done.contains(node)) && (node->getName()!="Epsilon"))
