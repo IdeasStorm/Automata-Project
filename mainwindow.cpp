@@ -114,14 +114,14 @@ void MainWindow::fillFromDFANode(NodeDFA* currentstate , DFA* dfa,GraphWidget *g
 void MainWindow::on_pushButton_3_clicked()
 {
     //Build DFA
-        DFA *myt = new DFA(getAllKeywords());
+        //DFA *myt = new DFA(getAllKeywords());
 
         //Build E-NFA
         //e_NFA *myt = new e_NFA(getAllKeywords());
 
         //Build NFA
-        //NFA *mytt = new NFA(getAllKeywords());
-        //DFA *myt = mytt->convertToDFA();
+        NFA *mytt = new NFA(getAllKeywords());
+        DFA *myt = mytt->convertToDFA();
 
         ui->graphicsView->currentScene->clear();
 

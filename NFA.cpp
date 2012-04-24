@@ -7,7 +7,7 @@ QList<char> NFA::Alphabetic;
 
 NFA::NFA(QList<QString>KeyWords)
 {
-    //NFA();
+
     StartState = new NodeNFA("q0") ;
     AllStates.insert(StartState);
     StartState->link(' ',StartState);
