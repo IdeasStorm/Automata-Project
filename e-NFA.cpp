@@ -142,7 +142,6 @@ QSet<NodeNFA *> e_NFA::getClosure(NodeNFA * state)
     {
         q=s.pop();
         r=q->getNextNode('\0');
-
         foreach (NodeNFA* n,r)
         {
             if (!set.contains(n))
