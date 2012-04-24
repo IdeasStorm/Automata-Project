@@ -272,7 +272,7 @@ QSet<NodeNFA *> e_NFA::getClosure(NodeNFA * state)
 
 NFA* e_NFA::convertToNFA()
 {
-    NFA* result = new NFA();int i=0;
+    NFA* result = new NFA();
     NodeNFA* start1=getStartState();
     NodeNFA* start2=result->getStartState();
     QStack<NodeNFA*> s;
@@ -323,7 +323,6 @@ NFA* e_NFA::convertToNFA()
                          temp->setFinite();
                          result->addFinitState(temp);
                        }
-                       i++;
                    }
                    else
                    {
@@ -334,7 +333,7 @@ NFA* e_NFA::convertToNFA()
                foreach(NodeNFA* node,temp3)
                {
                    if (!(done.contains(node)))
-                        s.push_back(node);
+                        s.push(node);
                }
            }
        }
