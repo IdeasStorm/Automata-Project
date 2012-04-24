@@ -107,7 +107,6 @@ e_NFA* e_NFA::Regex(QString expression)
             node = NFAnode;
         }
     }
-    e_nfa->setFinit_WordsState(node);
     //make the node finite
     //node->setFinite();
     //add it to finite set
@@ -200,15 +199,6 @@ void e_NFA::LoadE_NFA(QList<QString>KeyWords)
     foreach (QString s ,KeyWords)
     {
         CurrentState = StartState ;
-        if (s.contains('*'))
-        {
-            e_NFA* temp = Regex(s);
-            CurrentState->link('\0',temp->StartState);
-            addToState(temp->getAllStates());
-            temp->Finit_wordsState->setNotFinite();
-            temp->Finit_wordsState->link(' ',Finit_wordsState);
-            continue;
-        }
         NextState = new NodeNFA("Epsilon");
         AllStates.insert(NextState);
         CurrentState->link('\0',NextState);
@@ -216,6 +206,17 @@ void e_NFA::LoadE_NFA(QList<QString>KeyWords)
         //For link each NodeNFA with another NodeNFA Based input
         for (int j=0;j<s.length();j++)
         {
+            if (s[j].cell() == '*')
+            {
+                for(char c='a';c<='z';c++)
+                    CurrentState->link(c);
+                for(char c='A';c<='Z';c++)
+                    CurrentState->link(c);
+                if (j!=s.length()-1)
+                    NextState->link(' ', StartState);
+                continue;
+            }
+
             QString num;
             num.setNum(CounterState++);
             NextState = new NodeNFA(num);
