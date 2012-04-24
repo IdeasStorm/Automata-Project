@@ -6,12 +6,18 @@
 #include "node.h"
 #include "edge.h"
 #include <QString>
+#include <QStringList>
+#include <QHeaderView>
+#include <QMessageBox>
+bool graphic;
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
+    graphic = true;
+    ui->tableWidget->hide();
 }
 
 MainWindow::~MainWindow()
@@ -66,6 +72,43 @@ void MainWindow::ViewGraphOfDFA(DFA* dfa ,GraphWidget * graph)
     QHash<NodeDFA*,Node*> hash ;
     fillFromDFANode(dfa->getStartState(),dfa,graph,p,visited,hash);
 }
+
+void MainWindow::createTable(NFA* nfa)
+{
+    QMultiMap<QString, QPair<QString, char> >* table = nfa->getConvertTable();   
+    QHash<QString,int> rowList;
+    QHash<QString,int> symbols;
+    typedef QPair<QString,char> char_string ;
+    int counter = 0;
+    foreach (char_string value, table->values()) {
+        if (!symbols.contains(QString(value.second)))
+            symbols.insert(QString(value.second),counter++);
+    }
+    counter = 0;
+    foreach (QString key, table->keys()) {
+        if (!rowList.contains(key))
+            rowList.insert(key,counter++);
+    }
+
+
+    ui->tableWidget->setColumnCount(symbols.count());
+    ui->tableWidget->setRowCount(rowList.count());
+    foreach (QString key, table->keys()) {
+        QList<QPair<QString, char> > values = table->values(key);
+        foreach (char_string pair, values) {
+            QString str = pair.first;
+            QTableWidgetItem *item = new QTableWidgetItem(str);
+            int row = rowList.value(key);
+            int col = symbols.value(QString(pair.second));
+            QMessageBox::information(this,QString("%1,%2").arg(row).arg(col),str,0);
+            ui->tableWidget->setItem(row,col,item);
+            ui->tableWidget->repaint();
+        }
+    }
+    ui->tableWidget->setVerticalHeaderLabels(rowList.keys());
+    ui->tableWidget->setHorizontalHeaderLabels(symbols.keys());
+}
+
 void MainWindow::fillFromDFANode(NodeDFA* currentstate , DFA* dfa,GraphWidget *graph,QPointF p,QSet<NodeDFA*>& visited,QHash<NodeDFA*,Node*>& nodeOfState)
 {
     if (visited.contains(currentstate))
@@ -128,7 +171,16 @@ void MainWindow::fillFromDFANode(NodeDFA* currentstate , DFA* dfa,GraphWidget *g
 }
 
 void MainWindow::on_pushButton_3_clicked()
-{   
+{
+    //Build DFA
+    //DFA *myt = new DFA(getAllKeywords());
+
+    //Build E-NFA
+    //e_NFA *myt = new e_NFA(getAllKeywords());
+
+    //Build NFA
+    //NFA *mytt = new NFA(getAllKeywords());
+    //DFA *myt = mytt->convertToDFA();
 
         // Build DFA
          //DFA *myt = new DFA(getAllKeywords());
@@ -175,4 +227,24 @@ QString MainWindow::filterText(QString s)
 int MainWindow::getWordCount()
 {
     return ui->listWidget->count();
+}
+
+void MainWindow::on_radioButton_clicked()
+{
+    ui->tableWidget->hide();
+    ui->graphicsView->show();
+    graphic = true;
+}
+
+void MainWindow::on_radioButton_2_clicked()
+{
+    ui->graphicsView->hide();
+    ui->tableWidget->show();
+    graphic = false;
+}
+
+void MainWindow::on_tableWidget_cellClicked(int row, int column)
+{
+    // just for debugging
+    //QMessageBox::information(this,"alert",QString("%1 , %2").arg(row).arg(column),0);
 }

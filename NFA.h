@@ -18,7 +18,8 @@ public:
     // Get
     NodeNFA* getStartState();
     NodeNFA* getFinit_WordsState();
-	//NodeNFA * getSeparate_wordsState();
+    QMultiMap<QString, QPair<QString, char> >* getConvertTable();
+    //NodeNFA * getSeparate_wordsState();
   
     void addState(NodeNFA*);
     void addFinitState(NodeNFA*);
@@ -48,7 +49,7 @@ public:
     //to Pure NFA
     void toPureNFA(NFA*);
     QList<NodeNFA*> * func(QList<NodeNFA*>* a,QList<NodeNFA*>*b);
-	
+
 private:
     NodeNFA *StartState ;
     //NodeNFA *Separate_wordsState;
@@ -65,6 +66,7 @@ private:
     void addToList(NodeNFA* node);
     QString* setToString(QSet<NodeNFA*> set);
     QString* listToString(QList<NodeNFA*> list);
+    QMultiMap<QString, QPair<QString, char> > *convertTable;
 };
 
 #endif // NFA_H

@@ -54,8 +54,6 @@ DFA::DFA(QList<QString>KeyWords)
             Separate_wordsState->link(' ',StartState);
     }
 
-
-
     if (KeyWords.length() > 0)
     {
         Finit_wordsState = new NodeDFA(">");
@@ -63,8 +61,6 @@ DFA::DFA(QList<QString>KeyWords)
         FinitStates.insert(Finit_wordsState);
         AllStates.insert(Finit_wordsState);
     }
-
-
 
     LoadDFA(KeyWords);
 }
