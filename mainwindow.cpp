@@ -21,11 +21,23 @@ MainWindow::~MainWindow()
 
 void MainWindow::on_pushButton_clicked()
 {
-    if (ui->lineEdit->text() != "") //&&(!getAllKeywords()->contains(ui->lineEdit->text())
+
+    NFA* test  = new NFA();
+    if ((ui->lineEdit->text() != "") && (!getAllKeywords().contains(ui->lineEdit->text()) ))
     {
-        ui->listWidget->addItem(new QListWidgetItem(ui->lineEdit->text()));
+        QString s = ui->lineEdit->text();
+        QString res ;
+        for (int j=0;j<s.length();j++)
+        {
+            if (((NFA::getAlphabetic()).contains(s[j].cell())) && (s[j]!=' '))
+                res +=s[j];
+        }
+
+        ui->listWidget->addItem(new QListWidgetItem(res));
         ui->lineEdit->setText("");
     }
+    else
+        ui->lineEdit->setText("");
 }
 
 void MainWindow::on_pushButton_2_clicked()
@@ -40,7 +52,8 @@ QList<QString> MainWindow::getAllKeywords()
     QList<QListWidgetItem*> all_items = ui->listWidget->findItems("*", Qt::MatchWrap | Qt::MatchWildcard);
     QList<QString> all_words ;
     int i = 0;
-    foreach (QListWidgetItem* item, all_items) {
+    foreach (QListWidgetItem* item, all_items)
+    {
         all_words.insert(i++,item->text());
     }
     return all_words;
