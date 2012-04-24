@@ -20,6 +20,7 @@ public:
     NodeNFA* getFinit_WordsState();
 	//NodeNFA * getSeparate_wordsState();
   
+    void addState(NodeNFA*);
     QSet<NodeNFA*> getFinitStates();
     QSet<NodeNFA*> getAllStates();
     QSet<NodeNFA*> getNonFinitStates();

@@ -142,6 +142,14 @@ void NFA::addToList(NodeNFA* node)
        temp.append(node);
 }
 
+void NFA::addState(NodeNFA *state)
+{
+
+AllStates.insert(state);
+
+
+}
+
 QString* NFA::setToString(QSet<NodeNFA*> set)
 {
     QString* str = new QString();

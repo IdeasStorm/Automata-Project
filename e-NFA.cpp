@@ -51,6 +51,10 @@ e_NFA::e_NFA(QList<QString>KeyWords)
 
     LoadE_NFA(KeyWords);
 }
+void e_NFA::addState(NodeNFA* state)
+{
+    AllStates.insert(state);
+}
 
 //GET
 NodeNFA* e_NFA::getStartState()
@@ -199,7 +203,7 @@ NFA* e_NFA::convertToNFA()
                    {
                        NodeNFA* temp=new NodeNFA(node->getName());
                        start2->link(c,temp);
-                       result->getAllStates().insert(temp);
+                       result->addState(temp);
                        hash.insert(temp->getName(),temp);
                        if(node->isFiniteState())
                        {
@@ -222,6 +226,8 @@ NFA* e_NFA::convertToNFA()
        }
         temp1.clear();
     }
+    if(result->getAllStates().size()==2)
+        exit(0);
     return result;
 }
 
