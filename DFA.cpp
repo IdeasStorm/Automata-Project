@@ -290,8 +290,6 @@ void DFA::simplify()
                         new_group.clear();
                         no_diff = true;
                     }
-
-
                 }
                 // checking whether there is any out-going nodes
                 if (!no_diff) {
@@ -314,7 +312,7 @@ void DFA::simplify()
             bool at_first_node = false;
             bool at_last_node = false;
             // merge nodes
-            NodeDFA* new_node = new NodeDFA(1); //TODO must change name
+            NodeDFA* new_node = new NodeDFA("q!"); //TODO must change name
             foreach (NodeDFA* node, group) {
                 foreach (char symbol, Alphabetic) { // all symbols
                     new_node->link(symbol, node->nextNode(symbol));
@@ -339,7 +337,7 @@ void DFA::simplify()
             foreach (NodeDFA* node, group){
                 FinitStates.remove(node);
                 AllStates.remove(node);
-                delete node;
+//                delete node;
             }
         }
     }
