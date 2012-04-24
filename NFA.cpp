@@ -30,6 +30,7 @@ NFA::NFA()
 
 NFA::NFA(QList<QString>KeyWords)
 {
+
     StartState = new NodeNFA("q0") ;
     AllStates.insert(StartState);
     StartState->link(' ',StartState);
@@ -158,12 +159,20 @@ QString* NFA::setToString(QSet<NodeNFA*> set)
     return str;
 }
 
+QString* NFA::listToString(QList<NodeNFA*> list)
+{
+    QString* str = new QString();
+    foreach (NodeNFA* node, list)
+        str->append(node->getName());
+    return str;
+}
+
 DFA* NFA::convertToDFA()
 {
     NodeDFA* DFANode;
     DFA* dfa = new DFA();
-    QMap<QPair<QString, char>, NodeDFA*> *Helper =
-            new QMap<QPair<QString, char>, NodeDFA*>();
+    QMap<QPair<QString, char>, QString> *Helper =
+            new QMap<QPair<QString, char>, QString>();
     QList< QSet<NodeNFA*> > groups;
     QHash<QString, NodeDFA*>* nodes
             = new QHash<QString, NodeDFA*>();
@@ -173,7 +182,6 @@ DFA* NFA::convertToDFA()
     nodes->insert(StartState->getName(), DFANode);
     dfa->setStartState(DFANode);
     dfa->addToState(DFANode);
-    Helper->insert(QPair<QString, char>("q0", ' '), DFANode);
     groups.append(set);
     int i=0, nodeNum=0, AllNodes = 1;
     QString toSet;
@@ -198,7 +206,6 @@ DFA* NFA::convertToDFA()
                 }
                 else
                 {
-                    Helper->insert(QPair<QString, char>(toSet, '?'), dfa->getSeparate_wordsState());
                     QString str = *setToString(groups.at(i));
                     nodes->value(str)->link(symbol, dfa->getSeparate_wordsState());
                 }
@@ -212,36 +219,38 @@ DFA* NFA::convertToDFA()
                         {
                             QString str = *setToString(groups.at(i));
                             nodes->value(str)->link(symbol, dfa->getFinit_WordsState());
+                            Helper->insert(QPair<QString, char>(str, symbol),
+                                           *listToString(temp));
                         }
                         else
                         {
                             groups.append(temp.toSet());
                             NodeDFA* Dfa = new NodeDFA(AllNodes);
                             AllNodes++;
-                            Helper->insert(QPair<QString, char>(toSet, symbol), Dfa);
                             if (nodes->count()-1 < 1)
+                            {
                                 DFANode->link(symbol, Dfa);
+                                Helper->insert(QPair<QString, char>("q0", symbol),
+                                               *listToString(temp));
+                            }
                             else
                             {
                                 QString str = *setToString(groups.at(i));
                                 nodes->value(str)->link(symbol, Dfa);
+                                Helper->insert(QPair<QString, char>(str, symbol),
+                                               *listToString(temp));
                             }
                             QString str = *setToString(groups.last());
                             nodes->insert(str, Dfa);
                             dfa->addToState(Dfa);
                         }
                     }
-                    /*
-                    else if (symbol != ' ')
-                    {
-                        QString str = *setToString(groups.at(i));
-                        nodes->value(str)->link(symbol, dfa->getSeparate_wordsState());
-                    }*/
                     else
                     {
                         QString str = *setToString(groups.at(i));
                         QString str2 = *setToString(temp.toSet());
                         nodes->value(str)->link(symbol, nodes->value(str2));
+                        Helper->insert(QPair<QString, char>(str, symbol), str2);
                     }
                     temp.clear();
                     finite = false;

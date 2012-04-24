@@ -2,6 +2,7 @@
 
 QList<char>e_NFA::Alphabetic;
 
+
 e_NFA::e_NFA()
 {
     StartState = new NodeNFA("q0") ;
@@ -23,6 +24,96 @@ e_NFA::e_NFA()
         Alphabetic.insert(i++,ch);
     }
     Alphabetic.insert(i++,' ');
+}
+
+e_NFA::e_NFA (QString str)
+{
+    StartState = new NodeNFA("q0") ;
+    AllStates.insert(StartState);
+    StartState->link(' ',StartState);
+
+    //
+    int i = 0 ;
+    for (char ch = 'a';ch<='z';ch++)
+    {
+        Alphabetic.insert(i++,ch);
+    }
+    for (char ch = 'A';ch<='Z';ch++)
+    {
+        Alphabetic.insert(i++,ch);
+    }
+    Alphabetic.insert(i++,' ');
+
+    NodeNFA* current  = StartState, *Next ;
+    int count = 0 ;
+    for (int j=0;j<str.length();j++)
+    {
+        QString num;
+        num.setNum(count++);
+        Next = new NodeNFA(num);
+        AllStates.insert(Next);
+        current->link(str[j].cell(),Next);
+        if (j!=str.length()-1)
+            Next->link(' ',StartState);
+        current = Next ;
+    }
+    current->setFinite();
+    FinitStates.insert(current);
+    current->link('\0',StartState);
+    setFinit_WordsState(current);
+}
+
+e_NFA* e_NFA::Regex(QString expression)
+{
+    QList<QString> tokens = getTokens(expression);
+    //StartState = new NodeNFA("q0");
+    e_NFA* e_nfa = new e_NFA();
+    e_nfa->setStartState(new NodeNFA("q1"));
+    NodeNFA* node = e_nfa->getStartState();//StartState;
+    int nodesNum = 2;
+    foreach (QString token, tokens)
+    {
+        if(token == "*")
+        {
+            for(char c='a';c<='z';c++)
+                node->link(c);
+            for(char c='A';c<='Z';c++)
+                node->link(c);
+        }
+        else
+        {
+            //create NFA
+            e_NFA* nfa = new e_NFA(token);
+            //connect node with start state of e_nfa by eps
+            node->link('\0', nfa->getStartState());
+            //node is the last state
+            node = nfa->getFinit_WordsState();
+            //node is not finite state now
+            node->setNotFinite();
+            //remove it from FiniteState set
+            //nfa->getFinitStates().remove(node);
+            //add node to nodesNum
+            nodesNum += nfa->getAllStates().count();
+            e_nfa->getFinit_WordsState()->setNotFinite();
+            //e_nfa->setFinitStats(e_nfa->getFinitStates().remove(e_nfa->getFinit_WordsState()));
+            //add nodes to AllState set
+            e_nfa->addToState(nfa->getAllStates());
+            //create new node
+            NodeNFA* NFAnode = new NodeNFA(nodesNum);
+            nodesNum++;
+            //link the last node of nfa with new node by eps
+            node->link('\0', NFAnode);
+            //make it the node
+            node = NFAnode;
+        }
+    }
+    //make the node finite
+    //node->setFinite();
+    //add it to finite set
+    //addToFinitState(node);
+    //make it the finit words State
+    //Finit_wordsState = node;
+    return e_nfa;
 }
 
 e_NFA::e_NFA(QList<QString>KeyWords)
@@ -91,6 +182,12 @@ void e_NFA::setFinit_WordsState(NodeNFA *state)
 void e_NFA::addToFinitState(NodeNFA* state)
 { FinitStates.insert(state); }
 
+void e_NFA::addToState(QSet<NodeNFA*> states)
+{
+    foreach(NodeNFA* node, states)
+        AllStates.insert(node);
+}
+
 void e_NFA::addToState(NodeNFA* state)
 { AllStates.insert(state); }
 
@@ -105,7 +202,7 @@ void e_NFA::LoadE_NFA(QList<QString>KeyWords)
     //for (int i=0;i<numberWords;i++)
     foreach (QString s ,KeyWords)
     {
-        CurrentState = StartState;
+        CurrentState = StartState ;
         NextState = new NodeNFA("Epsilon");
         AllStates.insert(NextState);
         CurrentState->link('\0',NextState);
@@ -113,6 +210,17 @@ void e_NFA::LoadE_NFA(QList<QString>KeyWords)
         //For link each NodeNFA with another NodeNFA Based input
         for (int j=0;j<s.length();j++)
         {
+            if (s[j].cell() == '*')
+            {
+                for(char c='a';c<='z';c++)
+                    CurrentState->link(c);
+                for(char c='A';c<='Z';c++)
+                    CurrentState->link(c);
+                if (j!=s.length()-1)
+                    NextState->link(' ', StartState);
+                continue;
+            }
+
             QString num;
             num.setNum(CounterState++);
             NextState = new NodeNFA(num);
@@ -239,3 +347,20 @@ e_NFA::~e_NFA()
     }
 }
 
+QList<QString> e_NFA::getTokens(QString str)
+{
+    QList<QString> result;
+    QString buffer;
+    foreach (QChar c, str) {
+        if (c == '*') {
+            if (buffer != "")
+                result.append(buffer);
+            result.append("*");
+            buffer.clear();
+        } else {
+            buffer.append(c);
+        }    }
+    if (!buffer.isEmpty())
+        result.append(buffer);
+    return result;
+}
