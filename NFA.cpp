@@ -142,6 +142,12 @@ void NFA::addToList(NodeNFA* node)
     if (!temp.contains(node))
        temp.append(node);
 }
+void NFA::addFinnitState(NodeNFA * state)
+{
+
+    FinitStates.insert(state);
+
+}
 
 void NFA::addState(NodeNFA *state)
 {
