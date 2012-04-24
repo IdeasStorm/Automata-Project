@@ -173,6 +173,8 @@ NFA* e_NFA::convertToNFA()
        done.insert(start1);
        start2=hash.value(start1->getName());
        temp1=getClosure(start1);
+       if(temp1.size()==1)
+           exit(0);
        foreach(char c ,getAlphabetic())
        {
            if (c!='\0')
@@ -197,7 +199,7 @@ NFA* e_NFA::convertToNFA()
                {
 
                    if(!(hash.keys().contains(node->getName())))
-                   {   //if (node->getName()!="Epsilon")
+                   {
                        NodeNFA* temp=new NodeNFA(node->getName());
                         start2->link(c,temp);
                        result->getAllStates().insert(temp);
@@ -212,18 +214,22 @@ NFA* e_NFA::convertToNFA()
                    {
                        NodeNFA* temp=hash.value(node->getName());
                        start2->link(c,temp);
+                     //  exit(0);
                    }
+               }
+               foreach(NodeNFA* node,temp3)
+               {
+                   if (!done.contains(node))
+                        s.push_back(node);
                }
            }
        }
-       QMultiHash<char,NodeNFA*> *nodes=start1->getNextNodes();
-       foreach(NodeNFA* node,*nodes)
-       {
-           if (!done.contains(node))//&&(node->getName()!="Epsilon"))
-                s.push_back(node);
-       }
+      // QMultiHash<char,NodeNFA*> *nodes=start1->getNextNodes();
+
         temp1.clear();
     }
+   // if(result->getAllStates().size()==2)
+     //   exit(0);
     return result;
 }
 
