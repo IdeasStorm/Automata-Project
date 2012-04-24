@@ -29,7 +29,7 @@ void MainWindow::on_pushButton_clicked()
         QString res ;
         for (int j=0;j<s.length();j++)
         {
-            if (((NFA::getAlphabetic()).contains(s[j].cell())) && (s[j]!=' '))
+            if ((((NFA::getAlphabetic()).contains(s[j].cell())) && (s[j]!=' ')) ||(s[j]=='*'))
                 res +=s[j];
         }
 
@@ -119,17 +119,17 @@ void MainWindow::fillFromDFANode(NodeDFA* currentstate , DFA* dfa,GraphWidget *g
                 }
             }
         }
-        Edge *edgeToSeperatedWords = new Edge(node,nodeOfState.value(dfa->Separate_wordsState));
-        edgeToSeperatedWords->setSymbol('?');
-        graph->currentScene->addItem(edgeToSeperatedWords);
-        ui->graphicsView->currentScene->addItem(edgeToSeperatedWords);
+        //Edge *edgeToSeperatedWords = new Edge(node,nodeOfState.value(dfa->Separate_wordsState));
+        //edgeToSeperatedWords->setSymbol('?');
+        //graph->currentScene->addItem(edgeToSeperatedWords);
+        //ui->graphicsView->currentScene->addItem(edgeToSeperatedWords);
     }//from else
 }
 
 void MainWindow::on_pushButton_3_clicked()
 {
     // Build DFA
-    // DFA *myt = new DFA(getAllKeywords());
+     //DFA *myt = new DFA(getAllKeywords());
 
 
     // Build E-NFA
@@ -139,10 +139,10 @@ void MainWindow::on_pushButton_3_clicked()
     myt->simplify();
 
     //Build NFA
-    //NFA *myt2 = new NFA(getAllKeywords());
-    //DFA *myt = myt2->convertToDFA();
-    //myt->simplify();
-
+/*    NFA *myt2 = new NFA(getAllKeywords());
+    DFA *myt = myt2->convertToDFA();
+    myt->simplify();
+*/
         ui->graphicsView->currentScene->clear();
 
         ui->OutPut->clear();
@@ -162,7 +162,6 @@ void MainWindow::on_pushButton_3_clicked()
         }
         GraphWidget *graph = new GraphWidget();
         ViewGraphOfDFA(myt,graph);
-        //graph->loadFromDFA(myt);
 }
 
 QString MainWindow::filterText(QString s)

@@ -111,6 +111,16 @@ void NFA::LoadNFA(QList<QString>KeyWords)
         //For link each NodeNFA with another NodeNFA Based input
         for (int j=0;j<s.length();j++)
         {
+            if (s[j].cell() == '*')
+            {
+                for(char c='a';c<='z';c++)
+                    CurrentState->link(c);
+                for(char c='A';c<='Z';c++)
+                    CurrentState->link(c);
+                if (j!=s.length()-1)
+                    NextState->link(' ', StartState);
+                continue;
+            }
             NextState = new NodeNFA(CounterState++);
             AllStates.insert(NextState);
             CurrentState->link(s[j].cell(),NextState);

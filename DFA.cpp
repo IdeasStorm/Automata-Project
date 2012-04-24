@@ -172,6 +172,7 @@ void DFA::LoadDFA(QList<QString>KeyWords)
                 CurrentState->link(s[j].cell(),NextState);
                 //if (CurrentState->nextNode(' ')==CurrentState->nextNode('?'))
 //                    CurrentState->link(' ',StartState);
+
                 CurrentState = NextState ;
             }
             else
