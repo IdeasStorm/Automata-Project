@@ -41,7 +41,10 @@ e_NFA* e_NFA::Regex(QString expression)
     {
         if(token == "*")
         {
-            node->link('|');
+            for(char c='a';c<='z';c++)
+                node->link(c);
+            for(char c='A';c<='Z';c++)
+                node->link(c);
         }
         else
         {
