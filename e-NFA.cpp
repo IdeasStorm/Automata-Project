@@ -321,7 +321,7 @@ NFA* e_NFA::convertToNFA()
                        if(node->isFiniteState())
                        {
                          temp->setFinite();
-                         result->addFinnitState(temp);
+                         result->addFinitState(temp);
                        }
                    }
                    else
