@@ -290,8 +290,6 @@ void DFA::simplify()
                         new_group.clear();
                         no_diff = true;
                     }
-
-
                 }
                 // checking whether there is any out-going nodes
                 if (!no_diff) {

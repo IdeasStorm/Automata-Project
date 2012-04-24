@@ -195,11 +195,10 @@ NFA* e_NFA::convertToNFA()
                }
                foreach(NodeNFA* node,temp3)
                {
-
                    if(!(hash.keys().contains(node->getName())))
                    {   //if (node->getName()!="Epsilon")
                        NodeNFA* temp=new NodeNFA(node->getName());
-                        start2->link(c,temp);
+                       start2->link(c,temp);
                        result->getAllStates().insert(temp);
                        hash.insert(temp->getName(),temp);
                        if(node->isFiniteState())
