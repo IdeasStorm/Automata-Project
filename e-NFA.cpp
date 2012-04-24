@@ -46,15 +46,20 @@ e_NFA::e_NFA (QString str)
 
     NodeNFA* current  = StartState, *Next ;
     int count = 0 ;
-    foreach (QChar c , str)
+    for (int j=0;j<str.length();j++)
     {
-        Next = new NodeNFA(QString(++count));
+        QString num;
+        num.setNum(count++);
+        Next = new NodeNFA(num);
         AllStates.insert(Next);
-        current->link(c.cell(),Next);
+        current->link(str[j].cell(),Next);
+        if (j!=str.length()-1)
+            Next->link(' ',StartState);
         current = Next ;
     }
     current->setFinite();
     FinitStates.insert(current);
+    current->link('\0',StartState);
     setFinit_WordsState(current);
 }
 
@@ -86,11 +91,13 @@ e_NFA* e_NFA::Regex(QString expression)
             //node is not finite state now
             node->setNotFinite();
             //remove it from FiniteState set
-            nfa->getFinitStates().remove(node);
+            //nfa->getFinitStates().remove(node);
             //add node to nodesNum
             nodesNum += nfa->getAllStates().count();
+            e_nfa->getFinit_WordsState()->setNotFinite();
+            //e_nfa->setFinitStats(e_nfa->getFinitStates().remove(e_nfa->getFinit_WordsState()));
             //add nodes to AllState set
-            addToState(nfa->getFinitStates());
+            e_nfa->addToState(nfa->getAllStates());
             //create new node
             NodeNFA* NFAnode = new NodeNFA(nodesNum);
             nodesNum++;
@@ -100,12 +107,14 @@ e_NFA* e_NFA::Regex(QString expression)
             node = NFAnode;
         }
     }
+    e_nfa->setFinit_WordsState(node);
     //make the node finite
     //node->setFinite();
     //add it to finite set
     //addToFinitState(node);
     //make it the finit words State
     //Finit_wordsState = node;
+    return e_nfa;
 }
 
 e_NFA::e_NFA(QList<QString>KeyWords)
@@ -195,10 +204,11 @@ void e_NFA::LoadE_NFA(QList<QString>KeyWords)
         {
             e_NFA* temp = Regex(s);
             CurrentState->link('\0',temp->StartState);
+            addToState(temp->getAllStates());
+            temp->Finit_wordsState->setNotFinite();
             temp->Finit_wordsState->link(' ',Finit_wordsState);
             continue;
         }
-
         NextState = new NodeNFA("Epsilon");
         AllStates.insert(NextState);
         CurrentState->link('\0',NextState);
@@ -336,13 +346,14 @@ QList<QString> e_NFA::getTokens(QString str)
     QString buffer;
     foreach (QChar c, str) {
         if (c == '*') {
-            result.append(buffer);
+            if (buffer != "")
+                result.append(buffer);
             result.append("*");
             buffer.clear();
         } else {
             buffer.append(c);
         }    }
-    if (buffer.isEmpty())
+    if (!buffer.isEmpty())
         result.append(buffer);
     return result;
 }
