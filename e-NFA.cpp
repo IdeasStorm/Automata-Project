@@ -146,6 +146,11 @@ void e_NFA::addState(NodeNFA* state)
 {
     AllStates.insert(state);
 }
+void e_NFA::addFinitState(NodeNFA *state)
+{
+
+    FinitStates.insert(state);
+}
 
 //GET
 NodeNFA* e_NFA::getStartState()
@@ -254,7 +259,7 @@ QSet<NodeNFA *> e_NFA::getClosure(NodeNFA * state)
 
         foreach (NodeNFA* n,r)
         {
-            if (!set.contains(n))
+            if (!(set.contains(n)))
             {
               set.insert(n);
               s.push(n);
@@ -318,7 +323,7 @@ NFA* e_NFA::convertToNFA()
                        if(node->isFiniteState())
                        {
                          temp->setFinite();
-                         result->getFinitStates().insert(temp);
+                         result->addFinitState(temp);
                        }
                    }
                    else
@@ -339,6 +344,8 @@ NFA* e_NFA::convertToNFA()
                        added = true ;
                        s.push_back(node);
                    }
+                   if (!(done.contains(node)))
+                        s.push(node);
                }
            }
        }
