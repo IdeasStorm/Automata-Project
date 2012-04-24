@@ -213,7 +213,6 @@ NFA* e_NFA::convertToNFA()
                    {
                        NodeNFA* temp=hash.value(node->getName());
                        start2->link(c,temp);
-                     //  exit(0);
                    }
                }
                foreach(NodeNFA* node,temp3)
@@ -223,12 +222,8 @@ NFA* e_NFA::convertToNFA()
                }
            }
        }
-      // QMultiHash<char,NodeNFA*> *nodes=start1->getNextNodes();
-
         temp1.clear();
     }
-   // if(result->getAllStates().size()==2)
-     //   exit(0);
     return result;
 }
 
