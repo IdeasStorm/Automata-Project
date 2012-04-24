@@ -173,8 +173,6 @@ NFA* e_NFA::convertToNFA()
        done.insert(start1);
        start2=hash.value(start1->getName());
        temp1=getClosure(start1);
-       if(temp1.size()==1)
-           exit(0);
        foreach(char c ,getAlphabetic())
        {
            if (c!='\0')
