@@ -207,8 +207,19 @@ void MainWindow::on_pushButton_3_clicked()
             QString* str = new QString(key + number);
             ui->OutPut->addItem(new QListWidgetItem(*str));
         }
-        GraphWidget *graph = new GraphWidget();
-        ViewGraphOfDFA(myt,graph);
+        if (graphic)
+        {
+            ui->tableWidget->hide();
+            ui->graphicsView->show();
+            GraphWidget *graph = new GraphWidget();
+            ViewGraphOfDFA(myt,graph);
+        }
+        else
+        {
+            ui->graphicsView->hide();
+            ui->tableWidget->show();
+            createTable(mytt);
+        }
 }
 
 QString MainWindow::filterText(QString s)
