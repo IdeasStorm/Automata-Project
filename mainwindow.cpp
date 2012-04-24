@@ -6,7 +6,7 @@
 #include "node.h"
 #include "edge.h"
 #include <QString>
-
+#include <QStringList>
 bool graphic;
 
 MainWindow::MainWindow(QWidget *parent) :
@@ -15,7 +15,7 @@ MainWindow::MainWindow(QWidget *parent) :
 {
     ui->setupUi(this);
     graphic = true;
-    ui->tableView->hide();
+    ui->tableWidget->hide();
 }
 
 MainWindow::~MainWindow()
@@ -61,7 +61,29 @@ void MainWindow::ViewGraphOfDFA(DFA* dfa)
 
 void MainWindow::createTable(NFA* nfa)
 {
-    QMultiMap<QString, QPair<QString, char> >* table = nfa->getConvertTable();
+    QMultiMap<QString, QPair<QString, char> >* table = nfa->getConvertTable();   
+    QStringList rowList;
+    QStringList symbols;
+    typedef QPair<QString,char> char_string;
+    foreach (char_string value, table->values()) {
+        symbols.append(QString(value.second));
+    }
+
+    foreach (QString key, table->keys()) {
+        rowList.append(key);
+    }
+
+    ui->tableWidget->setVerticalHeaderLabels(rowList);
+    ui->tableWidget->setHorizontalHeaderLabels(symbols);
+
+    foreach (QString key, table->keys()) {
+        QString str;
+        QList<QPair<QString, char> > values = table->values(key);
+        foreach (char_string pair, values) {
+            pair;
+        }
+        QTableWidgetItem item(str);
+    }
 }
 
 void MainWindow::fillFromDFANode(NodeDFA* currentstate , DFA* dfa,GraphWidget *graph,QPointF p,QSet<NodeDFA*>& visited,QHash<NodeDFA*,Node*>& nodeOfState)
@@ -151,14 +173,14 @@ void MainWindow::on_pushButton_3_clicked()
     }
     if (graphic)
     {
-        ui->tableView->hide();
+        ui->tableWidget->hide();
         ui->graphicsView->show();
         ViewGraphOfDFA(myt);
     }
     else
     {
         ui->graphicsView->hide();
-        ui->tableView->show();
+        ui->tableWidget->show();
         createTable(mytt);
     }
 
@@ -171,7 +193,7 @@ int MainWindow::getWordCount()
 
 void MainWindow::on_radioButton_clicked()
 {
-    ui->tableView->hide();
+    ui->tableWidget->hide();
     ui->graphicsView->show();
     graphic = true;
 }
@@ -179,6 +201,6 @@ void MainWindow::on_radioButton_clicked()
 void MainWindow::on_radioButton_2_clicked()
 {
     ui->graphicsView->hide();
-    ui->tableView->show();
+    ui->tableWidget->show();
     graphic = false;
 }

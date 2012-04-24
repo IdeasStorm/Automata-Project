@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>495</width>
-    <height>419</height>
+    <height>428</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -90,16 +90,12 @@
     <item row="5" column="3">
      <widget class="QRadioButton" name="radioButton_2">
       <property name="text">
-       <string>Convert Table</string>
+       <string>Conversion Table</string>
       </property>
      </widget>
     </item>
     <item row="8" column="0" colspan="4">
-     <widget class="QTableView" name="tableView">
-      <property name="acceptDrops">
-       <bool>false</bool>
-      </property>
-     </widget>
+     <widget class="QTableWidget" name="tableWidget"/>
     </item>
    </layout>
   </widget>

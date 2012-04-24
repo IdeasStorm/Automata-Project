@@ -125,7 +125,9 @@ void Edge::paint(QPainter *painter, const QStyleOptionGraphicsItem *, QWidget *)
 //! [5]
     // Draw the line itself
     painter->setPen(QPen(Qt::black, 1, Qt::SolidLine, Qt::RoundCap, Qt::RoundJoin));
-    if (qFuzzyCompare(line.length(), qreal(0.))) {
+    if (qFuzzyCompare(line.length(), qreal(0.)))
+        return;
+    else if (sourceNode() == destNode()) {
         painter->drawEllipse(line.x1()-10,line.y1()-10,40,40);
         painter->setPen(Qt::blue);
         painter->drawText(line.x1() + 15, line.y1() + 15,_symbol);
