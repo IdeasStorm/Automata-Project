@@ -101,7 +101,7 @@ void MainWindow::createTable(NFA* nfa)
             QTableWidgetItem *item = new QTableWidgetItem(str);
             int row = rowList.value(key);
             int col = symbols.value(QString(pair.second));
-            QMessageBox::information(this,QString("%1,%2").arg(row).arg(col),str,0);
+     //       QMessageBox::information(this,QString("%1,%2").arg(row).arg(col),str,0);
             ui->tableWidget->setItem(row,col,item);
             ui->tableWidget->repaint();
         }
@@ -173,56 +173,53 @@ void MainWindow::fillFromDFANode(NodeDFA* currentstate , DFA* dfa,GraphWidget *g
 
 void MainWindow::on_pushButton_3_clicked()
 {
-    timerStart();
-    //Build DFA
-    //DFA *myt = new DFA(getAllKeywords());
 
-    //Build E-NFA
-    //e_NFA *myt = new e_NFA(getAllKeywords());
-
-    //Build NFA
-    //NFA *mytt = new NFA(getAllKeywords());
-    //DFA *myt = mytt->convertToDFA();
-
-        // Build DFA
-         //DFA *myt = new DFA(getAllKeywords());
+DFA* myt;
+NFA *myt2 ;
+    if (graphic)
+    {
+        timerStart();
         // Build E-NFA
         e_NFA *myt3 = new e_NFA(getAllKeywords());
         NFA *myt2 = myt3->convertToNFA();
-        DFA *myt = myt2->convertToDFA();
-        myt->simplify();
+        myt = myt2->convertToDFA();
+        //myt->simplify();
+    }
+    else
+    {
+        timerStart();
+        //Build NFA
+        myt2 = new NFA(getAllKeywords());
+        myt = myt2->convertToDFA();
+        //myt->simplify();
+    }
 
-    //Build NFA
-/*    NFA *myt2 = new NFA(getAllKeywords());
-    DFA *myt = myt2->convertToDFA();
-    myt->simplify();
-*/
-        ui->graphicsView->currentScene->clear();
-        ui->OutPut->clear();
-        QHash<QString,int> reshash = myt->SimulateDFA(filterText(ui->plainTextEdit->toPlainText()));
-        QList<QString> res = reshash.keys();
-        foreach(QString key,res)
-        {
-            int num = reshash.value(key);
-            QString number;
-            number.setNum(num);
-            QString* str = new QString(key + number);
-            ui->OutPut->addItem(new QListWidgetItem(*str));
-        }
-        if (graphic)
-        {
-            ui->tableWidget->hide();
-            ui->graphicsView->show();
-            GraphWidget *graph = new GraphWidget();
-            ViewGraphOfDFA(myt,graph);
-        }
-        else
-        {
-            ui->graphicsView->hide();
-            ui->tableWidget->show();
-            //createTable(mytt);
-        }
-        timerEnd();
+    ui->graphicsView->currentScene->clear();
+    ui->OutPut->clear();
+    QHash<QString,int> reshash = myt->SimulateDFA(filterText(ui->plainTextEdit->toPlainText()));
+    QList<QString> res = reshash.keys();
+    foreach(QString key,res)
+    {
+        int num = reshash.value(key);
+        QString number;
+        number.setNum(num);
+        QString* str = new QString(key + number);
+        ui->OutPut->addItem(new QListWidgetItem(*str));
+    }
+    if (graphic)
+    {
+        ui->tableWidget->hide();
+        ui->graphicsView->show();
+        GraphWidget *graph = new GraphWidget();
+        ViewGraphOfDFA(myt,graph);
+    }
+    else
+    {
+        ui->graphicsView->hide();
+        ui->tableWidget->show();
+        createTable(myt2);
+    }
+    timerEnd();
 }
 
 QString MainWindow::filterText(QString s)
