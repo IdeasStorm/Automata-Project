@@ -31,27 +31,27 @@
     <item row="2" column="0" rowspan="3" colspan="2">
      <widget class="QPlainTextEdit" name="plainTextEdit"/>
     </item>
-    <item row="2" column="2" rowspan="3">
+    <item row="2" column="2" rowspan="3" colspan="2">
      <widget class="QListWidget" name="listWidget"/>
     </item>
-    <item row="5" column="0" colspan="2">
+    <item row="6" column="0" colspan="2">
      <widget class="QPushButton" name="pushButton_3">
       <property name="text">
        <string>Find</string>
       </property>
      </widget>
     </item>
-    <item row="1" column="2">
+    <item row="1" column="2" colspan="2">
      <widget class="QLineEdit" name="lineEdit"/>
     </item>
-    <item row="2" column="3">
+    <item row="2" column="4">
      <widget class="QPushButton" name="pushButton">
       <property name="text">
        <string>&lt;&lt; Add</string>
       </property>
      </widget>
     </item>
-    <item row="3" column="3">
+    <item row="3" column="4">
      <widget class="QPushButton" name="pushButton_2">
       <property name="text">
        <string>Remove &gt;&gt;</string>
@@ -71,13 +71,13 @@
       </property>
      </widget>
     </item>
-    <item row="4" column="3">
+    <item row="4" column="4">
      <widget class="QListWidget" name="OutPut"/>
     </item>
-    <item row="7" column="0" colspan="4">
+    <item row="8" column="0" colspan="5">
      <widget class="GraphWidget" name="graphicsView"/>
     </item>
-    <item row="5" column="2">
+    <item row="6" column="2">
      <widget class="QRadioButton" name="radioButton">
       <property name="text">
        <string>Graphic</string>
@@ -87,20 +87,27 @@
       </property>
      </widget>
     </item>
-    <item row="5" column="3">
-     <widget class="QRadioButton" name="radioButton_2">
-      <property name="text">
-       <string>Conversion Table</string>
-      </property>
-     </widget>
-    </item>
-    <item row="8" column="0" colspan="4">
+    <item row="9" column="0" colspan="5">
      <widget class="QTableWidget" name="tableWidget"/>
     </item>
-    <item row="1" column="3">
+    <item row="1" column="4">
      <widget class="QLabel" name="label_3">
       <property name="text">
        <string>Executon Time : ? ms</string>
+      </property>
+     </widget>
+    </item>
+    <item row="6" column="4">
+     <widget class="QCheckBox" name="checkBox">
+      <property name="text">
+       <string>simplifiy</string>
+      </property>
+     </widget>
+    </item>
+    <item row="6" column="3">
+     <widget class="QRadioButton" name="radioButton_2">
+      <property name="text">
+       <string>Conversion Table</string>
       </property>
      </widget>
     </item>

@@ -303,6 +303,7 @@ void DFA::simplify()
         if (group_iter < groups.end())
             group_iter++;
     }
+    QSet<NodeDFA*> blackList;
     // searching for groups including more than one node
     foreach (QSet<NodeDFA*> group, groups) {
         if (group.count() > 1) {
@@ -327,16 +328,20 @@ void DFA::simplify()
             this->AllStates.insert(new_node);
             foreach (NodeDFA*node, getAllStates()) {
                 foreach (char symbol, Alphabetic) { // all symbols
+
                     if (group.contains(node->nextNode(symbol)))
                         node->link(symbol, new_node);
                 }
             }
             foreach (NodeDFA* node, group){
-                FinitStates.remove(node);
-                AllStates.remove(node);
+                blackList.insert(node);
 //                delete node;
             }
         }
+    }
+    foreach (NodeDFA* node , blackList){
+        FinitStates.remove(node);
+        AllStates.remove(node);
     }
 
 }

@@ -9,7 +9,7 @@
 #include <QStringList>
 #include <QHeaderView>
 #include <QMessageBox>
-#include <QElapsedTimer>
+
 bool graphic;
 
 MainWindow::MainWindow(QWidget *parent) :
@@ -36,10 +36,9 @@ void MainWindow::on_pushButton_clicked()
         QString res ;
         for (int j=0;j<s.length();j++)
         {
-            if ((((NFA::getAlphabetic()).contains(s[j].cell())) && (s[j]!=' ')) ||(s[j]=='*'))
+            if ((((NFA::getAlphabetic()).contains(s[j].cell())) && (s[j]!=' ')) ||( (graphic) &&(s[j]=='*')))
                 res +=s[j];
         }
-
         ui->listWidget->addItem(new QListWidgetItem(res));
         ui->lineEdit->setText("");
     }
@@ -101,9 +100,7 @@ void MainWindow::createTable(NFA* nfa)
             QTableWidgetItem *item = new QTableWidgetItem(str);
             int row = rowList.value(key);
             int col = symbols.value(QString(pair.second));
-     //       QMessageBox::information(this,QString("%1,%2").arg(row).arg(col),str,0);
             ui->tableWidget->setItem(row,col,item);
-            ui->tableWidget->repaint();
         }
     }
     ui->tableWidget->setVerticalHeaderLabels(rowList.keys());
@@ -117,7 +114,7 @@ void MainWindow::fillFromDFANode(NodeDFA* currentstate , DFA* dfa,GraphWidget *g
     else{
         visited.insert(currentstate);
         Node *node = graph->createNode(currentstate);
-        graph->currentScene->addItem(node);
+        //graph->currentScene->addItem(node);
         node->setText(QString(currentstate->getName()));
         nodeOfState.insert(currentstate,node);
         if (currentstate==dfa->getSeparate_wordsState())
@@ -174,29 +171,30 @@ void MainWindow::fillFromDFANode(NodeDFA* currentstate , DFA* dfa,GraphWidget *g
 void MainWindow::on_pushButton_3_clicked()
 {
 
-DFA* myt;
-NFA *myt2 ;
+    ui->graphicsView->currentScene->clear();
+    ui->OutPut->clear();
+    DFA * nodeDFA ;
+    NFA *nodeNFA ;
+    bool simplify = ui->checkBox->isChecked();
+    timerStart();
     if (graphic)
     {
-        timerStart();
         // Build E-NFA
-        e_NFA *myt3 = new e_NFA(getAllKeywords());
-        NFA *myt2 = myt3->convertToNFA();
-        myt = myt2->convertToDFA();
-        //myt->simplify();
+        e_NFA *nodeENFA = new e_NFA(getAllKeywords());
+        nodeNFA = nodeENFA->convertToNFA();
+        nodeDFA = nodeNFA->convertToDFA();
+        if (simplify)
+            nodeDFA->simplify();
     }
     else
     {
-        timerStart();
         //Build NFA
-        myt2 = new NFA(getAllKeywords());
-        myt = myt2->convertToDFA();
+        nodeNFA = new NFA(getAllKeywords());
+        nodeDFA = nodeNFA->convertToDFA();
         //myt->simplify();
     }
-
-    ui->graphicsView->currentScene->clear();
-    ui->OutPut->clear();
-    QHash<QString,int> reshash = myt->SimulateDFA(filterText(ui->plainTextEdit->toPlainText()));
+    QHash<QString,int> reshash = nodeDFA->SimulateDFA(filterText(ui->plainTextEdit->toPlainText()));
+    timerEnd();
     QList<QString> res = reshash.keys();
     foreach(QString key,res)
     {
@@ -211,15 +209,15 @@ NFA *myt2 ;
         ui->tableWidget->hide();
         ui->graphicsView->show();
         GraphWidget *graph = new GraphWidget();
-        ViewGraphOfDFA(myt,graph);
+        ViewGraphOfDFA(nodeDFA,graph);
     }
     else
     {
         ui->graphicsView->hide();
         ui->tableWidget->show();
-        createTable(myt2);
+        createTable(nodeNFA);
     }
-    timerEnd();
+
 }
 
 QString MainWindow::filterText(QString s)
@@ -249,6 +247,7 @@ void MainWindow::on_radioButton_clicked()
 
 void MainWindow::on_radioButton_2_clicked()
 {
+    ui->listWidget->clear();
     ui->graphicsView->hide();
     ui->tableWidget->show();
     graphic = false;
@@ -262,13 +261,12 @@ void MainWindow::on_tableWidget_cellClicked(int row, int column)
 
 void MainWindow::timerStart()
 {
-    spec_timer.start();
+    time_elapsed = spec_timer.currentTime().msec();
 }
 
-qint64 MainWindow::timerEnd()
+int MainWindow::timerEnd()
 {
-    qint64 time = spec_timer.elapsed();
-    ui->label_3->setText(QString("Exec Time : %1 ms").arg(time));
-    spec_timer.invalidate();
-    return time;
+    int delta = spec_timer.currentTime().msec() - time_elapsed;
+    ui->label_3->setText(QString("Exec Time : %1 ms").arg(time_elapsed));
+    return delta;
 }

@@ -275,6 +275,8 @@ NFA* e_NFA::convertToNFA()
     NFA* result = new NFA();
     NodeNFA* start1=getStartState();
     NodeNFA* start2=result->getStartState();
+    if(getClosure(start1).intersect(getFinitStates()).size()>0)
+        start2->setFinite();
     QStack<NodeNFA*> s;
     s.push(start1);
     QHash<QString,NodeNFA*> hash;
