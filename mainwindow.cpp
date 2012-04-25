@@ -9,6 +9,7 @@
 #include <QStringList>
 #include <QHeaderView>
 #include <QMessageBox>
+#include <QElapsedTimer>
 bool graphic;
 
 MainWindow::MainWindow(QWidget *parent) :
@@ -172,6 +173,7 @@ void MainWindow::fillFromDFANode(NodeDFA* currentstate , DFA* dfa,GraphWidget *g
 
 void MainWindow::on_pushButton_3_clicked()
 {
+    timerStart();
     //Build DFA
     //DFA *myt = new DFA(getAllKeywords());
 
@@ -218,8 +220,9 @@ void MainWindow::on_pushButton_3_clicked()
         {
             ui->graphicsView->hide();
             ui->tableWidget->show();
-            createTable(mytt);
+            //createTable(mytt);
         }
+        timerEnd();
 }
 
 QString MainWindow::filterText(QString s)
@@ -258,4 +261,17 @@ void MainWindow::on_tableWidget_cellClicked(int row, int column)
 {
     // just for debugging
     //QMessageBox::information(this,"alert",QString("%1 , %2").arg(row).arg(column),0);
+}
+
+void MainWindow::timerStart()
+{
+    spec_timer.start();
+}
+
+qint64 MainWindow::timerEnd()
+{
+    qint64 time = spec_timer.elapsed();
+    ui->label_3->setText(QString("Exec Time : %1 ms").arg(time));
+    spec_timer.invalidate();
+    return time;
 }

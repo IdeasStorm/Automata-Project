@@ -97,6 +97,13 @@
     <item row="8" column="0" colspan="4">
      <widget class="QTableWidget" name="tableWidget"/>
     </item>
+    <item row="1" column="3">
+     <widget class="QLabel" name="label_3">
+      <property name="text">
+       <string>Executon Time : ? ms</string>
+      </property>
+     </widget>
+    </item>
    </layout>
   </widget>
  </widget>

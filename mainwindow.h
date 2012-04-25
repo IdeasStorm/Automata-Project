@@ -4,6 +4,7 @@
 #include <QMainWindow>
 #include "graphwidget.h"
 #include "NFA.h"
+#include <QElapsedTimer>
 
 namespace Ui {
     class MainWindow;
@@ -40,6 +41,9 @@ private slots:
 
 private:
     Ui::MainWindow *ui;
+    QElapsedTimer spec_timer;
+    void timerStart();
+    qint64 timerEnd();
 };
 
 #endif // MAINWINDOW_H
